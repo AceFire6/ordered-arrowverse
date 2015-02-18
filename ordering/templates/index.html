@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Arrow/The Flash Episode Order</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+</head>
+<body>
+<main class="container">
+    <h1>
+        Arrow/The Flash Episode Order
+    </h1>
+    <hr>
+    <a href="#end"><small>END</small></a>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Series</th>
+            <th>Episode</th>
+            <th>Name</th>
+            <th>Original Air Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in table_content %}
+            <tr>
+                {% for data in row %}
+                    <td>
+                    {{ data }}
+                {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a name="end"></a>
+</main>
+</body>
+</html>
