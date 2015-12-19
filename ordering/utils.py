@@ -33,9 +33,9 @@ def sort_episodes(list_1, list_2):
 
     full_list = sorted(full_list, key=lambda episode_list: episode_list[-1])
 
-    for i in range(79, len(full_list), 2):
-        if i + 1 < len(full_list):
-            full_list[i + 1], full_list[i] = full_list[i], full_list[i + 1]
+    # Fix screening time error caused by network
+    # This fix corrects all the list errors.
+    full_list[78], full_list[79] = full_list[79], full_list[78]
 
     count = 0
     for row in full_list:
