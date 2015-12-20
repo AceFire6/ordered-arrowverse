@@ -7,7 +7,8 @@ from utils import get_episode_list, sort_episodes
 
 
 @app.route('/', methods=['GET'])
-def index():
+@app.route('/<newest_first>', methods=['GET'])
+def index(newest_first=None):
     context = {}
 
     arrow_html = requests.get(
@@ -20,6 +21,10 @@ def index():
 
     full_list = sort_episodes(arrow_list, flash_list)
 
+    if newest_first == 'newest_first':
+        full_list = full_list[::-1]
+
+    context['newest_first'] = True if newest_first else False
     context['table_content'] = full_list
 
     return render_template('index.html', **context)
