@@ -8,6 +8,7 @@ from utils import get_episode_list, sort_episodes
 
 @app.route('/', methods=['GET'])
 @app.route('/<newest_first>', methods=['GET'])
+@app.cache.memoize(timeout=43200)
 def index(newest_first=None):
     context = {}
 
