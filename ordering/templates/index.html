@@ -16,12 +16,14 @@
         Project on Github</a>
     </h1>
     <hr>
-    <a href="#end" id="top"><small>END</small></a> |
-    {% if newest_first %}
-        <a href="/"><small>OLDEST FIRST</small></a>
-    {% else %}
-        <a href="/newest_first"><small>NEWEST FIRST</small></a>
-    {% endif %}
+    <div class="pull-right">
+        <a href="#end" id="top"><small>END</small></a> |
+        {% if newest_first %}
+            <a href="/"><small>OLDEST FIRST</small></a>
+        {% else %}
+            <a href="/newest_first/"><small>NEWEST FIRST</small></a>
+        {% endif %}
+    </div>
     <table class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
