@@ -1,14 +1,12 @@
 from datetime import datetime
 
 
-def get_season(series_num, episode_num):
-    return int(episode_num) / int(series_num)
-
-
 def get_episode_list(series_soup, series):
     episode_list = []
     season = 0
-    for table in series_soup.find_all('table')[1:]:
+    for table in series_soup.find_all('table'):
+        if 'series overview' in table.getText().lower():
+            continue
         season += 1
         table = [row.strip().split('\n')
                  for row in table.getText().split('\n\n') if row]
@@ -26,10 +24,10 @@ def get_episode_list(series_soup, series):
     return episode_list
 
 
-def sort_episodes(list_1, list_2):
+def sort_episodes(show_list_set):
     full_list = []
-    full_list.extend(list_1)
-    full_list.extend(list_2)
+    for show_list in show_list_set:
+        full_list.extend(show_list)
 
     full_list = sorted(full_list, key=lambda episode_list: episode_list[-1])
 

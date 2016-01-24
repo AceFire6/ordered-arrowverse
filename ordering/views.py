@@ -12,20 +12,18 @@ from utils import get_episode_list, sort_episodes
 def index(newest_first=None):
     context = {}
 
-    arrow_html = requests.get(
-        'http://arrow.wikia.com/wiki/List_of_Arrow_episodes').content
-    flash_html = requests.get(
-        'http://arrow.wikia.com/wiki/List_of_The_Flash_episodes').content
+    show_list_set = []
+    for show in app.config['SHOWS']:
+        show_html = requests.get(show['url']).content
+        show_list = get_episode_list(BeautifulSoup(show_html), show['name'])
+        show_list_set.append(show_list)
 
-    arrow_list = get_episode_list(BeautifulSoup(arrow_html), 'Arrow')
-    flash_list = get_episode_list(BeautifulSoup(flash_html), 'The Flash')
-
-    full_list = sort_episodes(arrow_list, flash_list)
+    episode_list = sort_episodes(show_list_set)
 
     if newest_first == 'newest_first':
-        full_list = full_list[::-1]
+        episode_list = episode_list[::-1]
 
     context['newest_first'] = True if newest_first else False
-    context['table_content'] = full_list
+    context['table_content'] = episode_list
 
     return render_template('index.html', **context)
