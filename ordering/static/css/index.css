@@ -1,3 +1,7 @@
 a.btn {
     display:inline;
 }
+
+.episode {
+    cursor: pointer;
+}
