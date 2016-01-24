@@ -19,8 +19,8 @@ SHOWS = (
         'name': 'The Flash',
         'url': FLASH_URL
     },
-    # {
-    #     'name': 'DC\'s Legends of Tomorrow',
-    #     'url': LEGENDS_URL
-    # },
+    {
+        'name': 'DC\'s Legends of Tomorrow',
+        'url': LEGENDS_URL
+    },
 )

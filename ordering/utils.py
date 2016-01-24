@@ -12,14 +12,16 @@ def get_episode_list(series_soup, series):
                  for row in table.getText().split('\n\n') if row]
 
         for row in table:
+            episode_name = row[-2].replace('"', '')
+            episode_num = row[-3]
             try:
                 row[-1] = air_date = datetime.strptime(row[-1], '%B %d, %Y')
             except ValueError:
                 continue
 
             if air_date and 'TBA' not in row:
-                episode = 'S{:>02}E{:>02}'.format(season, row[1])
-                row = [series, episode, row[2].replace('"', ''), row[3]]
+                episode_id = 'S{:>02}E{:>02}'.format(season, episode_num)
+                row = [series, episode_id, episode_name, air_date]
                 episode_list.append(row)
     return episode_list
 
