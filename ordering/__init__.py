@@ -7,4 +7,4 @@ app.config.from_pyfile('settings.py')
 
 app.cache = Cache(app)
 
-from . import views
+from ordering import views

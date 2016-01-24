@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from flask import render_template
 
-from . import app
+from ordering import app
 from utils import get_episode_list, sort_episodes
 
 
