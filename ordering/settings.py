@@ -10,6 +10,8 @@ FLASH_URL = 'http://arrow.wikia.com/wiki/List_of_The_Flash_episodes'
 LEGENDS_URL = ('http://arrow.wikia.com/wiki/'
                'List_of_DC%27s_Legends_of_Tomorrow_episodes')
 
+ROOT_URL = 'http://arrow.wikia.com/wiki/'
+
 SHOWS = (
     {
         'name': 'Arrow',
