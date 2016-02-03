@@ -3,9 +3,9 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Arrow/The Flash Episode Order</title>
-    <link type="image/png" href="static/favicon.png" rel="icon">
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/css/index.css">
+    <link type="image/png" href="/static/favicon.png" rel="icon">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
 <main class="container">
@@ -14,12 +14,26 @@
         Project on Github</a>
     </h1>
     <hr>
+    <div class="pull-left">
+        <form class="form-inline">
+            <button type="button" id="filter-button" class="btn btn-xs btn-default">Filter</button>
+            <label>
+                <input type="checkbox" id="arrow" class="filter-option" {% if 'arrow' in hidden_list %}checked{% endif %}> Hide Arrow
+            </label>
+            <label>
+                <input type="checkbox" id="flash" class="filter-option" {% if 'flash' in hidden_list %}checked{% endif %}> Hide The Flash
+            </label>
+            <label>
+                <input type="checkbox" id="legends" class="filter-option" {% if 'legends' in hidden_list %}checked{% endif %}> Hide Legends of Tomorrow
+            </label>
+        </form>
+    </div>
     <div class="pull-right">
         <a href="#end" id="top"><small>END</small></a> |
         {% if newest_first %}
-            <a href="/"><small>OLDEST FIRST</small></a>
+            <a href="{{ oldest_first_url }}"><small>OLDEST FIRST</small></a>
         {% else %}
-            <a href="/newest_first"><small>NEWEST FIRST</small></a>
+            <a href="newest_first"><small>NEWEST FIRST</small></a>
         {% endif %}
     </div>
     <table class="table table-striped table-bordered table-hover">
@@ -68,9 +82,9 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    <script type="text/javascript" rel="script" src="static/js/jquery.min.js"></script>
-    <script type="text/javascript" rel="script" src="static/js/bootstrap.min.js"></script>
-    <script type="text/javascript" rel="script" src="../static/js/index.js"></script>
+    <script type="text/javascript" rel="script" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" rel="script" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" rel="script" src="/static/js/index.js"></script>
 </main>
 </body>
 </html>

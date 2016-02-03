@@ -1,4 +1,8 @@
+import requests
+from bs4 import BeautifulSoup
 from datetime import datetime
+
+from ordering import app
 
 
 def get_episode_list(series_soup, series):
@@ -35,7 +39,9 @@ def sort_episodes(show_list_set):
 
     # Fix screening time error caused by network
     # This fix corrects all the list errors.
-    full_list[78], full_list[79] = full_list[79], full_list[78]
+    if (len(full_list) > 80 and
+        full_list[78][1].endswith('E17') and full_list[79][1].endswith('E17')):
+        full_list[78], full_list[79] = full_list[79], full_list[78]
 
     count = 0
     for row in full_list:
@@ -44,3 +50,20 @@ def sort_episodes(show_list_set):
         row[-1] = row[-1].strftime('%B %d, %Y')
 
     return full_list
+
+
+@app.cache.memoize(timeout=43200)
+def get_url_content(url):
+    return requests.get(url).content
+
+
+def get_full_series_episode_list(excluded_series=list()):
+    show_list_set = []
+    for show in app.config['SHOWS']:
+        if show['id'] not in excluded_series:
+            show_html = get_url_content(show['url'])
+            show_list = get_episode_list(
+                    BeautifulSoup(show_html), show['name'])
+            show_list_set.append(show_list)
+
+    return sort_episodes(show_list_set)

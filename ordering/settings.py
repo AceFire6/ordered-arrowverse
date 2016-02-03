@@ -14,14 +14,17 @@ ROOT_URL = 'http://arrow.wikia.com/wiki/'
 
 SHOWS = (
     {
+        'id': 'arrow',
         'name': 'Arrow',
         'url': ARROW_URL
     },
     {
+        'id': 'flash',
         'name': 'The Flash',
         'url': FLASH_URL
     },
     {
+        'id': 'legends',
         'name': 'DC\'s Legends of Tomorrow',
         'url': LEGENDS_URL
     },
