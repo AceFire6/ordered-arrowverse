@@ -5,3 +5,9 @@ a.btn {
 .episode {
     cursor: pointer;
 }
+
+#footer-buttons {
+    width: 20%;
+    margin-left:auto;
+    margin-right:auto;
+}
