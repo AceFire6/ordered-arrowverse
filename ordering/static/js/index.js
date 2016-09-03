@@ -29,10 +29,40 @@
         window.location = url;
     };
 
+    var disableColours = function() {
+        $('.episode').add('thead').addClass('no-color');
+        $('#episode-list').addClass('table-striped table-hover');
+        $('#no-color').find('.text').text('ENABLE COLOR');
+        Cookies.set('colour', '0');
+    };
+
+    var enableColours = function() {
+        $('.episode').add('thead').removeClass('no-color');
+        $('#episode-list').removeClass('table-striped table-hover');
+        $('#no-color').find('.text').text('DISABLE COLOR');
+        Cookies.set('colour', '1');
+    };
+
     var registerListeners = function() {
         $('.episode').click(openWiki);
         $('#filter-button').click(addFilters);
+        $('#no-color').click(function() {
+            console.log(Cookies.get('colour'));
+            if (Cookies.get('colour') === '1') {
+                disableColours();
+            } else {
+                enableColours();
+            }
+        })
     };
 
-    $(document).ready(registerListeners);
+    $(document).ready(function() {
+        registerListeners();
+        var colourSetting = Cookies.get('colour');
+        if (colourSetting === undefined) {
+            Cookies.set('colour', '1');
+        } else if (colourSetting == '0') {
+            disableColours();
+        }
+    });
 })(jQuery);

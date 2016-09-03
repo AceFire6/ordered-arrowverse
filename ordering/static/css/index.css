@@ -2,12 +2,59 @@ a.btn {
     display:inline;
 }
 
+thead {
+    color: #FFF;
+    background-color: #333333;
+}
+
 .episode {
     cursor: pointer;
+    color: #FFF;
 }
 
 #footer-buttons {
     width: 20%;
     margin-left:auto;
     margin-right:auto;
+}
+
+.arrow {
+    background-color: #006200;
+}
+
+.arrow:hover {
+    background-color: #004e00;
+}
+
+.flash {
+    background-color: #a50400;
+}
+
+.flash:hover {
+    background-color: #910400;
+}
+
+.legends {
+    background-color: #003E3E;
+}
+
+.legends:hover {
+    background-color: #002a2a;
+}
+
+.supergirl {
+    background-color: #007196;
+}
+
+.supergirl:hover {
+    background-color: #005e82;
+}
+
+.no-color {
+    background-color: transparent;
+    color: #000;
+}
+
+.no-color:hover {
+    background-color: transparent;
 }

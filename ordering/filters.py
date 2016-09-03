@@ -27,3 +27,8 @@ def inject_oldest_first_url():
 @app.context_processor
 def inject_newest_first():
     return {'newest_first': request.url.endswith('/newest_first')}
+
+
+@app.context_processor
+def inject_show_dict():
+    return {'series_map': app.config['SHOW_DICT']}

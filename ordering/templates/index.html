@@ -38,8 +38,9 @@
         {% else %}
             <a href="newest_first"><small>NEWEST FIRST</small></a>
         {% endif %}
+        | <a href="#" id="no-color"><small class="text">DISABLE COLOR</small></a>
     </div>
-    <table class="table table-striped table-bordered table-hover">
+    <table class="table table-bordered" id="episode-list">
         <thead>
         <tr>
             <th>#</th>
@@ -51,7 +52,7 @@
         </thead>
         <tbody>
         {% for row in table_content %}
-            <tr class='episode' data-href="{{ row.3 | episode_url(row.1) }}">
+            <tr class='episode {{ series_map[row.1].id }}' data-href="{{ row.3 | episode_url(row.1) }}">
                 {% for data in row %}
                     <td>
                         {{ data }}
@@ -113,6 +114,7 @@
         </div><!-- /.modal -->
     <script type="text/javascript" rel="script" src="/static/js/jquery.min.js"></script>
     <script type="text/javascript" rel="script" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" rel="script" src="/static/js/cookie.js"></script>
     <script type="text/javascript" rel="script" src="/static/js/index.js"></script>
 </main>
 </body>
