@@ -8,8 +8,9 @@ def url_form(episode_name):
 
 @app.template_filter('episode_url')
 def episode_url_filter(episode_name, series):
-    root_url = app.config['ROOT_URL']
-    if episode_name == 'Pilot':
+    root_url = app.config['SHOW_DICT'][series]['root']
+    wikipedia = 'wikipedia' in root_url
+    if episode_name == 'Pilot' or wikipedia:
         return root_url + url_form(episode_name + ' (%s)' % series)
     else:
         return root_url + url_form(episode_name)

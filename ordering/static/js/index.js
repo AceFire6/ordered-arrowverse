@@ -9,15 +9,11 @@
     var addFilters = function() {
         var toFilterList = [];
 
-        if ($('#arrow').prop('checked')) {
-            toFilterList.push('arrow');
-        }
-        if ($('#flash').prop('checked')) {
-            toFilterList.push('flash');
-        }
-        if ($('#legends').prop('checked')) {
-            toFilterList.push('legends');
-        }
+        $('input[type=checkbox]').each(function() {
+            if ($(this).prop('checked')) {
+                toFilterList.push($(this).attr('id'));
+            }
+        });
 
         var url = '';
 

@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+from operator import itemgetter
 
 from ordering import app
 
@@ -8,15 +9,30 @@ from ordering import app
 def get_episode_list(series_soup, series):
     episode_list = []
     season = 0
-    for table in series_soup.find_all('table'):
+    wikipedia = 'wikipedia' in app.config['SHOW_DICT'][series]['root']
+
+    if not wikipedia:
+        tables = series_soup.find_all('table')
+    else:
+        tables = series_soup.find_all('table', class_='wikiepisodetable')
+
+    for table in tables:
         if 'series overview' in table.getText().lower():
             continue
         season += 1
-        table = [row.strip().split('\n')
-                 for row in table.getText().split('\n\n') if row]
+        if not wikipedia:
+            table = [row.strip().split('\n')
+                     for row in table.getText().split('\n\n') if row.strip()]
+        else:
+            table = [[j.getText() for j in itemgetter(1, 3, 5, 11)(i.contents)]
+                     for i in table.find_all(class_='vevent')]
 
         for row in table:
+            if wikipedia:
+                row[-1] = row[-1].split('(')[0].replace(u'\xa0', ' ').strip()
             episode_name = row[-2].replace('"', '')
+            if '[' in episode_name:
+                episode_name = episode_name.split('[')[0]
             episode_num = row[-3]
             try:
                 row[-1] = air_date = datetime.strptime(row[-1], '%B %d, %Y')
@@ -61,7 +77,7 @@ def get_full_series_episode_list(excluded_series=list()):
     show_list_set = []
     for show in app.config['SHOWS']:
         if show['id'] not in excluded_series:
-            show_html = get_url_content(show['url'])
+            show_html = get_url_content(show['root'] + show['url'])
             show_list = get_episode_list(
                     BeautifulSoup(show_html), show['name'])
             show_list_set.append(show_list)
