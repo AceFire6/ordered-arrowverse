@@ -1,4 +1,6 @@
+import re
 import requests
+
 from bs4 import BeautifulSoup
 from datetime import datetime
 from operator import itemgetter
@@ -39,7 +41,10 @@ def get_episode_list(series_soup, series):
                 episode_name = episode_name.split('[')[0]
             episode_num = row[-3]
             try:
-                row[-1] = air_date = datetime.strptime(row[-1], '%B %d, %Y')
+                date = row[-1]
+                reference = re.search(r'\[\d+\]$', row[-1])
+                date = date[:reference.start()] if reference else date
+                row[-1] = air_date = datetime.strptime(date, '%B %d, %Y')
             except ValueError:
                 continue
 
