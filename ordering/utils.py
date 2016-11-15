@@ -21,11 +21,15 @@ def get_episode_list(series_soup, series):
             continue
         season += 1
         if not wikipedia:
-            table = [row.strip().split('\n')
-                     for row in table.getText().split('\n\n') if row.strip()]
+            table = [
+                row.strip().split('\n')
+                for row in table.getText().split('\n\n') if row.strip()
+            ]
         else:
-            table = [[j.getText() for j in itemgetter(1, 3, 5, 11)(i.contents)]
-                     for i in table.find_all(class_='vevent')]
+            table = [
+                [j.getText() for j in itemgetter(1, 3, 5, 11)(i.contents)]
+                for i in table.find_all(class_='vevent')
+            ]
 
         for row in table:
             if wikipedia:
@@ -55,8 +59,10 @@ def sort_episodes(show_list_set):
 
     # Fix screening time error caused by network
     # This fix corrects all the list errors.
-    if (len(full_list) > 80 and
-        full_list[78][1].endswith('E17') and full_list[79][1].endswith('E17')):
+    ep_17 = all(
+        map(lambda x: x[1].endswith('E17'), (full_list[78], full_list[79]))
+    )
+    if len(full_list) > 80 and ep_17:
         full_list[78], full_list[79] = full_list[79], full_list[78]
 
     count = 0
@@ -79,7 +85,8 @@ def get_full_series_episode_list(excluded_series=list()):
         if show['id'] not in excluded_series:
             show_html = get_url_content(show['root'] + show['url'])
             show_list = get_episode_list(
-                    BeautifulSoup(show_html), show['name'])
+                    BeautifulSoup(show_html), show['name']
+            )
             show_list_set.append(show_list)
 
     return sort_episodes(show_list_set)
