@@ -1,5 +1,5 @@
 Flask==0.10.1
 Flask-Cache==0.13.1
-beautifulsoup4==4.3.2
+beautifulsoup4==4.5.3
 requests==2.5.1
 gunicorn==19.0.0
