@@ -1,5 +1,5 @@
 from flask import request
-from ordering import app
+from . import app
 
 
 def url_form(episode_name):

@@ -1,7 +1,7 @@
 from flask import render_template
 
-from ordering import app
-from utils import get_full_series_episode_list
+from . import app
+from .utils import get_full_series_episode_list
 
 
 @app.route('/', methods=['GET'])

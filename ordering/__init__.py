@@ -1,7 +1,7 @@
 from flask import Flask
 from flask.ext.cache import Cache
 
-from ordering.url_converters import ListConverter
+from .url_converters import ListConverter
 
 app = Flask(__name__)
 
@@ -11,5 +11,5 @@ app.cache = Cache(app)
 
 app.url_map.converters['list'] = ListConverter
 
-from ordering import filters
-from ordering import views
+from . import filters
+from . import views

@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from operator import itemgetter
 
-from ordering import app
+from . import app
 
 
 def get_episode_list(series_soup, series):
