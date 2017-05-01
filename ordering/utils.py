@@ -69,11 +69,16 @@ def sort_episodes(show_list_set):
 
     # Fix screening time error caused by network
     # This fix corrects all the list errors.
-    ep_17 = all(
-        map(lambda x: x[1].endswith('E17'), (full_list[78], full_list[79]))
-    )
-    if len(full_list) > 80 and ep_17:
-        full_list[78], full_list[79] = full_list[79], full_list[78]
+    if len(full_list) > 80:
+        problem_episodes = (full_list[78], full_list[79])
+
+        one_is_flash = any(map(lambda x: x['series'].upper() == 'THE FLASH', problem_episodes))
+        one_is_arrow = any(map(lambda x: x['series'].upper() == 'ARROW', problem_episodes))
+
+        both_are_episode_17 = all(map(lambda x: x['episode_id'].endswith('E17'), problem_episodes))
+
+        if one_is_arrow and one_is_flash and both_are_episode_17:
+            full_list[78], full_list[79] = full_list[79], full_list[78]
 
     count = 0
     for row in full_list:
