@@ -100,7 +100,8 @@ def get_full_series_episode_list(excluded_series=list()):
         if show['id'] not in excluded_series:
             show_html = get_url_content(show['root'] + show['url'])
             show_list = get_episode_list(
-                    BeautifulSoup(show_html), show['name']
+                BeautifulSoup(show_html, 'html.parser'),
+                show['name']
             )
             show_list_set.append(show_list)
 
