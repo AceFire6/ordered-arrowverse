@@ -52,12 +52,12 @@
         </thead>
         <tbody>
         {% for row in table_content %}
-            <tr class='episode {{ series_map[row.1].id }}' data-href="{{ row.3 | episode_url(row.1) }}">
-                {% for data in row %}
-                    <td>
-                        {{ data }}
-                    </td>
-                {% endfor %}
+            <tr class='episode {{ series_map[row.series].id }}' data-href="{{ row.episode_name | episode_url(row.series) }}">
+              <td>{{ row.row_number }}</td>
+              <td>{{ row.series }}</td>
+              <td>{{ row.episode_id }}</td>
+              <td>{{ row.episode_name }}</td>
+              <td>{{ row.air_date }}</td>
             </tr>
         {% endfor %}
         </tbody>

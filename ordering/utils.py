@@ -50,8 +50,13 @@ def get_episode_list(series_soup, series):
 
             if air_date and 'TBA' not in row:
                 episode_id = 'S{:>02}E{:>02}'.format(season, episode_num)
-                row = [series, episode_id, episode_name, air_date]
-                episode_list.append(row)
+                episode_data = {
+                    'series': series,
+                    'episode_id': episode_id,
+                    'episode_name': episode_name,
+                    'air_date': air_date,
+                }
+                episode_list.append(episode_data)
     return episode_list
 
 
@@ -60,7 +65,7 @@ def sort_episodes(show_list_set):
     for show_list in show_list_set:
         full_list.extend(show_list)
 
-    full_list = sorted(full_list, key=lambda episode_list: episode_list[-1])
+    full_list = sorted(full_list, key=lambda episode: episode['air_date'])
 
     # Fix screening time error caused by network
     # This fix corrects all the list errors.
@@ -73,8 +78,8 @@ def sort_episodes(show_list_set):
     count = 0
     for row in full_list:
         count += 1
-        row.insert(0, count)
-        row[-1] = row[-1].strftime('%B %d, %Y')
+        row['row_number'] = count
+        row['air_date'] = row['air_date'].strftime('%B %d, %Y')
 
     return full_list
 
