@@ -50,6 +50,22 @@ thead {
     background-color: #005e82;
 }
 
+.vixen {
+    background-color: #3c0096;
+}
+
+.vixen:hover {
+    background-color: #280082;
+}
+
+.constantine {
+    background-color: #512f00;
+}
+
+.constantine:hover {
+    background-color: #633900;
+}
+
 .no-color {
     background-color: transparent;
     color: #000;
