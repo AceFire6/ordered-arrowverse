@@ -44,13 +44,13 @@ SHOWS = (
         'id': 'vixen',
         'name': 'Vixen',
         'url': VIXEN_URL,
-        'root': ARROW_ROOT
+        'root': WIKIA_ROOT
     },
     {
         'id': 'constantine',
         'name': 'Constantine',
         'url': CONSTANTINE_URL,
-        'root': ARROW_ROOT
+        'root': WIKIA_ROOT
     }
 )
 
