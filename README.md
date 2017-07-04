@@ -17,3 +17,5 @@ Data for Supergirl is drawn from wikipedia.
 * The Flash
 * DC's Legends of Tomorrow
 * Supergirl
+* Vixen
+* Constantine
