@@ -12,6 +12,7 @@ def url_form(episode_name):
 def episode_url_filter(episode_name, series):
     root_url = app.config['SHOW_DICT'][series]['root']
     from_wikipedia = WIKIPEDIA in root_url
+
     if episode_name == 'Pilot' or from_wikipedia:
         return root_url + url_form(episode_name + ' (%s)' % series)
     else:

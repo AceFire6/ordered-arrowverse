@@ -50,7 +50,7 @@ def get_episode_list(series_soup, series):
                 continue
 
             if air_date and 'TBA' not in row:
-                episode_id = 'S{:>02}E{:>02}'.format(season, episode_num)
+                episode_id = f'S{season:>02}E{episode_num:>02}'
                 episode_data = {
                     'series': series,
                     'episode_id': episode_id,
@@ -85,7 +85,7 @@ def sort_episodes(show_list_set):
     for row in full_list:
         count += 1
         row['row_number'] = count
-        row['air_date'] = row['air_date'].strftime('%B %d, %Y')
+        row['air_date'] = f'{row["air_date"]:%B %d, %Y}'
 
     return full_list
 
