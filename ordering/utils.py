@@ -6,14 +6,15 @@ from datetime import datetime
 from operator import itemgetter
 
 from . import app
+from .constants import WIKIPEDIA
 
 
 def get_episode_list(series_soup, series):
     episode_list = []
     season = 0
-    wikipedia = 'wikipedia' in app.config['SHOW_DICT'][series]['root']
+    from_wikipedia = WIKIPEDIA in app.config['SHOW_DICT'][series]['root']
 
-    if not wikipedia:
+    if not from_wikipedia:
         tables = series_soup.find_all('table')
     else:
         tables = series_soup.find_all('table', class_='wikiepisodetable')
@@ -22,7 +23,7 @@ def get_episode_list(series_soup, series):
         if 'series overview' in table.getText().lower():
             continue
         season += 1
-        if not wikipedia:
+        if not from_wikipedia:
             table = [
                 row.strip().split('\n')
                 for row in table.getText().split('\n\n') if row.strip()
@@ -34,7 +35,7 @@ def get_episode_list(series_soup, series):
             ]
 
         for row in table:
-            if wikipedia:
+            if from_wikipedia:
                 row[-1] = row[-1].split('(')[0].replace('\xa0', ' ').strip()
             episode_name = row[-2].replace('"', '')
             if '[' in episode_name:
