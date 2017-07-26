@@ -6,14 +6,15 @@ from datetime import datetime
 from operator import itemgetter
 
 from . import app
+from .constants import WIKIPEDIA
 
 
 def get_episode_list(series_soup, series):
     episode_list = []
     season = 0
-    wikipedia = 'wikipedia' in app.config['SHOW_DICT'][series]['root']
+    from_wikipedia = WIKIPEDIA in app.config['SHOW_DICT'][series]['root']
 
-    if not wikipedia:
+    if not from_wikipedia:
         tables = series_soup.find_all('table')
     else:
         tables = series_soup.find_all('table', class_='wikiepisodetable')
@@ -22,7 +23,7 @@ def get_episode_list(series_soup, series):
         if 'series overview' in table.getText().lower():
             continue
         season += 1
-        if not wikipedia:
+        if not from_wikipedia:
             table = [
                 row.strip().split('\n')
                 for row in table.getText().split('\n\n') if row.strip()
@@ -34,8 +35,8 @@ def get_episode_list(series_soup, series):
             ]
 
         for row in table:
-            if wikipedia:
-                row[-1] = row[-1].split('(')[0].replace(u'\xa0', ' ').strip()
+            if from_wikipedia:
+                row[-1] = row[-1].split('(')[0].replace('\xa0', ' ').strip()
             episode_name = row[-2].replace('"', '')
             if '[' in episode_name:
                 episode_name = episode_name.split('[')[0]
@@ -49,7 +50,7 @@ def get_episode_list(series_soup, series):
                 continue
 
             if air_date and 'TBA' not in row:
-                episode_id = 'S{:>02}E{:>02}'.format(season, episode_num)
+                episode_id = f'S{season:>02}E{episode_num:>02}'
                 episode_data = {
                     'series': series,
                     'episode_id': episode_id,
@@ -72,10 +73,10 @@ def sort_episodes(show_list_set):
     if len(full_list) > 80:
         problem_episodes = (full_list[78], full_list[79])
 
-        one_is_flash = any(map(lambda x: x['series'].upper() == 'THE FLASH', problem_episodes))
-        one_is_arrow = any(map(lambda x: x['series'].upper() == 'ARROW', problem_episodes))
+        one_is_flash = any([x['series'].upper() == 'THE FLASH' for x in problem_episodes])
+        one_is_arrow = any([x['series'].upper() == 'ARROW' for x in problem_episodes])
 
-        both_are_episode_17 = all(map(lambda x: x['episode_id'].endswith('E17'), problem_episodes))
+        both_are_episode_17 = all([x['episode_id'].endswith('E17') for x in problem_episodes])
 
         if one_is_arrow and one_is_flash and both_are_episode_17:
             full_list[78], full_list[79] = full_list[79], full_list[78]
@@ -84,7 +85,7 @@ def sort_episodes(show_list_set):
     for row in full_list:
         count += 1
         row['row_number'] = count
-        row['air_date'] = row['air_date'].strftime('%B %d, %Y')
+        row['air_date'] = f'{row["air_date"]:%B %d, %Y}'
 
     return full_list
 

@@ -1,5 +1,7 @@
 from flask import request
+
 from . import app
+from .constants import WIKIPEDIA
 
 
 def url_form(episode_name):
@@ -9,8 +11,9 @@ def url_form(episode_name):
 @app.template_filter('episode_url')
 def episode_url_filter(episode_name, series):
     root_url = app.config['SHOW_DICT'][series]['root']
-    wikipedia = 'wikipedia' in root_url
-    if episode_name == 'Pilot' or wikipedia:
+    from_wikipedia = WIKIPEDIA in root_url
+
+    if episode_name == 'Pilot' or from_wikipedia:
         return root_url + url_form(episode_name + ' (%s)' % series)
     else:
         return root_url + url_form(episode_name)
