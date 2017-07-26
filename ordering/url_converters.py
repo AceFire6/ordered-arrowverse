@@ -6,6 +6,4 @@ class ListConverter(BaseConverter):
         return value.split('+')
 
     def to_url(self, values):
-        return '+'.join(
-            super(ListConverter, self).to_url(value) for value in values
-        )
+        return '+'.join(super().to_url(value) for value in values)
