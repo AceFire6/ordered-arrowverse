@@ -35,7 +35,7 @@ def get_episode_list(series_soup, series):
 
         for row in table:
             if wikipedia:
-                row[-1] = row[-1].split('(')[0].replace(u'\xa0', ' ').strip()
+                row[-1] = row[-1].split('(')[0].replace('\xa0', ' ').strip()
             episode_name = row[-2].replace('"', '')
             if '[' in episode_name:
                 episode_name = episode_name.split('[')[0]
