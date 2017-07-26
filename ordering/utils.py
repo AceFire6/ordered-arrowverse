@@ -72,10 +72,10 @@ def sort_episodes(show_list_set):
     if len(full_list) > 80:
         problem_episodes = (full_list[78], full_list[79])
 
-        one_is_flash = any(map(lambda x: x['series'].upper() == 'THE FLASH', problem_episodes))
-        one_is_arrow = any(map(lambda x: x['series'].upper() == 'ARROW', problem_episodes))
+        one_is_flash = any([x['series'].upper() == 'THE FLASH' for x in problem_episodes])
+        one_is_arrow = any([x['series'].upper() == 'ARROW' for x in problem_episodes])
 
-        both_are_episode_17 = all(map(lambda x: x['episode_id'].endswith('E17'), problem_episodes))
+        both_are_episode_17 = all([x['episode_id'].endswith('E17') for x in problem_episodes])
 
         if one_is_arrow and one_is_flash and both_are_episode_17:
             full_list[78], full_list[79] = full_list[79], full_list[78]
