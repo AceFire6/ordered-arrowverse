@@ -46,8 +46,8 @@
     var registerListeners = function() {
         $('.episode').click(openWiki);
         $('#filter-button').click(addFilters);
+
         $('#no-color').click(function() {
-            console.log(Cookies.get('colour'));
             if (Cookies.get('colour') === '1') {
                 disableColours();
             } else {
