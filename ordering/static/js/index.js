@@ -61,7 +61,7 @@
         var colourSetting = Cookies.get('colour');
         if (colourSetting === undefined) {
             Cookies.set('colour', '1');
-        } else if (colourSetting == '0') {
+        } else if (colourSetting === '0') {
             disableColours();
         }
     });
