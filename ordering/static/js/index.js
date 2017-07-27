@@ -30,14 +30,14 @@
     };
 
     var disableColours = function() {
-        $('.episode').add('thead').addClass('no-color');
+        $('.episode, thead').addClass('no-color');
         $('#episode-list').addClass('table-striped table-hover');
         $('#no-color').find('.text').text('ENABLE COLOR');
         Cookies.set('colour', '0');
     };
 
     var enableColours = function() {
-        $('.episode').add('thead').removeClass('no-color');
+        $('.episode, thead').removeClass('no-color');
         $('#episode-list').removeClass('table-striped table-hover');
         $('#no-color').find('.text').text('DISABLE COLOR');
         Cookies.set('colour', '1');
