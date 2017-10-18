@@ -12,71 +12,105 @@
 </head>
 <body>
 <main class="container">
-    <h1>
-        Arrowverse Episode Order <a href="https://github.com/AceFire6/ordered-arrowverse" target="_blank" type="button" class="btn btn-default btn-sm center-block">
-        Project on Github</a>
-    </h1>
+    <div class="row">
+        <div class="col-10">
+            <p class="h1">
+                Arrowverse Episode Order
+            </p>
+        </div>
+        <div class="col-2">
+            <a href="https://github.com/AceFire6/ordered-arrowverse" target="_blank" class="btn btn-secondary btn-sm pull-right">
+                Project on Github
+            </a>
+        </div>
+    </div>
     <hr>
-    <div class="pull-left">
-        <form class="form-inline">
-            <button type="button" id="filter-button" class="btn btn-xs btn-default">Filter</button>
-            <label>
-                <input type="checkbox" id="arrow" class="filter-option" {% if 'arrow' in hidden_list %}checked{% endif %}> Hide Arrow
-            </label>
-            <label>
-                <input type="checkbox" id="flash" class="filter-option" {% if 'flash' in hidden_list %}checked{% endif %}> Hide The Flash
-            </label>
-            <label>
-                <input type="checkbox" id="legends" class="filter-option" {% if 'legends' in hidden_list %}checked{% endif %}> Hide Legends of Tomorrow
-            </label>
-            <label>
-                <input type="checkbox" id="supergirl" class="filter-option" {% if 'supergirl' in hidden_list %}checked{% endif %}> Hide Supergirl
-            </label>
-            <label>
-                <input type="checkbox" id="vixen" class="filter-option" {% if 'vixen' in hidden_list %}checked{% endif %}> Hide Vixen
-            </label>
-            <label>
-                <input type="checkbox" id="constantine" class="filter-option" {% if 'constantine' in hidden_list %}checked{% endif %}> Hide Constantine
-            </label>
-        </form>
+    <div class="row">
+        <div class="col-10">
+            <form class="form-inline">
+                <button type="button" id="filter-button" class="btn btn-sm btn-secondary">Filter</button>
+                <div class="form-check ml-1 filter-option">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" id="arrow" {% if 'arrow' in hidden_list %}checked{% endif %}>
+                        Hide Arrow
+                    </label>
+                </div>
+                <div class="form-check ml-1 filter-option">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" id="flash" {% if 'flash' in hidden_list %}checked{% endif %}>
+                        Hide The Flash
+                    </label>
+                </div>
+                <div class="form-check ml-1 filter-option">
+                    <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="legends" {% if 'legends' in hidden_list %}checked{% endif %}>
+                        Hide Legends of Tomorrow
+                    </label>
+                </div>
+                <div class="form-check ml-1 filter-option">
+                    <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="supergirl" {% if 'supergirl' in hidden_list %}checked{% endif %}>
+                        Hide Supergirl
+                    </label>
+                </div>
+                <div class="form-check ml-1 filter-option">
+                    <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="vixen" {% if 'vixen' in hidden_list %}checked{% endif %}>
+                        Hide Vixen
+                    </label>
+                </div>
+                <div class="form-check ml-1 filter-option">
+                    <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" id="constantine" {% if 'constantine' in hidden_list %}checked{% endif %}>
+                        Hide Constantine
+                    </label>
+                </div>
+            </form>
+        </div>
+        <div class="col-2">
+            <div class="pull-right">
+                <a href="#end" id="top"><small>END</small></a> |
+                {% if newest_first %}
+                    <a href="{{ oldest_first_url }}"><small>OLDEST FIRST</small></a>
+                {% else %}
+                    <a href="newest_first"><small>NEWEST FIRST</small></a>
+                {% endif %}
+                | <a href="#" id="no-color"><small class="text">DISABLE COLOR</small></a>
+            </div>
+        </div>
     </div>
-    <div class="pull-right">
-        <a href="#end" id="top"><small>END</small></a> |
-        {% if newest_first %}
-            <a href="{{ oldest_first_url }}"><small>OLDEST FIRST</small></a>
-        {% else %}
-            <a href="newest_first"><small>NEWEST FIRST</small></a>
-        {% endif %}
-        | <a href="#" id="no-color"><small class="text">DISABLE COLOR</small></a>
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered" id="episode-list">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Series</th>
+                    <th>Episode</th>
+                    <th>Name</th>
+                    <th>Original Air Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in table_content %}
+                    <tr class='episode {{ series_map[row.series].id }}' data-href="{{ row.episode_name | episode_url(row.series) }}">
+                    <td>{{ row.row_number }}</td>
+                    <td>{{ row.series }}</td>
+                    <td>{{ row.episode_id }}</td>
+                    <td>{{ row.episode_name }}</td>
+                    <td>{{ row.air_date }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <table class="table table-bordered" id="episode-list">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Series</th>
-            <th>Episode</th>
-            <th>Name</th>
-            <th>Original Air Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for row in table_content %}
-            <tr class='episode {{ series_map[row.series].id }}' data-href="{{ row.episode_name | episode_url(row.series) }}">
-              <td>{{ row.row_number }}</td>
-              <td>{{ row.series }}</td>
-              <td>{{ row.episode_id }}</td>
-              <td>{{ row.episode_name }}</td>
-              <td>{{ row.air_date }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
     <a href="#top" id="end">BACK TO TOP</a>
     <div id="footer-buttons">
-        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#contact">
+        <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#contact">
             <small>Contact Me</small>
         </button>
-        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#acknowledgements">
+        <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#acknowledgements">
             <small>Acknowledgements</small>
         </button>
     </div>
