@@ -6,7 +6,7 @@ from datetime import datetime
 from operator import itemgetter
 
 from . import app
-from .constants import ARROW, FLASH, SUPERGIRL, WIKIPEDIA
+from .constants import ARROW, CONSTANTINE, FLASH, SUPERGIRL, WIKIPEDIA
 
 
 def get_episode_list(series_soup, series):
@@ -98,6 +98,18 @@ def _handle_crisis_on_earth_x_order_error(episode_list):
     _swap_episode_rows(episode_list, arrow_episode_index, supergirl_episode_index)
 
 
+def _handle_john_con_noir_episode(episode_list):
+    for index in range(len(episode_list)):
+        show_name = episode_list[index]['series'].upper()
+        if show_name != CONSTANTINE:
+            continue
+
+        episode_name = episode_list[index]['episode_name']
+        if episode_name == 'Trash':
+            episode_list.pop(index)
+            break
+
+
 def sort_episodes(show_list_set):
     full_list = []
     shows_in_list = []
@@ -117,6 +129,9 @@ def sort_episodes(show_list_set):
 
     if ARROW in shows_in_list and SUPERGIRL in shows_in_list:
         _handle_crisis_on_earth_x_order_error(full_list)
+
+    if CONSTANTINE in shows_in_list:
+        _handle_john_con_noir_episode(full_list)
 
     count = 0
     for row in full_list:
