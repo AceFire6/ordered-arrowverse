@@ -6,7 +6,7 @@ from datetime import datetime
 from operator import itemgetter
 
 from . import app
-from .constants import ARROW, CONSTANTINE, FLASH, SUPERGIRL, WIKIPEDIA
+from .constants import ARROW, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, SUPERGIRL, WIKIPEDIA
 
 
 def get_episode_list(series_soup, series):
@@ -24,8 +24,9 @@ def get_episode_list(series_soup, series):
         if 'series overview' in table_name:
             continue
 
-        if 'season' not in table_name and series.upper() != CONSTANTINE:
-            continue
+        if 'season' not in table_name:
+            if series.upper() not in [CONSTANTINE, FREEDOM_FIGHTERS]:
+                continue
 
         season += 1
 
