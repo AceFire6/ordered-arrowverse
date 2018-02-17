@@ -20,9 +20,15 @@ def get_episode_list(series_soup, series):
         tables = series_soup.find_all('table', class_='wikiepisodetable')
 
     for table in tables:
-        if 'series overview' in table.getText().lower():
+        table_name = table.getText().lower()
+        if 'series overview' in table_name:
             continue
+
+        if 'season' not in table_name and series.upper() != CONSTANTINE:
+            continue
+
         season += 1
+
         if not from_wikipedia:
             table = [
                 row.strip().split('\n')
@@ -37,9 +43,11 @@ def get_episode_list(series_soup, series):
         for row in table:
             if from_wikipedia:
                 row[-1] = row[-1].split('(')[0].replace('\xa0', ' ').strip()
+
             episode_name = row[-2].replace('"', '')
             if '[' in episode_name:
                 episode_name = episode_name.split('[')[0]
+
             episode_num = row[-3]
             try:
                 date = row[-1]
@@ -58,6 +66,7 @@ def get_episode_list(series_soup, series):
                     'air_date': air_date,
                 }
                 episode_list.append(episode_data)
+
     return episode_list
 
 
