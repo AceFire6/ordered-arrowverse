@@ -61,25 +61,62 @@ def get_episode_list(series_soup, series):
     return episode_list
 
 
+def _swap_episode_rows(epsidoe_list, index_1, index_2):
+    epsidoe_list[index_1], epsidoe_list[index_2] = epsidoe_list[index_2], epsidoe_list[index_1]
+
+
+def _handle_screening_day_error(episode_list):
+    problem_episodes = (episode_list[78], episode_list[79])
+
+    one_is_flash = any([x['series'].upper() == 'THE FLASH' for x in problem_episodes])
+    one_is_arrow = any([x['series'].upper() == 'ARROW' for x in problem_episodes])
+
+    both_are_episode_17 = all([x['episode_id'].endswith('E17') for x in problem_episodes])
+
+    if one_is_arrow and one_is_flash and both_are_episode_17:
+        _swap_episode_rows(episode_list, 78, 79)
+
+
+def _handle_crisis_on_earth_x_order_error(episode_list):
+    arrow_episode_index = None
+    supergirl_episode_index = None
+
+    for index in range(len(episode_list)):
+        show_name = episode_list[index]['series'].upper()
+        if show_name not in ['ARROW', 'SUPERGIRL']:
+            continue
+
+        episode_name = episode_list[index]['episode_name']
+        if not episode_name.startswith('Crisis on Earth-X, Part'):
+            continue
+
+        if show_name == 'ARROW':
+            arrow_episode_index = index
+        elif show_name == 'SUPERGIRL':
+            supergirl_episode_index = index
+
+    _swap_episode_rows(episode_list, arrow_episode_index, supergirl_episode_index)
+
+
 def sort_episodes(show_list_set):
     full_list = []
+    shows_in_list = []
+
     for show_list in show_list_set:
         full_list.extend(show_list)
+
+        show_name = show_list[0]['series'].upper()
+        shows_in_list.append(show_name)
 
     full_list = sorted(full_list, key=lambda episode: episode['air_date'])
 
     # Fix screening time error caused by network
     # This fix corrects all the list errors.
-    if len(full_list) > 80:
-        problem_episodes = (full_list[78], full_list[79])
+    if len(full_list) > 80 and 'THE FLASH' in shows_in_list and 'ARROW' in shows_in_list:
+        _handle_screening_day_error(full_list)
 
-        one_is_flash = any([x['series'].upper() == 'THE FLASH' for x in problem_episodes])
-        one_is_arrow = any([x['series'].upper() == 'ARROW' for x in problem_episodes])
-
-        both_are_episode_17 = all([x['episode_id'].endswith('E17') for x in problem_episodes])
-
-        if one_is_arrow and one_is_flash and both_are_episode_17:
-            full_list[78], full_list[79] = full_list[79], full_list[78]
+    if 'ARROW' in shows_in_list and 'SUPERGIRL' in shows_in_list:
+        _handle_crisis_on_earth_x_order_error(full_list)
 
     count = 0
     for row in full_list:
