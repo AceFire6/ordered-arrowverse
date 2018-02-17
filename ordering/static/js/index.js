@@ -9,10 +9,9 @@
     var addFilters = function() {
         var toFilterList = [];
 
-        $('input[type=checkbox]').each(function() {
-            if ($(this).prop('checked')) {
-                toFilterList.push($(this).attr('id'));
-            }
+        var selectedOptions = $('#show-filter-select').select2('data');
+        $.each(selectedOptions, function() {
+            toFilterList.push(this.id);
         });
 
         var url = '';
@@ -57,7 +56,14 @@
     };
 
     $(document).ready(function() {
+        $('#show-filter-select').select2({
+          placeholder: 'Select shows to exclude...',
+          allowClear: true,
+          closeOnSelect: false,
+          width: "90%",
+        });
         registerListeners();
+
         var colourSetting = Cookies.get('colour');
         if (colourSetting === undefined) {
             Cookies.set('colour', '1');
