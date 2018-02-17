@@ -34,6 +34,14 @@ thead {
     background-color: #910400;
 }
 
+.freedom-fighters {
+    background-color: #cdbb43;
+}
+
+.freedom-fighters:hover {
+    background-color: #b9a73e;
+}
+
 .legends {
     background-color: #003E3E;
 }
