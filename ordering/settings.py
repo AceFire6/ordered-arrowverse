@@ -30,7 +30,7 @@ SHOWS = (
     },
     {
         'id': 'legends',
-        'name': 'DC\'s Legends of Tomorrow',
+        'name': "DC's Legends of Tomorrow",
         'url': LEGENDS_URL,
         'root': WIKIA_ROOT
     },
