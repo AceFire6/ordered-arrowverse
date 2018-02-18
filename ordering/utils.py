@@ -12,7 +12,7 @@ from .constants import ARROW, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, SUPERGIRL, W
 def get_episode_list(series_soup, series):
     episode_list = []
     season = 0
-    from_wikipedia = WIKIPEDIA in app.config['SHOW_DICT'][series]['root']
+    from_wikipedia = WIKIPEDIA in app.config['SHOW_DICT_WITH_NAMES'][series]['root']
 
     if not from_wikipedia:
         tables = series_soup.find_all('table')

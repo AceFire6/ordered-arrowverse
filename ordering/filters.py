@@ -10,7 +10,7 @@ def url_form(episode_name):
 
 @app.template_filter('episode_url')
 def episode_url_filter(episode_name, series):
-    root_url = app.config['SHOW_DICT'][series]['root']
+    root_url = app.config['SHOW_DICT_WITH_NAMES'][series]['root']
     from_wikipedia = WIKIPEDIA in root_url
 
     if episode_name == 'Pilot' or from_wikipedia:
@@ -34,4 +34,4 @@ def inject_newest_first():
 
 @app.context_processor
 def inject_show_dict():
-    return {'series_map': app.config['SHOW_DICT']}
+    return {'series_map': app.config['SHOW_DICT_WITH_NAMES']}

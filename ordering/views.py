@@ -15,6 +15,7 @@ def index(newest_first=None):
         episode_list = episode_list[::-1]
 
     context['table_content'] = episode_list
+    context['show_list'] = app.config['SHOW_DICT']
 
     return render_template('index.html', **context)
 
@@ -31,5 +32,6 @@ def index_with_hidden(hide_list, newest_first=None):
 
     context['hidden_list'] = hide_list
     context['table_content'] = episode_list
+    context['show_list'] = app.config['SHOW_DICT']
 
     return render_template('index.html', **context)

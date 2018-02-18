@@ -62,4 +62,6 @@ SHOWS = (
 )
 
 SHOW_DICT = {SHOWS[i]['id']: SHOWS[i] for i in range(len(SHOWS))}
-SHOW_DICT.update({SHOWS[i]['name']: SHOWS[i] for i in range(len(SHOWS))})
+
+SHOW_DICT_WITH_NAMES = {SHOWS[i]['name']: SHOWS[i] for i in range(len(SHOWS))}
+SHOW_DICT_WITH_NAMES.update(SHOW_DICT)
