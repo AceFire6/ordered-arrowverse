@@ -27,21 +27,34 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-8">
-            <select id="show-filter-select"
-                    title="Filter options"
-                    name="shows[]"
-                    multiple="multiple">
-                {% for show_id, show_data in show_list.items() %}
-                    <option value="{{ show_id }}" {% if show_id in hidden_list %}selected{% endif %}>
-                        {{ show_data.name }}
-                    </option>
-                {% endfor %}
-            </select>
-            <button type="button" id="filter-button" class="btn btn-outline-secondary">
-                Filter
-            </button>
+        <div class="col">
+            <div class="row">
+
+                <div class="col-11">
+                    <select id="show-filter-select"
+                        title="Filter options"
+                        name="shows[]"
+                        multiple="multiple">
+                        {% for show_id, show_data in show_list.items() %}
+                            <option value="{{ show_id }}" {% if show_id in hidden_list %}selected{% endif %}>
+                                {{ show_data.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col">
+                    <button type="button" id="filter-button" class="btn btn-outline-secondary">
+                        Filter
+                    </button>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
         <div class="col">
             <div class="float-right">
                 <a href="#end" id="top"><small>END</small></a> |

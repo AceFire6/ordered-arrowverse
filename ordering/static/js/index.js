@@ -60,7 +60,7 @@
           placeholder: 'Select shows to exclude...',
           allowClear: true,
           closeOnSelect: false,
-          width: "90%",
+          width: "100%",
         });
         registerListeners();
 
