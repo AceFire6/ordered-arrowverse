@@ -28,14 +28,15 @@
     <hr>
     <div class="row">
         <div class="col-8">
-            <select id="show-filter-select" title="Filter options" name="shows[]" multiple="multiple">
-                <option value="arrow" {% if 'arrow' in hidden_list %}selected{% endif %}>Arrow</option>
-                <option value="constantine" {% if 'constantine' in hidden_list %}selected{% endif %}>Constantine</option>
-                <option value="legends" {% if 'legends' in hidden_list %}selected{% endif %}>DC's Legends of Tomorrow</option>
-                <option value="flash" {% if 'flash' in hidden_list %}selected{% endif %}>The Flash</option>
-                <option value="freedom-fighters" {% if 'freedom-fighters' in hidden_list %}selected{% endif %}>Freedom Fighters: The Ray</option>
-                <option value="supergirl" {% if 'supergirl' in hidden_list %}selected{% endif %}>Supergirl</option>
-                <option value="vixen" {% if 'vixen' in hidden_list %}selected{% endif %}>Vixen</option>
+            <select id="show-filter-select"
+                    title="Filter options"
+                    name="shows[]"
+                    multiple="multiple">
+                {% for show_id, show_data in show_list.items() %}
+                    <option value="{{ show_id }}" {% if show_id in hidden_list %}selected{% endif %}>
+                        {{ show_data.name }}
+                    </option>
+                {% endfor %}
             </select>
             <button type="button" id="filter-button" class="btn btn-outline-secondary">
                 Filter
@@ -107,13 +108,13 @@
                 <div class="modal-body">
                     Content is drawn from:
                     <ul>
-                        <li><a href="http://arrow.wikia.com/wiki/List_of_Arrow_episodes" target="_blank">List of Arrow Episodes</a></li>
-                        <li><a href="http://arrow.wikia.com/wiki/List_of_The_Flash_episodes" target="_blank">List of The Flash Episodes</a></li>
-                        <li><a href="http://arrow.wikia.com/wiki/List_of_Freedom_Fighters:_The_Ray_episodes" target="_blank">List of Freedom Fighters: The Ray episodes</a></li>
-                        <li><a href="http://arrow.wikia.com/wiki/List_of_DC%27s_Legends_of_Tomorrow_episodes" target="_blank">List of DC's Legends of Tomorrow Episodes</a></li>
-                        <li><a href="https://en.wikipedia.org/wiki/List_of_Supergirl_episodes" target="_blank">List of Supergirl Episodes</a></li>
-                        <li><a href="http://arrow.wikia.com/wiki/List_of_Vixen_episodes" target="_blank">List of Vixen Episodes</a></li>
-                        <li><a href="http://arrow.wikia.com/wiki/List_of_Constantine_episodes" target="_blank">List of Constantine Episodes</a></li>
+                        {% for show_id, show_data in show_list.items() %}
+                            <li>
+                                <a href="{{ show_data.root }}{{ show_data.url }}" target="_blank">
+                                    {{ show_data.url|replace("_", " ") }}
+                                </a>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="modal-footer">
