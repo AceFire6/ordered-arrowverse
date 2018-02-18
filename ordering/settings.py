@@ -9,7 +9,7 @@ ARROW_URL = 'List_of_Arrow_episodes'
 CONSTANTINE_URL = 'List_of_Constantine_episodes'
 FLASH_URL = 'List_of_The_Flash_episodes'
 FREEDOM_FIGHTERS_URL = 'List_of_Freedom_Fighters:_The_Ray_episodes'
-LEGENDS_URL = 'List_of_DC%27s_Legends_of_Tomorrow_episodes'
+LEGENDS_URL = "List_of_DC's_Legends_of_Tomorrow_episodes"
 SUPERGIRL_URL = 'List_of_Supergirl_episodes'
 VIXEN_URL = 'List_of_Vixen_episodes'
 
