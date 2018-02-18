@@ -7,6 +7,10 @@ thead {
     background-color: #333333;
 }
 
+#show-filter-select {
+    visibility: hidden;
+}
+
 .episode {
     cursor: pointer;
     color: #FFF;
