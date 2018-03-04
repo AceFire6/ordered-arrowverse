@@ -16,6 +16,11 @@ thead {
     color: #FFF;
 }
 
+.episode.seen:not(.show-seen) {
+    visibility: hidden;
+    display: none;
+}
+
 #footer-buttons {
     width: 20%;
     margin-left:auto;

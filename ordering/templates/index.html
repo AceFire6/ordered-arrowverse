@@ -9,6 +9,10 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css">
+    <link rel="stylesheet" 
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+          crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body>
@@ -64,6 +68,7 @@
                     <a href="newest_first"><small>NEWEST FIRST</small></a>
                 {% endif %}
                 | <a href="#" id="no-color"><small class="text">DISABLE COLOR</small></a>
+                | <a href="#" id="show-hide-seen"><small class="text">SHOW SEEN</small></a>
             </div>
         </div>
     </div>
@@ -77,16 +82,20 @@
                     <th>Episode</th>
                     <th>Name</th>
                     <th>Original Air Date</th>
+                    <th class="col-xs-1 text-center">Seen</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for row in table_content %}
-                    <tr class='episode {{ series_map[row.series].id }}' data-href="{{ row.episode_name | episode_url(row.series) }}">
+                    <tr class='episode {{ series_map[row.series].id }}' 
+                        id="{{ series_map[row.series].id + row.episode_id }}" 
+                        data-href="{{ row.episode_name | episode_url(row.series) }}">
                     <td>{{ row.row_number }}</td>
                     <td>{{ row.series }}</td>
                     <td>{{ row.episode_id }}</td>
                     <td>{{ row.episode_name }}</td>
                     <td>{{ row.air_date }}</td>
+                    <td class="col-xs-1 text-center watchable"></td>
                     </tr>
                 {% endfor %}
                 </tbody>
