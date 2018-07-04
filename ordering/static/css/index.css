@@ -8,7 +8,7 @@ thead {
 }
 
 #show-filter-select {
-    visibility: hidden;
+    display: none;
 }
 
 .episode {
