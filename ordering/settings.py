@@ -51,7 +51,7 @@ SHOWS = (
         'id': 'supergirl',
         'name': 'Supergirl',
         'url': SUPERGIRL_URL,
-        'root': WIKIPEDIA_ROOT
+        'root': WIKIA_ROOT
     },
     {
         'id': 'vixen',
