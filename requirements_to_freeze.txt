@@ -2,6 +2,6 @@ beautifulsoup4
 Flask
 flask-caching
 gunicorn
-Jinja2
+Jinja2==2.10
 redis
 requests
