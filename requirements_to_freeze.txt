@@ -1,6 +1,6 @@
 beautifulsoup4
 Flask
-flask-caching
+flask-caching==1.4.0
 gunicorn
 Jinja2
 redis
