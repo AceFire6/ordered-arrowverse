@@ -4,6 +4,7 @@ chardet==3.0.4
 click==6.7
 Flask==1.0.2
 Flask-Caching==1.4.0
+Flask-Compress==1.4.0
 gunicorn==19.8.1
 idna==2.7
 itsdangerous==0.24
