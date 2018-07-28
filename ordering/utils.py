@@ -157,6 +157,7 @@ def get_url_content(url):
     return requests.get(url).content
 
 
+@app.cache.memoize(timeout=1800)
 def get_full_series_episode_list(excluded_series=list()):
     show_list_set = []
     for show in app.config['SHOWS']:
