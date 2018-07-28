@@ -1,0 +1,7 @@
+beautifulsoup4
+Flask
+flask-caching
+gunicorn
+Jinja2
+redis
+requests
