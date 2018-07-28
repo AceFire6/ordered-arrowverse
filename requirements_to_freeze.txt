@@ -4,4 +4,4 @@ flask-caching
 gunicorn
 Jinja2
 redis
-requests
+requests==2.19.1
