@@ -1,9 +1,12 @@
+import os
+
 USERNAME = 'user'
 PASSWORD = 'pass'
 HOST = '0.0.0.0'
 PORT = 5000
 
 CACHE_TYPE = 'simple'
+CACHE_REDIS_URL = os.environ.get('REDIS_URL')
 
 ARROW_URL = 'List_of_Arrow_episodes'
 CONSTANTINE_URL = 'List_of_Constantine_episodes'
