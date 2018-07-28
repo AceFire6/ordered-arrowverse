@@ -3,5 +3,5 @@ Flask
 flask-caching
 gunicorn
 Jinja2
-redis
+redis==2.10.6
 requests
