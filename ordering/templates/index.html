@@ -3,13 +3,13 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Arrowverse Episode Order</title>
-    <link type="image/png" href="/static/favicon.png" rel="icon">
+    <link type="image/png" href="{{ url_for('static', filename='favicon.png') }}" rel="icon">
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css">
-    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
 <main class="container">
@@ -172,8 +172,8 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <script type="text/javascript" rel="script" src="/static/js/cookie.js"></script>
-    <script type="text/javascript" rel="script" src="/static/js/index.js"></script>
+    <script type="text/javascript" rel="script" src="{{ url_for('static', filename='js/cookie.js') }}"></script>
+    <script type="text/javascript" rel="script" src="{{ url_for('static', filename='js/index.js') }}"></script>
     {% include 'analytics.html' %}
 </main>
 </body>
