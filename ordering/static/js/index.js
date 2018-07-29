@@ -22,8 +22,8 @@
 
         url += '/';
 
-        if (document.baseURI.match('/newest_first$')) {
-            url += 'newest_first';
+        if (document.baseURI.match('/newest_first/$')) {
+            url += 'newest_first/';
         }
         window.location = url;
     };

@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en">
+
+<head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Arrowverse episode order tracker. Never spoil a crossover episode again!">
+
     <title>Arrowverse Episode Order</title>
     <link type="image/png" href="{{ url_for('static', filename='favicon.png') }}" rel="icon">
     <link rel="stylesheet"
@@ -11,11 +15,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
+
 <body>
 <main class="container">
     <div class="row">
         <div class="col">
-            <p class="h1">Arrowverse Episode Order</p>
+            <h1>Arrowverse Episode Order</h1>
         </div>
         <div class="col-2">
             <a href="https://github.com/AceFire6/ordered-arrowverse"
@@ -123,7 +128,9 @@
                     <ul>
                         {% for show_id, show_data in show_list.items() %}
                             <li>
-                                <a href="{{ show_data.root }}{{ show_data.url }}" target="_blank">
+                                <a href="{{ show_data.root }}{{ show_data.url }}"
+                                   target="_blank"
+                                   rel="noopener">
                                     {{ show_data.url|replace("_", " ") }}
                                 </a>
                             </li>
@@ -150,7 +157,7 @@
                 </div>
                 <div class="modal-body text-center">
                     <p>Made by Jethro Muller</p>
-                    <p>To contact me, <a href="mailto:git+ordering@jethromuller.co.za" target="_blank" type="email">email me</a>.</p>
+                    <p>To contact me, <a href="mailto:git+ordering@jethromuller.co.za" target="_blank">email me</a>.</p>
                     <p>Or, view my other projects on <a href="http://www.github.com/AceFire6" target="_blank">Github</a>.</p>
                 </div>
                 <div class="modal-footer">
@@ -172,8 +179,8 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <script type="text/javascript" rel="script" src="{{ url_for('static', filename='js/cookie.js') }}"></script>
-    <script type="text/javascript" rel="script" src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cookie.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
     {% include 'analytics.html' %}
 </main>
 </body>

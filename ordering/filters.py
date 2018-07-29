@@ -21,15 +21,15 @@ def episode_url_filter(episode_name, series):
 
 @app.context_processor
 def inject_oldest_first_url():
-    if request.url.endswith('/newest_first'):
-        return {'oldest_first_url': '/'.join(request.url.split('/')[:-1])}
+    if request.url.endswith('/newest_first/'):
+        return {'oldest_first_url': request.url.replace('/newest_first/', '/')}
     else:
         return {'oldest_first_url': None}
 
 
 @app.context_processor
 def inject_newest_first():
-    return {'newest_first': request.url.endswith('/newest_first')}
+    return {'newest_first': request.url.endswith('/newest_first/')}
 
 
 @app.context_processor
