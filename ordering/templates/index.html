@@ -127,7 +127,9 @@
                     <ul>
                         {% for show_id, show_data in show_list.items() %}
                             <li>
-                                <a href="{{ show_data.root }}{{ show_data.url }}" target="_blank">
+                                <a href="{{ show_data.root }}{{ show_data.url }}"
+                                   target="_blank"
+                                   rel="noopener">
                                     {{ show_data.url|replace("_", " ") }}
                                 </a>
                             </li>
