@@ -1,12 +1,16 @@
-import re
-import requests
-
-from bs4 import BeautifulSoup
+from concurrent.futures import as_completed, ThreadPoolExecutor
 from datetime import datetime
 from operator import itemgetter
+import re
+
+import requests
+from bs4 import BeautifulSoup
 
 from . import app
 from .constants import ARROW, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, SUPERGIRL, WIKIPEDIA
+
+
+TWELVE_HOURS = 43200
 
 
 def get_episode_list(series_soup, series):
@@ -152,21 +156,34 @@ def sort_episodes(show_list_set):
     return full_list
 
 
-@app.cache.memoize(timeout=21600)
+@app.cache.memoize(timeout=TWELVE_HOURS)
 def get_url_content(url):
     return requests.get(url).content
 
 
-@app.cache.memoize(timeout=1800)
-def get_full_series_episode_list(excluded_series=list()):
-    show_list_set = []
-    for show in app.config['SHOWS']:
-        if show['id'] not in excluded_series:
-            show_html = get_url_content(show['root'] + show['url'])
-            show_list = get_episode_list(
-                BeautifulSoup(show_html, 'html.parser'),
-                show['name']
-            )
-            show_list_set.append(show_list)
+def get_show_list_from_show_html(show_name, show_html):
+    show_soup = BeautifulSoup(show_html, 'html.parser')
+    show_list = get_episode_list(show_soup, show_name)
+    return show_list
 
-    return sort_episodes(show_list_set)
+
+@app.cache.memoize(timeout=TWELVE_HOURS)
+def get_full_series_episode_list(excluded_series=None):
+    excluded_series = [] if excluded_series is None else excluded_series
+    shows_to_get = [show for show in app.config['SHOWS'] if show['id'] not in excluded_series]
+    show_lists = []
+
+    with ThreadPoolExecutor(max_workers=len(shows_to_get)) as executor:
+        named_show_futures = {
+            executor.submit(get_url_content, show['root'] + show['url']): show['name']
+            for show in shows_to_get
+        }
+
+        for show_future in as_completed(named_show_futures):
+            show_name = named_show_futures[show_future]
+            show_html = show_future.result()
+
+            show_list = get_show_list_from_show_html(show_name, show_html)
+            show_lists.append(show_list)
+
+    return sort_episodes(show_lists)
