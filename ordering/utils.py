@@ -155,7 +155,7 @@ def sort_episodes(show_list_set):
     return full_list
 
 
-@app.cache.memoize(timeout=21600)
+@app.cache.memoize(timeout=TWELVE_HOURS)
 def get_url_content(url):
     return requests.get(url).content
 
