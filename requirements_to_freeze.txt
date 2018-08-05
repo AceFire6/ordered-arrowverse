@@ -6,3 +6,4 @@ gunicorn
 Jinja2
 redis
 requests
+requests-futures
