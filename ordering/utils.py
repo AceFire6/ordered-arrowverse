@@ -166,14 +166,18 @@ def get_show_list_from_show_html(show_name, show_html):
 @app.cache.memoize(timeout=1800)
 def get_full_series_episode_list(excluded_series=None):
     excluded_series = [] if excluded_series is None else excluded_series
-    show_list_set = []
+    shows_html_content = {}
 
     for show in app.config['SHOWS']:
         if show['id'] in excluded_series:
             continue
 
         show_html = get_url_content(show['root'] + show['url'])
-        show_list = get_show_list_from_show_html(show['name'], show_html)
+        shows_html_content[show['name']] = show_html
+
+    show_list_set = []
+    for show_name, show_html in shows_html_content.items():
+        show_list = get_show_list_from_show_html(show_name, show_html)
         show_list_set.append(show_list)
 
     return sort_episodes(show_list_set)
