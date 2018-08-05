@@ -157,16 +157,23 @@ def get_url_content(url):
     return requests.get(url).content
 
 
+def get_show_list_from_show_html(show_name, show_html):
+    show_soup = BeautifulSoup(show_html, 'html.parser')
+    show_list = get_episode_list(show_soup, show_name)
+    return show_list
+
+
 @app.cache.memoize(timeout=1800)
-def get_full_series_episode_list(excluded_series=list()):
+def get_full_series_episode_list(excluded_series=None):
+    excluded_series = [] if excluded_series is None else excluded_series
     show_list_set = []
+
     for show in app.config['SHOWS']:
-        if show['id'] not in excluded_series:
-            show_html = get_url_content(show['root'] + show['url'])
-            show_list = get_episode_list(
-                BeautifulSoup(show_html, 'html.parser'),
-                show['name']
-            )
-            show_list_set.append(show_list)
+        if show['id'] in excluded_series:
+            continue
+
+        show_html = get_url_content(show['root'] + show['url'])
+        show_list = get_show_list_from_show_html(show['name'], show_html)
+        show_list_set.append(show_list)
 
     return sort_episodes(show_list_set)
