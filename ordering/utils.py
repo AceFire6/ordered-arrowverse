@@ -9,6 +9,9 @@ from . import app
 from .constants import ARROW, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, SUPERGIRL, WIKIPEDIA
 
 
+TWELVE_HOURS = 43200
+
+
 def get_episode_list(series_soup, series):
     episode_list = []
     season = 0
@@ -163,7 +166,7 @@ def get_show_list_from_show_html(show_name, show_html):
     return show_list
 
 
-@app.cache.memoize(timeout=1800)
+@app.cache.memoize(timeout=TWELVE_HOURS)
 def get_full_series_episode_list(excluded_series=None):
     excluded_series = [] if excluded_series is None else excluded_series
     shows_html_content = {}
