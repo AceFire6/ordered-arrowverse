@@ -1,9 +1,10 @@
-import re
-import requests
-
-from bs4 import BeautifulSoup
+from concurrent.futures import as_completed, ThreadPoolExecutor
 from datetime import datetime
 from operator import itemgetter
+import re
+
+import requests
+from bs4 import BeautifulSoup
 
 from . import app
 from .constants import ARROW, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, SUPERGIRL, WIKIPEDIA
@@ -169,18 +170,20 @@ def get_show_list_from_show_html(show_name, show_html):
 @app.cache.memoize(timeout=TWELVE_HOURS)
 def get_full_series_episode_list(excluded_series=None):
     excluded_series = [] if excluded_series is None else excluded_series
-    shows_html_content = {}
+    shows_to_get = [show for show in app.config['SHOWS'] if show['id'] not in excluded_series]
+    show_lists = []
 
-    for show in app.config['SHOWS']:
-        if show['id'] in excluded_series:
-            continue
+    with ThreadPoolExecutor(max_workers=len(shows_to_get)) as executor:
+        named_show_futures = {
+            executor.submit(get_url_content, show['root'] + show['url']): show['name']
+            for show in shows_to_get
+        }
 
-        show_html = get_url_content(show['root'] + show['url'])
-        shows_html_content[show['name']] = show_html
+        for show_future in as_completed(named_show_futures):
+            show_name = named_show_futures[show_future]
+            show_html = show_future.result()
 
-    show_list_set = []
-    for show_name, show_html in shows_html_content.items():
-        show_list = get_show_list_from_show_html(show_name, show_html)
-        show_list_set.append(show_list)
+            show_list = get_show_list_from_show_html(show_name, show_html)
+            show_lists.append(show_list)
 
-    return sort_episodes(show_list_set)
+    return sort_episodes(show_lists)
