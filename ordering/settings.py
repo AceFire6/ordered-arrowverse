@@ -5,8 +5,8 @@ PASSWORD = 'pass'
 HOST = '0.0.0.0'
 PORT = 5000
 
-CACHE_TYPE = 'simple'
-CACHE_REDIS_URL = os.environ.get('REDIS_URL')
+CACHE_TYPE = 'redis'
+CACHE_REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
 
 ARROW_URL = 'List_of_Arrow_episodes'
 CONSTANTINE_URL = 'List_of_Constantine_episodes'
