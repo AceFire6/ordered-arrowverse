@@ -12,6 +12,5 @@ Jinja2==2.10
 MarkupSafe==1.0
 redis==2.10.6
 requests==2.19.1
-requests-futures==0.9.7
 urllib3==1.23
 Werkzeug==0.14.1
