@@ -2,6 +2,7 @@ beautifulsoup4
 Flask
 flask-caching
 flask-compress
+Flask-Minify
 gunicorn
 Jinja2
 redis

@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_caching import Cache
 from flask_compress import Compress
+from flask_minify import minify
 
 from .url_converters import ListConverter
 
@@ -12,6 +13,8 @@ app.cache = Cache(app)
 
 # gzip responses
 Compress(app)
+# Minify HTML and any inline JS or CSS
+minify(app, js=True)
 
 app.url_map.converters['list'] = ListConverter
 
