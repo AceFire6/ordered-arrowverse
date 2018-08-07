@@ -1,5 +1,7 @@
+cssmin
 beautifulsoup4
 Flask
+Flask-Assets
 flask-caching
 flask-compress
 Flask-Minify
