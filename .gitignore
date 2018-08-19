@@ -68,4 +68,6 @@ target/
 pyvenv.cfg
 pip-selfcheck.json
 
-
+# User defined
+ordering/static/gen/
+ordering/static/.webassets-cache/
