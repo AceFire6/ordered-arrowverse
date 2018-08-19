@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 USERNAME = 'user'
 PASSWORD = 'pass'
@@ -7,6 +8,8 @@ PORT = 5000
 
 CACHE_TYPE = 'redis'
 CACHE_REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
+
+SEND_FILE_MAX_AGE_DEFAULT = timedelta(weeks=1)
 
 ARROW_URL = 'List_of_Arrow_episodes'
 CONSTANTINE_URL = 'List_of_Constantine_episodes'
