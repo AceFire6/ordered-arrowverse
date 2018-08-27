@@ -43,7 +43,7 @@ def index_with_hidden(hide_list):
 
     episode_list = get_full_series_episode_list(hide_list)
 
-    context['hidden_list'] = hide_list
+    context['hidden_show_list'] = hide_list
     context['table_content'] = episode_list
     context['show_list'] = app.config['SHOW_DICT']
 
@@ -57,7 +57,7 @@ def index_with_hidden_newest_first(hide_list):
     episode_list = get_full_series_episode_list(hide_list)
     episode_list = episode_list[::-1]
 
-    context['hidden_list'] = hide_list
+    context['hidden_show_list'] = hide_list
     context['table_content'] = episode_list
     context['show_list'] = app.config['SHOW_DICT']
 
