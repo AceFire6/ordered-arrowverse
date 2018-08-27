@@ -187,3 +187,10 @@ def get_full_series_episode_list(excluded_series=None):
             show_lists.append(show_list)
 
     return sort_episodes(show_lists)
+
+
+def _get_bool(arg):
+    if isinstance(arg, bool):
+        return arg
+
+    return arg == 'True'

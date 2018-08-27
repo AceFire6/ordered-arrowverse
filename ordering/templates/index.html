@@ -38,20 +38,23 @@
             <div class="row">
 
                 <div class="col-11">
-                    <select id="show-filter-select"
-                        title="Filter options"
-                        name="shows[]"
-                        multiple="multiple">
-                        {% for show_id, show_data in show_list.items() %}
-                            <option value="{{ show_id }}" {% if show_id in hidden_list %}selected{% endif %}>
-                                {{ show_data.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
+                    <form id="hide-shows-form" method="get" action="{{ url_for('index') }}">
+                        <input name="newest_first" value="{{ newest_first }}" title="Newest First" type="hidden">
+                        <select id="show-filter-select"
+                            title="Filter options"
+                            name="hide_show"
+                            multiple="multiple">
+                            {% for show_id, show_data in show_list.items() %}
+                                <option value="{{ show_id }}" {% if show_id in hidden_show_list %}selected{% endif %}>
+                                    {{ show_data.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </form>
                 </div>
 
                 <div class="col">
-                    <button type="button" id="filter-button" class="btn btn-outline-secondary">
+                    <button type="submit" id="filter-button" class="btn btn-outline-secondary" form="hide-shows-form">
                         Filter
                     </button>
                 </div>
@@ -65,11 +68,13 @@
         <div class="col">
             <div class="float-right">
                 <a href="#end" id="top"><small>END</small></a> |
-                {% if newest_first %}
-                    <a href="{{ oldest_first_url }}"><small>OLDEST FIRST</small></a>
-                {% else %}
-                    <a href="newest_first"><small>NEWEST FIRST</small></a>
-                {% endif %}
+                    <a href="{{ url_for('index', newest_first=not newest_first, hide_show=hidden_show_list) }}">
+                        {% if newest_first %}
+                            <small>OLDEST FIRST</small>
+                        {% else %}
+                            <small>NEWEST FIRST</small>
+                        {% endif %}
+                    </a>
                 | <a href="#" id="no-color"><small class="text">DISABLE COLOR</small></a>
             </div>
         </div>
