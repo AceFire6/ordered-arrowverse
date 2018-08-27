@@ -6,28 +6,6 @@
         window.open(url, '_blank');
     };
 
-    var addFilters = function() {
-        var toFilterList = [];
-
-        var selectedOptions = $('#show-filter-select').select2('data');
-        $.each(selectedOptions, function() {
-            toFilterList.push(this.id);
-        });
-
-        var url = '';
-
-        if (toFilterList.length > 0) {
-            url = '/hide/' + toFilterList.join('+');
-        }
-
-        url += '/';
-
-        if (document.baseURI.match('/newest_first/$')) {
-            url += 'newest_first/';
-        }
-        window.location = url;
-    };
-
     var disableColours = function() {
         $('.episode, thead').addClass('no-color');
         $('#episode-list').addClass('table-striped table-hover');
@@ -44,7 +22,6 @@
 
     var registerListeners = function() {
         $('.episode').click(openWiki);
-        $('#filter-button').click(addFilters);
 
         $('#no-color').click(function() {
             if (Cookies.get('colour') === '1') {
