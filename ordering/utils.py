@@ -58,7 +58,7 @@ def get_episode_list(series_soup, series):
                 date = row[-1]
                 reference = re.search(r'\[\d+\]$', row[-1])
                 date = date[:reference.start()] if reference else date
-                row[-1] = air_date = datetime.strptime(date, '%B %d, %Y')
+                row[-1] = air_date = datetime.strptime(date, '%B %d, %Y').date()
             except ValueError:
                 continue
 
