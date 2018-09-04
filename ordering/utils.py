@@ -1,5 +1,6 @@
 from concurrent.futures import as_completed, ThreadPoolExecutor
 from datetime import datetime
+from dateutil.parser import parse as parse_date_string
 from operator import itemgetter
 import re
 
@@ -168,7 +169,7 @@ def get_show_list_from_show_html(show_name, show_html):
 
 
 @app.cache.memoize(timeout=TWELVE_HOURS)
-def get_full_series_episode_list(excluded_series=None):
+def get_full_series_episode_list(excluded_series=None, after_date=None, before_date=None):
     excluded_series = [] if excluded_series is None else excluded_series
     shows_to_get = [show for show in app.config['SHOWS'] if show['id'] not in excluded_series]
     show_lists = []
@@ -194,3 +195,13 @@ def _get_bool(arg):
         return arg
 
     return arg == 'True'
+
+
+def _get_date(arg):
+    if isinstance(arg, datetime):
+        return arg
+
+    if arg is None:
+        return None
+
+    return parse_date_string(arg, dayfirst=True).date()

@@ -1,7 +1,9 @@
+from datetime import date
+
 from flask import render_template, request
 
 from . import app
-from .utils import _get_bool, get_full_series_episode_list
+from .utils import _get_bool, _get_date, get_full_series_episode_list
 
 
 @app.route('/', methods=['GET'])
@@ -10,8 +12,14 @@ def index():
 
     newest_first = request.args.get('newest_first', default=False, type=_get_bool)
     hide_shows_list = request.args.getlist('hide_show')
+    after_date = request.args.get('after', default=date(2012, 9, 12), type=_get_date)
+    before_date = request.args.get('before', default=date.today(), type=_get_date)
 
-    episode_list = get_full_series_episode_list(excluded_series=hide_shows_list)
+    episode_list = get_full_series_episode_list(
+        excluded_series=hide_shows_list,
+        after_date=after_date,
+        before_date=before_date,
+    )
 
     if newest_first:
         episode_list = episode_list[::-1]
