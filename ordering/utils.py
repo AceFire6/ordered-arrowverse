@@ -125,7 +125,7 @@ def _handle_john_con_noir_episode(episode_list):
             break
 
 
-def sort_episodes(show_list_set):
+def sort_and_filter_episodes(show_list_set, after_date=None, before_date=None):
     full_list = []
     shows_in_list = []
 
@@ -148,13 +148,28 @@ def sort_episodes(show_list_set):
     if CONSTANTINE in shows_in_list:
         _handle_john_con_noir_episode(full_list)
 
+    filtered_list = _filter_on_air_date(full_list, after_date, before_date)
+
     count = 0
-    for row in full_list:
+    for row in filtered_list:
         count += 1
         row['row_number'] = count
         row['air_date'] = f'{row["air_date"]:%B %d, %Y}'
 
-    return full_list
+    return filtered_list
+
+
+def _filter_on_air_date(episode_list, after_date, before_date):
+    if not after_date and not before_date:
+        return episode_list
+
+    if after_date:
+        episode_list = [episode for episode in episode_list if episode['air_date'] > after_date]
+
+    if before_date:
+        episode_list = [episode for episode in episode_list if episode['air_date'] < before_date]
+
+    return episode_list
 
 
 @app.cache.memoize(timeout=TWELVE_HOURS)
@@ -187,7 +202,7 @@ def get_full_series_episode_list(excluded_series=None, after_date=None, before_d
             show_list = get_show_list_from_show_html(show_name, show_html)
             show_lists.append(show_list)
 
-    return sort_episodes(show_lists)
+    return sort_and_filter_episodes(show_lists, after_date=after_date, before_date=before_date)
 
 
 def _get_bool(arg):
