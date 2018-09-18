@@ -125,7 +125,7 @@ def _handle_john_con_noir_episode(episode_list):
             break
 
 
-def sort_and_filter_episodes(show_list_set, after_date=None, before_date=None):
+def sort_and_filter_episodes(show_list_set, from_date=None, to_date=None):
     full_list = []
     shows_in_list = []
 
@@ -148,7 +148,7 @@ def sort_and_filter_episodes(show_list_set, after_date=None, before_date=None):
     if CONSTANTINE in shows_in_list:
         _handle_john_con_noir_episode(full_list)
 
-    filtered_list = _filter_on_air_date(full_list, after_date, before_date)
+    filtered_list = _filter_on_air_date(full_list, from_date, to_date)
 
     count = 0
     for row in filtered_list:
@@ -159,15 +159,15 @@ def sort_and_filter_episodes(show_list_set, after_date=None, before_date=None):
     return filtered_list
 
 
-def _filter_on_air_date(episode_list, after_date, before_date):
-    if not after_date and not before_date:
+def _filter_on_air_date(episode_list, from_date, to_date):
+    if not from_date and not to_date:
         return episode_list
 
-    if after_date:
-        episode_list = [episode for episode in episode_list if episode['air_date'] > after_date]
+    if from_date:
+        episode_list = [episode for episode in episode_list if episode['air_date'] >= from_date]
 
-    if before_date:
-        episode_list = [episode for episode in episode_list if episode['air_date'] < before_date]
+    if to_date:
+        episode_list = [episode for episode in episode_list if episode['air_date'] <= to_date]
 
     return episode_list
 
@@ -184,7 +184,7 @@ def get_show_list_from_show_html(show_name, show_html):
 
 
 @app.cache.memoize(timeout=TWELVE_HOURS)
-def get_full_series_episode_list(excluded_series=None, after_date=None, before_date=None):
+def get_full_series_episode_list(excluded_series=None, from_date=None, to_date=None):
     excluded_series = [] if excluded_series is None else excluded_series
     shows_to_get = [show for show in app.config['SHOWS'] if show['id'] not in excluded_series]
     show_lists = []
@@ -202,7 +202,7 @@ def get_full_series_episode_list(excluded_series=None, after_date=None, before_d
             show_list = get_show_list_from_show_html(show_name, show_html)
             show_lists.append(show_list)
 
-    return sort_and_filter_episodes(show_lists, after_date=after_date, before_date=before_date)
+    return sort_and_filter_episodes(show_lists, from_date=from_date, to_date=to_date)
 
 
 def _get_bool(arg):
