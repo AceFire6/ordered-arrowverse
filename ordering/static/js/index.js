@@ -32,10 +32,9 @@
         });
 
         $('.date-picker').daterangepicker({
-            autoApply: false,
+            autoUpdateInput: false,
             showDropdowns: true,
             minDate: '2012-10-10',
-            autoUpdateInput: false,
             singleDatePicker: true,
             locale: {
                 format: 'YYYY-MM-DD',
@@ -43,8 +42,6 @@
             }
         }).on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('YYYY-MM-DD'));
-        }).on('cancel.daterangepicker', function(ev, picker) {
-            $(picker).val('');
         });
     };
 
