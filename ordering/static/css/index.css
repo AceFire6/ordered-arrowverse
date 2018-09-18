@@ -2,7 +2,7 @@ a.btn {
     display:inline;
 }
 
-thead {
+#episode-list thead {
     color: #FFF;
     background-color: #333333;
 }

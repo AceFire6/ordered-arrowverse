@@ -16,6 +16,7 @@
     {% assets 'css_all' %}
         <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 
 <body>
@@ -38,26 +39,50 @@
             <div class="row">
 
                 <div class="col-11">
-                    <form id="hide-shows-form" method="get" action="{{ url_for('index') }}">
-                        <input name="newest_first" value="{{ newest_first }}" title="Newest First" type="hidden">
-                        <select id="show-filter-select"
-                            title="Filter options"
-                            name="hide_show"
-                            multiple="multiple">
-                            {% for show_id, show_data in show_list.items() %}
-                                <option value="{{ show_id }}" {% if show_id in hidden_show_list %}selected{% endif %}>
-                                    {{ show_data.name }}
-                                </option>
-                            {% endfor %}
-                        </select>
+                    <form action="{{ url_for('index') }}" id="filter-form" method="get" class="row form-inline">
+                        <div class="col-7">
+                            <input name="newest_first" value="{{ newest_first }}" title="Newest First" type="hidden">
+                            <select id="show-filter-select"
+                                title="Filter options"
+                                name="hide_show"
+                                multiple="multiple"
+                                class="form-control" >
+                                {% for show_id, show_data in show_list.items() %}
+                                    <option value="{{ show_id }}" {% if show_id in hidden_show_list %}selected{% endif %}>
+                                        {{ show_data.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-6">
+                                    <input title="From Date"
+                                           class="form-control date-picker"
+                                           type="text"
+                                           name="from_date"
+                                           id="from-date"
+                                           {% if from_date %}value="{{ from_date }}"{% endif %}
+                                           placeholder="From Date">
+                                </div>
+                                <div class="col-6">
+                                    <input title="To Date"
+                                           class="form-control date-picker"
+                                           type="text"
+                                           name="to_date"
+                                           id="to-date"
+                                           {% if to_date %}value="{{ to_date }}"{% endif %}
+                                           placeholder="To Date">
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
 
-                <div class="col">
-                    <button type="submit" id="filter-button" class="btn btn-outline-secondary" form="hide-shows-form">
-                        Filter
-                    </button>
-                </div>
+                <button type="submit" id="filter-button" class="btn btn-outline-secondary" form="filter-form">
+                    Filter
+                </button>
             </div>
         </div>
     </div>
@@ -186,6 +211,8 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     {% assets 'js_all' %}
         <script src="{{ ASSET_URL }}"></script>
     {% endassets %}

@@ -1,5 +1,6 @@
 from concurrent.futures import as_completed, ThreadPoolExecutor
 from datetime import datetime
+from dateutil.parser import parse as parse_date_string
 from operator import itemgetter
 import re
 
@@ -58,7 +59,7 @@ def get_episode_list(series_soup, series):
                 date = row[-1]
                 reference = re.search(r'\[\d+\]$', row[-1])
                 date = date[:reference.start()] if reference else date
-                row[-1] = air_date = datetime.strptime(date, '%B %d, %Y')
+                row[-1] = air_date = datetime.strptime(date, '%B %d, %Y').date()
             except ValueError:
                 continue
 
@@ -124,7 +125,7 @@ def _handle_john_con_noir_episode(episode_list):
             break
 
 
-def sort_episodes(show_list_set):
+def sort_and_filter_episodes(show_list_set, from_date=None, to_date=None):
     full_list = []
     shows_in_list = []
 
@@ -147,13 +148,28 @@ def sort_episodes(show_list_set):
     if CONSTANTINE in shows_in_list:
         _handle_john_con_noir_episode(full_list)
 
+    filtered_list = _filter_on_air_date(full_list, from_date, to_date)
+
     count = 0
-    for row in full_list:
+    for row in filtered_list:
         count += 1
         row['row_number'] = count
         row['air_date'] = f'{row["air_date"]:%B %d, %Y}'
 
-    return full_list
+    return filtered_list
+
+
+def _filter_on_air_date(episode_list, from_date, to_date):
+    if not from_date and not to_date:
+        return episode_list
+
+    if from_date:
+        episode_list = [episode for episode in episode_list if episode['air_date'] >= from_date]
+
+    if to_date:
+        episode_list = [episode for episode in episode_list if episode['air_date'] <= to_date]
+
+    return episode_list
 
 
 @app.cache.memoize(timeout=TWELVE_HOURS)
@@ -168,7 +184,7 @@ def get_show_list_from_show_html(show_name, show_html):
 
 
 @app.cache.memoize(timeout=TWELVE_HOURS)
-def get_full_series_episode_list(excluded_series=None):
+def get_full_series_episode_list(excluded_series=None, from_date=None, to_date=None):
     excluded_series = [] if excluded_series is None else excluded_series
     shows_to_get = [show for show in app.config['SHOWS'] if show['id'] not in excluded_series]
     show_lists = []
@@ -186,7 +202,7 @@ def get_full_series_episode_list(excluded_series=None):
             show_list = get_show_list_from_show_html(show_name, show_html)
             show_lists.append(show_list)
 
-    return sort_episodes(show_lists)
+    return sort_and_filter_episodes(show_lists, from_date=from_date, to_date=to_date)
 
 
 def _get_bool(arg):
@@ -194,3 +210,13 @@ def _get_bool(arg):
         return arg
 
     return arg == 'True'
+
+
+def _get_date(arg):
+    if isinstance(arg, datetime):
+        return arg
+
+    if arg is None:
+        return None
+
+    return parse_date_string(arg, dayfirst=True).date()

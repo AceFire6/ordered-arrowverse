@@ -29,7 +29,20 @@
             } else {
                 enableColours();
             }
-        })
+        });
+
+        $('.date-picker').daterangepicker({
+            autoUpdateInput: false,
+            showDropdowns: true,
+            minDate: '2012-10-10',
+            singleDatePicker: true,
+            locale: {
+                format: 'YYYY-MM-DD',
+                cancelLabel: 'Clear'
+            }
+        }).on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('YYYY-MM-DD'));
+        });
     };
 
     $(document).ready(function() {

@@ -1,4 +1,5 @@
 cssmin
+dateutil
 beautifulsoup4
 Flask
 Flask-Assets
