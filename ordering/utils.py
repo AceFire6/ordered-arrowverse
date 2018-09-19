@@ -219,4 +219,4 @@ def _get_date(arg):
     if arg is None:
         return None
 
-    return parse_date_string(arg, dayfirst=True).date()
+    return parse_date_string(arg).date()
