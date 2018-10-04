@@ -8,8 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from . import app
-from .constants import ARROW, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, SUPERGIRL, WIKIPEDIA
-
+from .constants import ARROW, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, LEGENDS_OF_TOMORROW, SUPERGIRL, WIKIPEDIA
 
 TWELVE_HOURS = 43200
 
@@ -76,8 +75,8 @@ def get_episode_list(series_soup, series):
     return episode_list
 
 
-def _swap_episode_rows(epsidoe_list, index_1, index_2):
-    epsidoe_list[index_1], epsidoe_list[index_2] = epsidoe_list[index_2], epsidoe_list[index_1]
+def _swap_episode_rows(episode_list, index_1, index_2):
+    episode_list[index_1], episode_list[index_2] = episode_list[index_2], episode_list[index_1]
 
 
 def _handle_screening_day_error(episode_list):
@@ -92,25 +91,35 @@ def _handle_screening_day_error(episode_list):
         _swap_episode_rows(episode_list, 78, 79)
 
 
-def _handle_crisis_on_earth_x_order_error(episode_list):
-    arrow_episode_index = None
-    supergirl_episode_index = None
+def _handle_crisis_on_earth_x_order_error(episode_list, shows_in_list):
+    earth_x_show_order = (SUPERGIRL, ARROW, FLASH, LEGENDS_OF_TOMORROW)
+    earth_x_ordered_shows = [show for show in earth_x_show_order if show in shows_in_list]
+    episode_indices = {show: None for show in earth_x_ordered_shows}
 
-    for index in range(len(episode_list)):
-        show_name = episode_list[index]['series'].upper()
-        if show_name not in [ARROW, SUPERGIRL]:
+    for index, episode in enumerate(episode_list):
+        show_name = episode['series'].upper()
+        if show_name not in earth_x_show_order:
             continue
 
-        episode_name = episode_list[index]['episode_name']
+        episode_name = episode['episode_name']
         if not episode_name.startswith('Crisis on Earth-X, Part'):
             continue
 
-        if show_name == ARROW:
-            arrow_episode_index = index
-        elif show_name == SUPERGIRL:
-            supergirl_episode_index = index
+        episode_indices[show_name] = index
 
-    _swap_episode_rows(episode_list, arrow_episode_index, supergirl_episode_index)
+    if ARROW in episode_indices and SUPERGIRL in episode_indices:
+        arrow_index = episode_indices[ARROW]
+        supergirl_index = episode_indices[SUPERGIRL]
+        indices = sorted([arrow_index, supergirl_index])
+
+        episode_list[supergirl_index], episode_list[arrow_index] = episode_list[indices[0]], episode_list[indices[1]]
+
+    if FLASH in episode_indices and LEGENDS_OF_TOMORROW in episode_indices:
+        flash_index = episode_indices[FLASH]
+        legends_index = episode_indices[LEGENDS_OF_TOMORROW]
+        indices = sorted([flash_index, legends_index])
+
+        episode_list[flash_index], episode_list[legends_index] = episode_list[indices[0]], episode_list[indices[1]]
 
 
 def _handle_john_con_noir_episode(episode_list):
@@ -142,8 +151,7 @@ def sort_and_filter_episodes(show_list_set, from_date=None, to_date=None):
     if len(full_list) > 80 and FLASH in shows_in_list and ARROW in shows_in_list:
         _handle_screening_day_error(full_list)
 
-    if ARROW in shows_in_list and SUPERGIRL in shows_in_list:
-        _handle_crisis_on_earth_x_order_error(full_list)
+    _handle_crisis_on_earth_x_order_error(full_list, shows_in_list)
 
     if CONSTANTINE in shows_in_list:
         _handle_john_con_noir_episode(full_list)
