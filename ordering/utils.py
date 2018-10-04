@@ -75,8 +75,8 @@ def get_episode_list(series_soup, series):
     return episode_list
 
 
-def _swap_episode_rows(epsidoe_list, index_1, index_2):
-    epsidoe_list[index_1], epsidoe_list[index_2] = epsidoe_list[index_2], epsidoe_list[index_1]
+def _swap_episode_rows(episode_list, index_1, index_2):
+    episode_list[index_1], episode_list[index_2] = episode_list[index_2], episode_list[index_1]
 
 
 def _handle_screening_day_error(episode_list):
