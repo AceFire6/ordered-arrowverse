@@ -91,25 +91,29 @@ def _handle_screening_day_error(episode_list):
         _swap_episode_rows(episode_list, 78, 79)
 
 
-def _handle_crisis_on_earth_x_order_error(episode_list):
-    arrow_episode_index = None
-    supergirl_episode_index = None
+def _handle_crisis_on_earth_x_order_error(episode_list, shows_in_list):
+    episode_indices = {show: None for show in shows_in_list}
 
-    for index in range(len(episode_list)):
-        show_name = episode_list[index]['series'].upper()
+    for index, episode in enumerate(episode_list):
+        show_name = episode['series'].upper()
         if show_name not in [ARROW, SUPERGIRL]:
             continue
 
-        episode_name = episode_list[index]['episode_name']
+        episode_name = episode['episode_name']
         if not episode_name.startswith('Crisis on Earth-X, Part'):
             continue
 
-        if show_name == ARROW:
-            arrow_episode_index = index
-        elif show_name == SUPERGIRL:
-            supergirl_episode_index = index
+        episode_indices[show_name] = index
 
-    _swap_episode_rows(episode_list, arrow_episode_index, supergirl_episode_index)
+    indices = sorted(episode_indices.values())
+    earth_x_ordered_shows = [
+        show for show in (SUPERGIRL, ARROW, FLASH, LEGENDS_OF_TOMORROW)
+        if show in shows_in_list
+    ]
+
+    for show_name, new_index in zip(earth_x_ordered_shows, indices):
+        old_index = episode_indices[show_name]
+        episode_list[old_index], episode_list[new_index] = episode_list[new_index], episode_list[old_index]
 
 
 def _handle_john_con_noir_episode(episode_list):
@@ -141,8 +145,7 @@ def sort_and_filter_episodes(show_list_set, from_date=None, to_date=None):
     if len(full_list) > 80 and FLASH in shows_in_list and ARROW in shows_in_list:
         _handle_screening_day_error(full_list)
 
-    if ARROW in shows_in_list and SUPERGIRL in shows_in_list:
-        _handle_crisis_on_earth_x_order_error(full_list)
+    _handle_crisis_on_earth_x_order_error(full_list, shows_in_list)
 
     if CONSTANTINE in shows_in_list:
         _handle_john_con_noir_episode(full_list)
