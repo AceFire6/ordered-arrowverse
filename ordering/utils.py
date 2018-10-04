@@ -92,11 +92,13 @@ def _handle_screening_day_error(episode_list):
 
 
 def _handle_crisis_on_earth_x_order_error(episode_list, shows_in_list):
-    episode_indices = {show: None for show in shows_in_list}
+    earth_x_show_order = (SUPERGIRL, ARROW, FLASH, LEGENDS_OF_TOMORROW)
+    earth_x_ordered_shows = [show for show in earth_x_show_order if show in shows_in_list]
+    episode_indices = {show: None for show in earth_x_ordered_shows}
 
     for index, episode in enumerate(episode_list):
         show_name = episode['series'].upper()
-        if show_name not in [ARROW, SUPERGIRL]:
+        if show_name not in earth_x_show_order:
             continue
 
         episode_name = episode['episode_name']
@@ -105,15 +107,19 @@ def _handle_crisis_on_earth_x_order_error(episode_list, shows_in_list):
 
         episode_indices[show_name] = index
 
-    indices = sorted(episode_indices.values())
-    earth_x_ordered_shows = [
-        show for show in (SUPERGIRL, ARROW, FLASH, LEGENDS_OF_TOMORROW)
-        if show in shows_in_list
-    ]
+    if ARROW in episode_indices and SUPERGIRL in episode_indices:
+        arrow_index = episode_indices[ARROW]
+        supergirl_index = episode_indices[SUPERGIRL]
+        indices = sorted([arrow_index, supergirl_index])
 
-    for show_name, new_index in zip(earth_x_ordered_shows, indices):
-        old_index = episode_indices[show_name]
-        episode_list[old_index], episode_list[new_index] = episode_list[new_index], episode_list[old_index]
+        episode_list[supergirl_index], episode_list[arrow_index] = episode_list[indices[0]], episode_list[indices[1]]
+
+    if FLASH in episode_indices and LEGENDS_OF_TOMORROW in episode_indices:
+        flash_index = episode_indices[FLASH]
+        legends_index = episode_indices[LEGENDS_OF_TOMORROW]
+        indices = sorted([flash_index, legends_index])
+
+        episode_list[flash_index], episode_list[legends_index] = episode_list[indices[0]], episode_list[indices[1]]
 
 
 def _handle_john_con_noir_episode(episode_list):
