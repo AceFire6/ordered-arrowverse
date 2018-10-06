@@ -7,6 +7,10 @@
     <meta name="description" content="Arrowverse episode order tracker. Never spoil a crossover episode again!">
 
     <title>Arrowverse Episode Order</title>
+    <link href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}"
+          rel="alternate"
+          title="Recent Episodes"
+          type="application/atom+xml">
     <link type="image/png" href="{{ url_for('static', filename='favicon.png') }}" rel="icon">
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -30,6 +34,14 @@
                class="btn btn-outline-secondary"
                target="_blank">
                 Project on Github
+            </a>
+        </div>
+        <div>
+            <a href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}"
+               class="btn btn-outline-secondary"
+               target="_blank">
+                RSS Feed
+                <img src="https://www.mozilla.org/media/img/trademarks/feed-icon-14x14.2168a573d0d4.png" rel="icon">
             </a>
         </div>
     </div>
