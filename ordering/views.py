@@ -1,4 +1,7 @@
-from flask import render_template, request
+from datetime import datetime
+
+from flask import render_template, request, url_for
+from werkzeug.contrib.atom import AtomFeed
 
 from . import app
 from .utils import _get_bool, _get_date, get_full_series_episode_list
@@ -28,6 +31,38 @@ def index():
     context['to_date'] = to_date
 
     return render_template('index.html', **context)
+
+
+@app.route('/recent_episodes.atom')
+def recent_episodes():
+    feed = AtomFeed(
+        title='Recent Episodes',
+        feed_url=request.url,
+        url=request.url_root,
+        logo=url_for('static', filename='favicon.png', _external=True),
+        icon=url_for('static', filename='favicon.png', _external=True),
+    )
+
+    hide_shows_list = request.args.getlist('hide_show')
+
+    newest_first_episode_list = get_full_series_episode_list(excluded_series=hide_shows_list)[::-1]
+
+    for episode in newest_first_episode_list[:15]:
+        title = '{series} - {episode_id} - {episode_name}'.format(**episode)
+        content = '{series} {episode_id} {episode_name} will air on {air_date}'.format(**episode)
+        show_dict = app.config['SHOW_DICT_WITH_NAMES'][episode['series']]
+        data_source = f"{show_dict['root']}{show_dict['url']}"
+
+        feed.add(
+            title=title,
+            content=content,
+            content_type='text',
+            url=data_source,
+            author=show_dict['root'],
+            updated=datetime.now(),
+        )
+
+    return feed.get_response()
 
 
 @app.route('/newest_first/', methods=['GET'])
