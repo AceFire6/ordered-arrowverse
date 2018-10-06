@@ -36,7 +36,7 @@ def index():
 @app.route('/recent_episodes.atom')
 def recent_episodes():
     feed = AtomFeed(
-        title='Recent Episodes',
+        title='Arrowverse.info - Recent Episodes',
         feed_url=request.url,
         url=request.url_root,
         logo=url_for('static', filename='favicon.png', _external=True),
