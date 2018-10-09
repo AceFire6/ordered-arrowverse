@@ -8,7 +8,7 @@ Flask-Assets==0.12
 Flask-Caching==1.4.0
 Flask-Compress==1.4.0
 Flask-Minify==0.9
-gunicorn==19.8.1
+gunicorn==19.9.0
 htmlmin==0.1.12
 idna==2.7
 itsdangerous==0.24
