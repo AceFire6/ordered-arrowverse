@@ -19,7 +19,7 @@ MarkupSafe==1.0
 ply==3.11
 python-dateutil==2.7.3
 redis==2.10.6
-requests==2.19.1
+requests==2.20.0
 six==1.11.0
 urllib3==1.24
 webassets==0.12.1
