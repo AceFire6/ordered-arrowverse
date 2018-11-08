@@ -19,7 +19,7 @@ LEGENDS_URL = "List_of_DC's_Legends_of_Tomorrow_episodes"
 SUPERGIRL_URL = 'List_of_Supergirl_episodes'
 VIXEN_URL = 'List_of_Vixen_episodes'
 
-WIKIA_ROOT = 'http://arrow.wikia.com/wiki/'
+FANDOM_ROOT = 'http://arrow.fandom.com/wiki/'
 WIKIPEDIA_ROOT = 'https://en.wikipedia.org/wiki/'
 
 SHOWS = (
@@ -27,43 +27,43 @@ SHOWS = (
         'id': 'arrow',
         'name': 'Arrow',
         'url': ARROW_URL,
-        'root': WIKIA_ROOT
+        'root': FANDOM_ROOT
     },
     {
         'id': 'constantine',
         'name': 'Constantine',
         'url': CONSTANTINE_URL,
-        'root': WIKIA_ROOT
+        'root': FANDOM_ROOT
     },
     {
         'id': 'flash',
         'name': 'The Flash',
         'url': FLASH_URL,
-        'root': WIKIA_ROOT
+        'root': FANDOM_ROOT
     },
     {
         'id': 'freedom-fighters',
         'name': 'Freedom Fighters: The Ray',
         'url': FREEDOM_FIGHTERS_URL,
-        'root': WIKIA_ROOT
+        'root': FANDOM_ROOT
     },
     {
         'id': 'legends',
         'name': "DC's Legends of Tomorrow",
         'url': LEGENDS_URL,
-        'root': WIKIA_ROOT
+        'root': FANDOM_ROOT
     },
     {
         'id': 'supergirl',
         'name': 'Supergirl',
         'url': SUPERGIRL_URL,
-        'root': WIKIA_ROOT
+        'root': FANDOM_ROOT
     },
     {
         'id': 'vixen',
         'name': 'Vixen',
         'url': VIXEN_URL,
-        'root': WIKIA_ROOT
+        'root': FANDOM_ROOT
     },
 )
 
