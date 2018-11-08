@@ -6,7 +6,7 @@ order.
 
 ### How It Works:
 
-This project uses data from the episode lists on the [Arrow wikia](http://arrow.wikia.com)
+This project uses data from the episode lists on the [Arrow Wiki](http://arrow.fandom.com)
 and the episodes are ordered by air date.
 
 Data for Supergirl is drawn from wikipedia.
