@@ -18,6 +18,7 @@ FREEDOM_FIGHTERS_URL = 'List_of_Freedom_Fighters:_The_Ray_episodes'
 LEGENDS_URL = "List_of_DC's_Legends_of_Tomorrow_episodes"
 SUPERGIRL_URL = 'List_of_Supergirl_episodes'
 VIXEN_URL = 'List_of_Vixen_episodes'
+BLACK_LIGHTNING_URL = 'Black_Lightning_(TV_series)'
 
 FANDOM_ROOT = 'http://arrow.fandom.com/wiki/'
 WIKIPEDIA_ROOT = 'https://en.wikipedia.org/wiki/'
@@ -64,6 +65,12 @@ SHOWS = (
         'name': 'Vixen',
         'url': VIXEN_URL,
         'root': FANDOM_ROOT
+    },
+{
+        'id': 'black-lightning',
+        'name': 'Black Lightning',
+        'url': BLACK_LIGHTNING_URL,
+        'root': WIKIPEDIA_ROOT
     },
 )
 
