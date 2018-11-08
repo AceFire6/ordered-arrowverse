@@ -9,13 +9,14 @@ order.
 This project uses data from the episode lists on the [Arrow Wiki](http://arrow.fandom.com)
 and the episodes are ordered by air date.
 
-Data for Supergirl is drawn from wikipedia.
+Data is also drawn from Wikipedia when necessary.
 
 ### Currently Supported Series:
 
 * Arrow
 * The Flash
 * DC's Legends of Tomorrow
+* Freedom Fighters: The Ray
 * Supergirl
 * Vixen
 * Constantine
