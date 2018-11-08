@@ -40,9 +40,20 @@ def get_episode_list(series_soup, series):
                 for row in table.getText().split('\n\n') if row.strip()
             ]
         else:
+            table_heading = table.find(name='tr', class_=None)
+            table_headings = [
+                heading.getText().replace(' ', '').lower()
+                for heading in table_heading.children
+            ]
+            episode_num_index = table_headings.index('no.inseason')
+            title_index = table_headings.index('title')
+            air_date_index = table_headings.index('originalairdate')
+
+            wikipedia_row_unpacker = itemgetter(episode_num_index, title_index, air_date_index)
+
             table = [
-                [j.getText() for j in itemgetter(1, 3, 5, 11)(i.contents)]
-                for i in table.find_all(class_='vevent')
+                [episode_row_col.getText() for episode_row_col in wikipedia_row_unpacker(episode_row.contents)]
+                for episode_row in table.find_all(class_='vevent')
             ]
 
         for row in table:

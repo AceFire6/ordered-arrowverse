@@ -78,6 +78,14 @@ a.btn {
     background-color: #be3915;
 }
 
+.black-lightning {
+    background-color: #464340;
+}
+
+.black-lightning:hover {
+    background-color: #383532;
+}
+
 .no-color {
     background-color: transparent;
     color: #000;
