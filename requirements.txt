@@ -18,7 +18,7 @@ lesscpy==0.13.0
 MarkupSafe==1.1.0
 ply==3.11
 python-dateutil==2.7.5
-redis==2.10.6
+redis==3.0.1
 requests==2.20.1
 six==1.11.0
 urllib3==1.24.1
