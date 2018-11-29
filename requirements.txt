@@ -1,5 +1,5 @@
 beautifulsoup4==4.6.3
-certifi==2018.10.15
+certifi==2018.11.29
 chardet==3.0.4
 click==7.0
 cssmin==0.2.0
