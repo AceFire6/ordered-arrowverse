@@ -10,7 +10,7 @@ Flask-Compress==1.4.0
 Flask-Minify==0.9
 gunicorn==19.9.0
 htmlmin==0.1.12
-idna==2.7
+idna==2.8
 itsdangerous==1.1.0
 Jinja2==2.10
 jsmin==2.2.2
