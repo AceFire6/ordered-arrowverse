@@ -17,7 +17,7 @@ jsmin==2.2.2
 lesscpy==0.13.0
 MarkupSafe==1.1.0
 ply==3.11
-python-dateutil==2.7.5
+python-dateutil==2.8.0
 redis==2.10.6
 requests==2.20.1
 six==1.11.0
