@@ -13,7 +13,7 @@ SEND_FILE_MAX_AGE_DEFAULT = timedelta(weeks=1)
 
 ARROW_URL = 'List_of_Arrow_episodes'
 CONSTANTINE_URL = 'List_of_Constantine_episodes'
-FLASH_URL = 'List_of_The_Flash_episodes'
+FLASH_URL = 'List_of_The_Flash_(The_CW)_episodes'
 FREEDOM_FIGHTERS_URL = 'List_of_Freedom_Fighters:_The_Ray_episodes'
 LEGENDS_URL = "List_of_DC's_Legends_of_Tomorrow_episodes"
 SUPERGIRL_URL = 'List_of_Supergirl_episodes'
@@ -66,7 +66,7 @@ SHOWS = (
         'url': VIXEN_URL,
         'root': FANDOM_ROOT
     },
-{
+    {
         'id': 'black-lightning',
         'name': 'Black Lightning',
         'url': BLACK_LIGHTNING_URL,
