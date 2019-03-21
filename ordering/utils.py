@@ -1,5 +1,6 @@
 from concurrent.futures import as_completed, ThreadPoolExecutor
 from datetime import datetime
+
 from dateutil.parser import parse as parse_date_string
 from operator import itemgetter
 import re
@@ -73,7 +74,7 @@ def get_episode_list(series_soup, series):
                 date = row[-1]
                 reference = re.search(r'\[\d+\]$', row[-1])
                 date = date[:reference.start()] if reference else date
-                row[-1] = air_date = datetime.strptime(date, '%B %d, %Y').date()
+                row[-1] = air_date = parse_date_string(date).date()
             except ValueError:
                 continue
 
