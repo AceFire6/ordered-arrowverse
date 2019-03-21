@@ -3,6 +3,7 @@ certifi==2019.3.9
 chardet==3.0.4
 Click==7.0
 cssmin==0.2.0
+feedgen==0.7.0
 Flask==1.0.2
 Flask-Assets==0.12
 Flask-Caching==1.6.0
@@ -15,6 +16,7 @@ itsdangerous==1.1.0
 Jinja2==2.10
 jsmin==2.2.2
 lesscpy==0.13.0
+lxml==4.3.2
 MarkupSafe==1.1.1
 ply==3.11
 python-dateutil==2.8.0
