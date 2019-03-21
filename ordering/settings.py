@@ -6,7 +6,9 @@ PASSWORD = 'pass'
 HOST = '0.0.0.0'
 PORT = 5000
 
-CACHE_TYPE = 'redis'
+DEBUG = os.getenv('FLASK_DEBUG', False)
+
+CACHE_TYPE = 'redis' if not DEBUG else 'null'
 CACHE_REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
 
 SEND_FILE_MAX_AGE_DEFAULT = timedelta(weeks=1)
