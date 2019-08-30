@@ -20,3 +20,5 @@ Data is also drawn from Wikipedia when necessary.
 * Supergirl
 * Vixen
 * Constantine
+* Black Lightning
+* Batwoman

@@ -9,7 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from . import app
-from .constants import ARROW, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, LEGENDS_OF_TOMORROW, SUPERGIRL, WIKIPEDIA
+from .constants import ARROW, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, LEGENDS_OF_TOMORROW, SUPERGIRL, BATWOMAN, WIKIPEDIA
 
 TWELVE_HOURS = 43200
 
@@ -30,7 +30,7 @@ def get_episode_list(series_soup, series):
             continue
 
         if 'season' not in table_name:
-            if series.upper() not in [CONSTANTINE, FREEDOM_FIGHTERS]:
+            if series.upper() not in [CONSTANTINE, FREEDOM_FIGHTERS, BATWOMAN]:
                 continue
 
         season += 1
