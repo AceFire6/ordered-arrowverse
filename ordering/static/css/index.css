@@ -86,6 +86,14 @@ a.btn {
     background-color: #383532;
 }
 
+.batwoman {
+    background-color: #692e69;
+}
+
+.batwoman:hover {
+    background-color: #470e47;
+}
+
 .no-color {
     background-color: transparent;
     color: #000;
