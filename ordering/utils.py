@@ -9,7 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from . import app
-from .constants import ARROW, BATWOMAN, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, LEGENDS_OF_TOMORROW, SUPERGIRL, WIKIPEDIA
+from .constants import ARROW, BATWOMAN, BLACK_LIGHTNING, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, LEGENDS_OF_TOMORROW, SUPERGIRL, VIXEN, WIKIPEDIA
 
 TWELVE_HOURS = 43200
 
@@ -106,6 +106,42 @@ def _handle_screening_day_error(episode_list):
     if one_is_arrow and one_is_flash and both_are_episode_17:
         _swap_episode_rows(episode_list, 78, 79)
 
+def _handle_air_time_error(episode_list):
+    # handles when two episodes air on the same day
+    seasons = ['', 'Midseason', 'Midseason', 'Midseason', 'Midseason', 'Midseason', 'Midseason',
+               'Summer', 'Summer', 'Summer', 'Fall', 'Fall', 'Fall']
+    air_orders = {'Fall 2016' : [(LEGENDS_OF_TOMORROW, VIXEN)],
+                  'Midseason 2017' : [(FLASH, LEGENDS_OF_TOMORROW)],
+                  'Fall 2017' : [(FLASH, LEGENDS_OF_TOMORROW)],
+                  'Midseason 2018' : [(FLASH, BLACK_LIGHTNING)],
+                  'Fall 2018' : [(ARROW, LEGENDS_OF_TOMORROW),
+                                 (FLASH, BLACK_LIGHTNING),
+                                 (SUPERGIRL, BLACK_LIGHTNING)],
+                  'Midseason 2019' : [(ARROW, BLACK_LIGHTNING),
+                                      (LEGENDS_OF_TOMORROW, ARROW)],
+                  'Fall 2019' : [(BATWOMAN, SUPERGIRL),
+                                 (FLASH, ARROW)]}
+
+    i=0
+    while i < len(episode_list)-1:
+        curr_ep = episode_list[i]
+        next_ep = episode_list[i+1]
+        i+=1
+
+        if not curr_ep['air_date'] == next_ep['air_date']:
+            continue
+
+        air_date = curr_ep['air_date']
+        air_season = seasons[air_date.month] + ' ' + str(air_date.year)
+
+        if not air_season in air_orders.keys(): # handle summer releases
+            continue
+
+        pairs = air_orders[air_season]
+        for pair in pairs:
+            if curr_ep['series'].upper() == pair[1] and next_ep['series'].upper() == pair[0]:
+                _swap_episode_rows(episode_list, i-1, i)
+
 
 def _handle_crisis_on_earth_x_order_error(episode_list, shows_in_list):
     earth_x_show_order = (SUPERGIRL, ARROW, FLASH, LEGENDS_OF_TOMORROW)
@@ -168,6 +204,8 @@ def sort_and_filter_episodes(show_list_set, from_date=None, to_date=None):
         _handle_screening_day_error(full_list)
 
     _handle_crisis_on_earth_x_order_error(full_list, shows_in_list)
+
+    _handle_air_time_error(full_list)
 
     if CONSTANTINE in shows_in_list:
         _handle_john_con_noir_episode(full_list)
