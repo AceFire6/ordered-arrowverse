@@ -1,12 +1,13 @@
-from flask import Flask
-from flask_assets import Bundle, Environment
+from flask_assets import Environment
+from quart import Quart
 from flask_caching import Cache
-from flask_compress import Compress
-from flask_minify import minify
+from quart_compress import Compress
+from quart_minify import Minify
+from webassets import Bundle
 
 from .url_converters import ListConverter
 
-app = Flask(__name__)
+app = Quart(__name__)
 
 app.config.from_pyfile('settings.py')
 
@@ -19,10 +20,11 @@ assets = Environment(app)
 assets.register('js_all', js_assets)
 assets.register('css_all', css_assets)
 
+# Minify HTML and any inline JS or CSS
+Minify(app, js=True)
+
 # gzip responses
 Compress(app)
-# Minify HTML and any inline JS or CSS
-minify(app, js=True)
 
 app.url_map.converters['list'] = ListConverter
 

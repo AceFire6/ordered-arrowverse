@@ -1,4 +1,4 @@
-from flask import request
+from quart import request
 
 from . import app
 from .constants import WIKIPEDIA

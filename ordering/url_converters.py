@@ -1,4 +1,4 @@
-from werkzeug.routing import BaseConverter
+from quart.routing import BaseConverter
 
 
 class ListConverter(BaseConverter):

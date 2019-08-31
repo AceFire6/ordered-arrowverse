@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import render_template, request, url_for
+from quart import render_template, request, url_for
 from werkzeug.contrib.atom import AtomFeed
 
 from . import app
@@ -8,7 +8,7 @@ from .utils import _get_bool, _get_date, get_full_series_episode_list
 
 
 @app.route('/', methods=['GET'])
-def index():
+async def index():
     context = {}
 
     newest_first = request.args.get('newest_first', default=False, type=_get_bool)
@@ -30,11 +30,11 @@ def index():
     context['from_date'] = from_date
     context['to_date'] = to_date
 
-    return render_template('index.html', **context)
+    return await render_template('index.html', **context)
 
 
 @app.route('/recent_episodes.atom')
-def recent_episodes():
+async def recent_episodes():
     feed = AtomFeed(
         title='Arrowverse.info - Recent Episodes',
         feed_url=request.url,
@@ -66,7 +66,7 @@ def recent_episodes():
 
 
 @app.route('/newest_first/', methods=['GET'])
-def index_newest_first():
+async def index_newest_first():
     context = {}
 
     episode_list = get_full_series_episode_list()
@@ -75,11 +75,11 @@ def index_newest_first():
     context['table_content'] = episode_list
     context['show_list'] = app.config['SHOW_DICT']
 
-    return render_template('index.html', **context)
+    return await render_template('index.html', **context)
 
 
 @app.route('/hide/<list:hide_list>/', methods=['GET'])
-def index_with_hidden(hide_list):
+async def index_with_hidden(hide_list):
     context = {}
 
     episode_list = get_full_series_episode_list(hide_list)
@@ -88,11 +88,11 @@ def index_with_hidden(hide_list):
     context['table_content'] = episode_list
     context['show_list'] = app.config['SHOW_DICT']
 
-    return render_template('index.html', **context)
+    return await render_template('index.html', **context)
 
 
 @app.route('/hide/<list:hide_list>/newest_first/', methods=['GET'])
-def index_with_hidden_newest_first(hide_list):
+async def index_with_hidden_newest_first(hide_list):
     context = {}
 
     episode_list = get_full_series_episode_list(hide_list)
@@ -102,4 +102,4 @@ def index_with_hidden_newest_first(hide_list):
     context['table_content'] = episode_list
     context['show_list'] = app.config['SHOW_DICT']
 
-    return render_template('index.html', **context)
+    return await render_template('index.html', **context)
