@@ -1,6 +1,6 @@
 from feedgen.entry import FeedEntry
 from feedgen.feed import FeedGenerator
-from quart import render_template, request, url_for, make_response
+from quart import jsonify, make_response, render_template, request, url_for
 
 from . import app
 from .utils import _get_bool, _get_date, get_full_series_episode_list
@@ -30,6 +30,25 @@ async def index():
     context['to_date'] = to_date
 
     return await render_template('index.html', **context)
+
+
+@app.route('/api', methods=['GET'])
+async def api():
+    newest_first = request.args.get('newest_first', default=False, type=_get_bool)
+    hide_shows_list = request.args.getlist('hide_show')
+    from_date = request.args.get('from_date', default=None, type=_get_date)
+    to_date = request.args.get('to_date', default=None, type=_get_date)
+
+    episode_list = get_full_series_episode_list(
+        excluded_series=hide_shows_list,
+        from_date=from_date,
+        to_date=to_date,
+    )
+
+    if newest_first:
+        episode_list = episode_list[::-1]
+
+    return jsonify(episode_list)
 
 
 @app.route('/recent_episodes.atom')
