@@ -21,6 +21,7 @@ LEGENDS_URL = "List_of_DC's_Legends_of_Tomorrow_episodes"
 SUPERGIRL_URL = 'List_of_Supergirl_episodes'
 VIXEN_URL = 'List_of_Vixen_episodes'
 BLACK_LIGHTNING_URL = 'Black_Lightning_(TV_series)'
+BATWOMAN_URL = 'List_of_Batwoman_episodes'
 
 FANDOM_ROOT = 'http://arrow.fandom.com/wiki/'
 WIKIPEDIA_ROOT = 'https://en.wikipedia.org/wiki/'
@@ -73,6 +74,12 @@ SHOWS = (
         'name': 'Black Lightning',
         'url': BLACK_LIGHTNING_URL,
         'root': WIKIPEDIA_ROOT
+    },
+    {
+        'id': 'batwoman',
+        'name': 'Batwoman',
+        'url': BATWOMAN_URL,
+        'root': FANDOM_ROOT
     },
 )
 

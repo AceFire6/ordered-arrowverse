@@ -1,14 +1,13 @@
 from feedgen.entry import FeedEntry
 from feedgen.feed import FeedGenerator
-from flask import render_template, request, url_for
-from werkzeug.wrappers import BaseResponse
+from quart import render_template, request, url_for, make_response
 
 from . import app
 from .utils import _get_bool, _get_date, get_full_series_episode_list
 
 
 @app.route('/', methods=['GET'])
-def index():
+async def index():
     context = {}
 
     newest_first = request.args.get('newest_first', default=False, type=_get_bool)
@@ -30,11 +29,11 @@ def index():
     context['from_date'] = from_date
     context['to_date'] = to_date
 
-    return render_template('index.html', **context)
+    return await render_template('index.html', **context)
 
 
 @app.route('/recent_episodes.atom')
-def recent_episodes():
+async def recent_episodes():
     logo_link = url_for('static', filename='favicon.png', _external=True)
 
     feed = FeedGenerator()
@@ -64,11 +63,14 @@ def recent_episodes():
 
         feed.add_entry(feed_entry)
 
-    return BaseResponse(feed.atom_str(pretty=True), mimetype='application/atom+xml')
+    response = await make_response(feed.atom_str(pretty=True))
+    response.headers['Content-Type'] = 'application/atom+xml'
+
+    return response
 
 
 @app.route('/newest_first/', methods=['GET'])
-def index_newest_first():
+async def index_newest_first():
     context = {}
 
     episode_list = get_full_series_episode_list()
@@ -77,11 +79,11 @@ def index_newest_first():
     context['table_content'] = episode_list
     context['show_list'] = app.config['SHOW_DICT']
 
-    return render_template('index.html', **context)
+    return await render_template('index.html', **context)
 
 
 @app.route('/hide/<list:hide_list>/', methods=['GET'])
-def index_with_hidden(hide_list):
+async def index_with_hidden(hide_list):
     context = {}
 
     episode_list = get_full_series_episode_list(hide_list)
@@ -90,11 +92,11 @@ def index_with_hidden(hide_list):
     context['table_content'] = episode_list
     context['show_list'] = app.config['SHOW_DICT']
 
-    return render_template('index.html', **context)
+    return await render_template('index.html', **context)
 
 
 @app.route('/hide/<list:hide_list>/newest_first/', methods=['GET'])
-def index_with_hidden_newest_first(hide_list):
+async def index_with_hidden_newest_first(hide_list):
     context = {}
 
     episode_list = get_full_series_episode_list(hide_list)
@@ -104,4 +106,4 @@ def index_with_hidden_newest_first(hide_list):
     context['table_content'] = episode_list
     context['show_list'] = app.config['SHOW_DICT']
 
-    return render_template('index.html', **context)
+    return await render_template('index.html', **context)
