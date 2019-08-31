@@ -1,7 +1,6 @@
-from datetime import datetime
-
-from quart import render_template, request, url_for
-from werkzeug.contrib.atom import AtomFeed
+from feedgen.entry import FeedEntry
+from feedgen.feed import FeedGenerator
+from quart import render_template, request, url_for, make_response
 
 from . import app
 from .utils import _get_bool, _get_date, get_full_series_episode_list
@@ -35,13 +34,15 @@ async def index():
 
 @app.route('/recent_episodes.atom')
 async def recent_episodes():
-    feed = AtomFeed(
-        title='Arrowverse.info - Recent Episodes',
-        feed_url=request.url,
-        url=request.url_root,
-        logo=url_for('static', filename='favicon.png', _external=True),
-        icon=url_for('static', filename='favicon.png', _external=True),
-    )
+    logo_link = url_for('static', filename='favicon.png', _external=True)
+
+    feed = FeedGenerator()
+    feed.title('Arrowverse.info - Recent Episodes')
+    feed.id(request.url_root)
+    feed.link(href=request.url)
+    feed.logo(logo_link)
+    feed.icon(logo_link)
+    feed.language('en')
 
     hide_shows_list = request.args.getlist('hide_show')
 
@@ -53,16 +54,19 @@ async def recent_episodes():
         show_dict = app.config['SHOW_DICT_WITH_NAMES'][episode['series']]
         data_source = f"{show_dict['root']}{show_dict['url']}"
 
-        feed.add(
-            title=title,
-            content=content,
-            content_type='text',
-            url=data_source,
-            author=show_dict['root'],
-            updated=datetime.now(),
-        )
+        feed_entry = FeedEntry()
+        feed_entry.id(data_source)
+        feed_entry.link({'href': data_source})
+        feed_entry.title(title)
+        feed_entry.content(content, type='text')
+        feed_entry.author(uri=show_dict['root'])
 
-    return feed.get_response()
+        feed.add_entry(feed_entry)
+
+    response = await make_response(feed.atom_str(pretty=True))
+    response.headers['Content-Type'] = 'application/atom+xml'
+
+    return response
 
 
 @app.route('/newest_first/', methods=['GET'])

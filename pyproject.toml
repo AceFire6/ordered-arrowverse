@@ -22,6 +22,7 @@ webassets = "^0.12.1"
 quart = "^0.10.0"
 quart-minify = "^0.1.0"
 quart-compress = "^0.1.0"
+feedgen = "^0.7.0"
 
 [tool.poetry.dev-dependencies]
 
