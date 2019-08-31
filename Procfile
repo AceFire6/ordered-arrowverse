@@ -1,1 +1,1 @@
-web: hypercorn ordering:app --error-log=- --access-log=-
+web: hypercorn ordering:app --error-log=- --access-log=- --bind=0.0.0.0:5000
