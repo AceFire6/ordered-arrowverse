@@ -1,1 +1,1 @@
-web: gunicorn ordering:app --log-file=-
+web: hypercorn ordering:app --error-log=- --access-log=-

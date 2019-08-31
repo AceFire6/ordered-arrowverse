@@ -1,1 +1,1 @@
-FLASK_ENV=development FLASK_DEBUG=1 FLASK_APP=./ordering/ flask run
+QUART_ENV=development QUART_DEBUG=1 QUART_APP=./ordering/ quart run
