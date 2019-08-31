@@ -9,7 +9,17 @@ import requests
 from bs4 import BeautifulSoup
 
 from . import app
-from .constants import ARROW, BATWOMAN, BLACK_LIGHTNING, CONSTANTINE, FLASH, FREEDOM_FIGHTERS, LEGENDS_OF_TOMORROW, SUPERGIRL, VIXEN, WIKIPEDIA
+from .constants import (
+    ARROW,
+    BATWOMAN,
+    BLACK_LIGHTNING,
+    CONSTANTINE,
+    FLASH,
+    FREEDOM_FIGHTERS,
+    LEGENDS_OF_TOMORROW,
+    SUPERGIRL,
+    WIKIPEDIA,
+)
 
 TWELVE_HOURS = 43200
 
