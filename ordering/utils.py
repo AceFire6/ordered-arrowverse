@@ -18,6 +18,7 @@ from .constants import (
     FREEDOM_FIGHTERS,
     LEGENDS_OF_TOMORROW,
     SUPERGIRL,
+    VIXEN,
     WIKIPEDIA,
 )
 
@@ -135,11 +136,9 @@ def _handle_air_time_error(episode_list):
                   'Fall 2019' : [(BATWOMAN, SUPERGIRL),
                                  (FLASH, ARROW)]}
 
-    i=0
-    while i < len(episode_list)-1:
+    for i in range(len(episode_list)-1):
         curr_ep = episode_list[i]
         next_ep = episode_list[i+1]
-        i+=1
 
         if not curr_ep['air_date'] == next_ep['air_date']:
             continue
@@ -153,7 +152,7 @@ def _handle_air_time_error(episode_list):
         pairs = air_orders[air_season]
         for pair in pairs:
             if curr_ep['series'].upper() == pair[1] and next_ep['series'].upper() == pair[0]:
-                _swap_episode_rows(episode_list, i-1, i)
+                _swap_episode_rows(episode_list, i, i+1)
 
 
 def _handle_crisis_on_earth_x_order_error(episode_list, shows_in_list):
