@@ -1,4 +1,5 @@
 # Arrowverse Series Ordering
+[![Build Status](https://travis-ci.org/AceFire6/ordered-arrowverse.svg?branch=master)](https://travis-ci.org/AceFire6/ordered-arrowverse)
 
 This is a project that aims to centralize the series in the Arrowverse that
 have crossovers so as to make it easy to watch the episodes in the correct

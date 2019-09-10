@@ -63,7 +63,10 @@ def get_episode_list(series_soup, series):
             wikipedia_row_unpacker = itemgetter(episode_num_index, title_index, air_date_index)
 
             table = [
-                [episode_row_col.getText() for episode_row_col in wikipedia_row_unpacker(episode_row.contents)]
+                [
+                    episode_row_col.getText()
+                    for episode_row_col in wikipedia_row_unpacker(episode_row.contents)
+                ]
                 for episode_row in table.find_all(class_='vevent')
             ]
 
@@ -172,16 +175,16 @@ def _handle_crisis_on_earth_x_order_error(episode_list, shows_in_list):
     if ARROW in episode_indices and SUPERGIRL in episode_indices:
         arrow_index = episode_indices[ARROW]
         supergirl_index = episode_indices[SUPERGIRL]
-        indices = sorted([arrow_index, supergirl_index])
+        first_index, second_index = sorted([arrow_index, supergirl_index])
 
-        episode_list[supergirl_index], episode_list[arrow_index] = episode_list[indices[0]], episode_list[indices[1]]
+        episode_list[supergirl_index], episode_list[arrow_index] = episode_list[first_index], episode_list[second_index]  # noqa: E501
 
     if FLASH in episode_indices and LEGENDS_OF_TOMORROW in episode_indices:
         flash_index = episode_indices[FLASH]
         legends_index = episode_indices[LEGENDS_OF_TOMORROW]
-        indices = sorted([flash_index, legends_index])
+        first_index, second_index = sorted([flash_index, legends_index])
 
-        episode_list[flash_index], episode_list[legends_index] = episode_list[indices[0]], episode_list[indices[1]]
+        episode_list[flash_index], episode_list[legends_index] = episode_list[first_index], episode_list[second_index]  # noqa: E501
 
 
 def _handle_john_con_noir_episode(episode_list):

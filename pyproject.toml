@@ -6,7 +6,6 @@ authors = ["Jethro Muller"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-Flask = "^1.0"
 beautifulsoup4 = "^4.7"
 certifi = "^2019.3"
 cssmin = "^0.2.0"
@@ -22,6 +21,9 @@ webassets = "^0.12.1"
 quart = "^0.10.0"
 quart-minify = "^0.1.0"
 quart-compress = "^0.1.0"
+feedgen = "^0.7.0"
+flake8 = "^3.7"
+flake8-quotes = "^2.1"
 
 [tool.poetry.dev-dependencies]
 
