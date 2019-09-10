@@ -130,12 +130,12 @@ def _handle_air_time_error(episode_list):
                   'Fall 2017': [(FLASH, LEGENDS_OF_TOMORROW)],
                   'Midseason 2018': [(FLASH, BLACK_LIGHTNING)],
                   'Fall 2018': [(ARROW, LEGENDS_OF_TOMORROW),
-                                 (FLASH, BLACK_LIGHTNING),
-                                 (SUPERGIRL, BLACK_LIGHTNING)],
+                                (FLASH, BLACK_LIGHTNING),
+                                (SUPERGIRL, BLACK_LIGHTNING)],
                   'Midseason 2019': [(ARROW, BLACK_LIGHTNING),
-                                      (LEGENDS_OF_TOMORROW, ARROW)],
+                                    (LEGENDS_OF_TOMORROW, ARROW)],
                   'Fall 2019': [(BATWOMAN, SUPERGIRL),
-                                 (FLASH, ARROW)]}
+                                (FLASH, ARROW)]}
 
     for i in range(len(episode_list)-1):
         curr_ep = episode_list[i]
@@ -151,7 +151,7 @@ def _handle_air_time_error(episode_list):
             continue
 
         pairs = air_orders[air_season]
-        for series_1,series_2 in pairs:
+        for series_1, series_2 in pairs:
             if curr_ep['series'].upper() == series_2 and next_ep['series'].upper() == series_1:
                 _swap_episode_rows(episode_list, i, i+1)
 
