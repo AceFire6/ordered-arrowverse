@@ -133,7 +133,7 @@ def _handle_air_time_error(episode_list):
                                 (FLASH, BLACK_LIGHTNING),
                                 (SUPERGIRL, BLACK_LIGHTNING)],
                   'Midseason 2019': [(ARROW, BLACK_LIGHTNING),
-                                    (LEGENDS_OF_TOMORROW, ARROW)],
+                                     (LEGENDS_OF_TOMORROW, ARROW)],
                   'Fall 2019': [(BATWOMAN, SUPERGIRL),
                                 (FLASH, ARROW)]}
 
