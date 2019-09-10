@@ -120,38 +120,39 @@ def _handle_screening_day_error(episode_list):
     if one_is_arrow and one_is_flash and both_are_episode_17:
         _swap_episode_rows(episode_list, 78, 79)
 
+
 def _handle_air_time_error(episode_list):
     # handles when two episodes air on the same day
     seasons = ['', 'Midseason', 'Midseason', 'Midseason', 'Midseason', 'Midseason', 'Midseason',
                'Summer', 'Summer', 'Summer', 'Fall', 'Fall', 'Fall']
-    air_orders = {'Fall 2016' : [(LEGENDS_OF_TOMORROW, VIXEN)],
-                  'Midseason 2017' : [(FLASH, LEGENDS_OF_TOMORROW)],
-                  'Fall 2017' : [(FLASH, LEGENDS_OF_TOMORROW)],
-                  'Midseason 2018' : [(FLASH, BLACK_LIGHTNING)],
-                  'Fall 2018' : [(ARROW, LEGENDS_OF_TOMORROW),
+    air_orders = {'Fall 2016': [(LEGENDS_OF_TOMORROW, VIXEN)],
+                  'Midseason 2017': [(FLASH, LEGENDS_OF_TOMORROW)],
+                  'Fall 2017': [(FLASH, LEGENDS_OF_TOMORROW)],
+                  'Midseason 2018': [(FLASH, BLACK_LIGHTNING)],
+                  'Fall 2018': [(ARROW, LEGENDS_OF_TOMORROW),
                                  (FLASH, BLACK_LIGHTNING),
                                  (SUPERGIRL, BLACK_LIGHTNING)],
-                  'Midseason 2019' : [(ARROW, BLACK_LIGHTNING),
+                  'Midseason 2019': [(ARROW, BLACK_LIGHTNING),
                                       (LEGENDS_OF_TOMORROW, ARROW)],
-                  'Fall 2019' : [(BATWOMAN, SUPERGIRL),
+                  'Fall 2019': [(BATWOMAN, SUPERGIRL),
                                  (FLASH, ARROW)]}
 
     for i in range(len(episode_list)-1):
         curr_ep = episode_list[i]
         next_ep = episode_list[i+1]
 
-        if not curr_ep['air_date'] == next_ep['air_date']:
+        if curr_ep['air_date'] != next_ep['air_date']:
             continue
 
         air_date = curr_ep['air_date']
-        air_season = seasons[air_date.month] + ' ' + str(air_date.year)
+        air_season = f'{seasons[air_date.month]} {air_date.year}'
 
-        if not air_season in air_orders.keys(): # handle summer releases
+        if air_season not in air_orders.keys():  # handle summer releases
             continue
 
         pairs = air_orders[air_season]
-        for pair in pairs:
-            if curr_ep['series'].upper() == pair[1] and next_ep['series'].upper() == pair[0]:
+        for series_1,series_2 in pairs:
+            if curr_ep['series'].upper() == series_2 and next_ep['series'].upper() == series_1:
                 _swap_episode_rows(episode_list, i, i+1)
 
 
