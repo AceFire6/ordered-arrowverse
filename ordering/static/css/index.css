@@ -16,12 +16,6 @@ a.btn {
     color: #FFF;
 }
 
-#footer-buttons {
-    width: 20%;
-    margin-left:auto;
-    margin-right:auto;
-}
-
 .arrow {
     background-color: #006200;
 }
@@ -101,4 +95,12 @@ a.btn {
 
 .no-color:hover {
     background-color: transparent;
+}
+
+nav.navbar {
+    margin-bottom: 1rem;
+}
+
+table.table {
+    margin: 0;
 }

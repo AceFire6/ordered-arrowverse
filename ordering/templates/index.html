@@ -7,225 +7,207 @@
     <meta name="description" content="Arrowverse episode order tracker. Never spoil a crossover episode again!">
 
     <title>Arrowverse Episode Order</title>
-    <link href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}"
-          rel="alternate"
-          title="Recent Episodes"
-          type="application/atom+xml">
+    <link href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}" rel="alternate" title="Recent Episodes"
+        type="application/atom+xml">
     <link type="image/png" href="{{ url_for('static', filename='favicon.png') }}" rel="icon">
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 
 <body>
-<main class="container">
-    <div class="row">
-        <div class="col">
-            <h1>Arrowverse Episode Order</h1>
-        </div>
-        <div class="col-2">
-            <a href="https://github.com/AceFire6/ordered-arrowverse"
-               class="btn btn-outline-secondary"
-               target="_blank">
-                Project on Github
-            </a>
-        </div>
-        <div>
-            <a href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}"
-               class="btn btn-outline-secondary"
-               target="_blank">
-                RSS Feed
-                <img src="https://www.mozilla.org/media/img/trademarks/feed-icon-14x14.2168a573d0d4.png" rel="icon">
-            </a>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col">
-            <div class="row">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <span class="navbar-brand">Arrowverse Episode Order</span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <div class="col-11">
-                    <form action="{{ url_for('index') }}" id="filter-form" method="get" class="row form-inline">
-                        <div class="col-7">
-                            <input name="newest_first" value="{{ newest_first }}" title="Newest First" type="hidden">
-                            <select id="show-filter-select"
-                                title="Filter options"
-                                name="hide_show"
-                                multiple="multiple"
-                                class="form-control" >
-                                {% for show_id, show_data in show_list.items() %}
-                                    <option value="{{ show_id }}" {% if show_id in hidden_show_list %}selected{% endif %}>
-                                        {{ show_data.name }}
-                                    </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="col">
-                            <div class="row">
-                                <div class="col-6">
-                                    <input title="From Date"
-                                           class="form-control date-picker"
-                                           type="text"
-                                           name="from_date"
-                                           id="from-date"
-                                           {% if from_date %}value="{{ from_date }}"{% endif %}
-                                           placeholder="From Date">
-                                </div>
-                                <div class="col-6">
-                                    <input title="To Date"
-                                           class="form-control date-picker"
-                                           type="text"
-                                           name="to_date"
-                                           id="to-date"
-                                           {% if to_date %}value="{{ to_date }}"{% endif %}
-                                           placeholder="To Date">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a href="https://github.com/AceFire6/ordered-arrowverse" class="nav-link" target="_blank">
+                            Project on Github
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}" class="nav-link"
+                            target="_blank">
+                            RSS Feed
+                            <img src="https://www.mozilla.org/media/img/trademarks/feed-icon-14x14.2168a573d0d4.png"
+                                rel="icon">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="container">
+            <form action="{{ url_for('index') }}" id="filter-form" method="get" class="row form-inline row">
+                <div class="col-sm-6">
+                    <input name="newest_first" value="{{ newest_first }}" title="Newest First" type="hidden">
+                    <select id="show-filter-select" title="Filter options" name="hide_show" multiple="multiple"
+                        class="form-control">
+                        {% for show_id, show_data in show_list.items() %}
+                        <option value="{{ show_id }}" {% if show_id in hidden_show_list %}selected{% endif %}>
+                            {{ show_data.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
                 </div>
-
-                <button type="submit" id="filter-button" class="btn btn-outline-secondary" form="filter-form">
-                    Filter
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <hr>
-
-    <div class="row">
-        <div class="col">
-            <div class="float-right">
-                <a href="#end" id="top"><small>END</small></a> |
-                    <a href="{{ url_for('index', newest_first=not newest_first, hide_show=hidden_show_list) }}">
-                        {% if newest_first %}
-                            <small>OLDEST FIRST</small>
-                        {% else %}
-                            <small>NEWEST FIRST</small>
-                        {% endif %}
-                    </a>
-                | <a href="#" id="no-color"><small class="text">DISABLE COLOR</small></a>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <table class="table table-bordered" id="episode-list">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Series</th>
-                    <th>Episode</th>
-                    <th>Name</th>
-                    <th>Original Air Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for row in table_content %}
-                    <tr class='episode {{ series_map[row.series].id }}' data-href="{{ row.episode_name | episode_url(row.series) }}">
-                    <td>{{ row.row_number }}</td>
-                    <td>{{ row.series }}</td>
-                    <td>{{ row.episode_id }}</td>
-                    <td>{{ row.episode_name }}</td>
-                    <td>{{ row.air_date }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <a href="#top" id="end">BACK TO TOP</a>
-    <div id="footer-buttons">
-        <button type="button"
-                class="btn btn-outline-secondary btn-sm"
-                data-toggle="modal"
-                data-target="#contact">
-            <small>Contact Me</small>
-        </button>
-        <button type="button"
-                class="btn btn-outline-secondary btn-sm"
-                data-toggle="modal"
-                data-target="#acknowledgements">
-            <small>Acknowledgements</small>
-        </button>
-    </div>
-
-    <div class="modal" tabindex="-1" role="dialog" id="acknowledgements">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Acknowledgements</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                <div class="col-sm-6">
+                    <input title="From Date" class="form-control date-picker" type="text" name="from_date"
+                        id="from-date" {% if from_date %}value="{{ from_date }}" {% endif %} placeholder="From Date">
+                    <input title="To Date" class="form-control date-picker" type="text" name="to_date" id="to-date"
+                        {% if to_date %}value="{{ to_date }}" {% endif %} placeholder="To Date">
+                    <button type="submit" id="filter-button" class="btn btn-outline-secondary" form="filter-form">
+                        Filter
                     </button>
                 </div>
-                <div class="modal-body">
-                    Content is drawn from:
-                    <ul>
-                        {% for show_id, show_data in show_list.items() %}
+            </form>
+        </div>
+        <div class="container">
+            <div class="row row text-center text-sm-right">
+                <div class="col-sm-12">
+                    <a href="#end" id="top"><small>END</small></a> |
+                    <a href="{{ url_for('index', newest_first=not newest_first, hide_show=hidden_show_list) }}">
+                        {% if newest_first %}
+                        <small>OLDEST FIRST</small>
+                        {% else %}
+                        <small>NEWEST FIRST</small>
+                        {% endif %}
+                    </a>
+                    | <a href="#" id="no-color"><small class="text">DISABLE COLOR</small></a>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-bordered col-sm-12" id="episode-list">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Series</th>
+                                <th>Episode</th>
+                                <th>Name</th>
+                                <th>Original Air Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in table_content %}
+                            <tr class='episode {{ series_map[row.series].id }}'
+                                data-href="{{ row.episode_name | episode_url(row.series) }}">
+                                <td>{{ row.row_number }}</td>
+                                <td>{{ row.series }}</td>
+                                <td>{{ row.episode_id }}</td>
+                                <td>{{ row.episode_name }}</td>
+                                <td>{{ row.air_date }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <a href="#top" id="end">BACK TO TOP</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <div id="footer-buttons">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal"
+                            data-target="#contact">
+                            <small>Contact Me</small>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal"
+                            data-target="#acknowledgements">
+                            <small>Acknowledgements</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" tabindex="-1" role="dialog" id="acknowledgements">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Acknowledgements</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Content is drawn from:
+                        <ul>
+                            {% for show_id, show_data in show_list.items() %}
                             <li>
-                                <a href="{{ show_data.root }}{{ show_data.url }}"
-                                   target="_blank"
-                                   rel="noopener">
+                                <a href="{{ show_data.root }}{{ show_data.url }}" target="_blank" rel="noopener">
                                     {{ show_data.url|replace("_", " ") }}
                                 </a>
                             </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
-                        Close
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" tabindex="-1" role="dialog" id="contact">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Contact</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    <p>Made by Jethro Muller</p>
-                    <p>To contact me, <a href="mailto:arrowverse.info@gmail.com" target="_blank">email me</a>.</p>
-                    <p>Or, view my other projects on <a href="http://www.github.com/AceFire6" target="_blank">Github</a>.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
-                        Close
-                    </button>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/cookie.js') }}"></script>
-    {% include 'analytics.html' %}
-</main>
+        <div class="modal" tabindex="-1" role="dialog" id="contact">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Contact</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>Made by Jethro Muller</p>
+                        <p>To contact me, <a href="mailto:arrowverse.info@gmail.com" target="_blank">email me</a>.
+                        </p>
+                        <p>Or, view my other projects on <a href="http://www.github.com/AceFire6"
+                                target="_blank">Github</a>.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+            <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+            <script type="text/javascript"
+                src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+            <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/cookie.js') }}"></script>
+            {% include 'analytics.html' %}
+        </div>
+    </main>
 </body>
+
 </html>
