@@ -7,11 +7,15 @@
     <meta name="description" content="Arrowverse episode order tracker. Never spoil a crossover episode again!">
 
     <title>Arrowverse Episode Order</title>
-    <link href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}" rel="alternate" title="Recent Episodes"
-        type="application/atom+xml">
+    <link href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}" 
+          rel="alternate" 
+          title="Recent Episodes"
+          type="application/atom+xml">
     <link type="image/png" href="{{ url_for('static', filename='favicon.png') }}" rel="icon">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" 
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+          crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
@@ -21,21 +25,29 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <span class="navbar-brand">Arrowverse Episode Order</span>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" 
+                    type="button" 
+                    data-toggle="collapse" 
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" 
+                    aria-expanded="false" 
+                    aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a href="https://github.com/AceFire6/ordered-arrowverse" class="nav-link" target="_blank">
+                        <a href="https://github.com/AceFire6/ordered-arrowverse" 
+                           class="nav-link" 
+                           target="_blank">
                             Project on Github
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}" class="nav-link"
-                            target="_blank">
+                        <a href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}" 
+                           class="nav-link"
+                           target="_blank">
                             RSS Feed
                             <img src="https://www.mozilla.org/media/img/trademarks/feed-icon-14x14.2168a573d0d4.png"
                                 rel="icon">
@@ -50,22 +62,38 @@
             <form action="{{ url_for('index') }}" id="filter-form" method="get" class="row form-inline row">
                 <div class="col-sm-6">
                     <input name="newest_first" value="{{ newest_first }}" title="Newest First" type="hidden">
-                    <select id="show-filter-select" title="Filter options" name="hide_show" multiple="multiple"
-                        class="form-control">
-                        {% for show_id, show_data in show_list.items() %}
-                        <option value="{{ show_id }}" {% if show_id in hidden_show_list %}selected{% endif %}>
-                            {{ show_data.name }}
-                        </option>
-                        {% endfor %}
+                    <select id="show-filter-select" 
+                            title="Filter options" 
+                            name="hide_show" 
+                            multiple="multiple"
+                            class="form-control">
+                            {% for show_id, show_data in show_list.items() %}
+                            <option value="{{ show_id }}" {% if show_id in hidden_show_list %}selected{% endif %}>
+                                {{ show_data.name }}
+                            </option>
+                            {% endfor %}
                     </select>
                 </div>
                 <div class="col-sm-6">
-                    <input title="From Date" class="form-control date-picker" type="text" name="from_date"
-                        id="from-date" {% if from_date %}value="{{ from_date }}" {% endif %} placeholder="From Date">
-                    <input title="To Date" class="form-control date-picker" type="text" name="to_date" id="to-date"
-                        {% if to_date %}value="{{ to_date }}" {% endif %} placeholder="To Date">
-                    <button type="submit" id="filter-button" class="btn btn-outline-secondary" form="filter-form">
-                        Filter
+                    <input title="From Date" 
+                           class="form-control date-picker" 
+                           type="text" 
+                           name="from_date"
+                           id="from-date" 
+                           {% if from_date %}value="{{ from_date }}" {% endif %} 
+                           placeholder="From Date">
+                    <input title="To Date" 
+                           class="form-control date-picker" 
+                           type="text" 
+                           name="to_date" 
+                           id="to-date"
+                           {% if to_date %}value="{{ to_date }}" {% endif %} 
+                           placeholder="To Date">
+                    <button type="submit" 
+                            id="filter-button" 
+                            class="btn btn-outline-secondary" 
+                            form="filter-form">
+                            Filter
                     </button>
                 </div>
             </form>
@@ -209,5 +237,4 @@
         </div>
     </main>
 </body>
-
 </html>
