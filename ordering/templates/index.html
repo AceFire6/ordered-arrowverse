@@ -8,7 +8,7 @@
 
     <title>Arrowverse Episode Order</title>
     <link href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}"
-          rel="alternate" 
+          rel="alternate"
           title="Recent Episodes"
           type="application/atom+xml">
     <link type="image/png" href="{{ url_for('static', filename='favicon.png') }}" rel="icon">
@@ -178,8 +178,8 @@
                         <ul>
                             {% for show_id, show_data in show_list.items() %}
                             <li>
-                                <a href="{{ show_data.root }}{{ show_data.url }}" 
-                                   target="_blank" 
+                                <a href="{{ show_data.root }}{{ show_data.url }}"
+                                   target="_blank"
                                    rel="noopener">
                                     {{ show_data.url|replace("_", " ") }}
                                 </a>
