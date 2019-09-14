@@ -7,14 +7,14 @@
     <meta name="description" content="Arrowverse episode order tracker. Never spoil a crossover episode again!">
 
     <title>Arrowverse Episode Order</title>
-    <link href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}" 
+    <link href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}"
           rel="alternate" 
           title="Recent Episodes"
           type="application/atom+xml">
     <link type="image/png" href="{{ url_for('static', filename='favicon.png') }}" rel="icon">
-    <link rel="stylesheet" 
+    <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
@@ -104,9 +104,9 @@
                     <a href="#end" id="top"><small>END</small></a> |
                     <a href="{{ url_for('index', newest_first=not newest_first, hide_show=hidden_show_list) }}">
                         {% if newest_first %}
-                        <small>OLDEST FIRST</small>
+                            <small>OLDEST FIRST</small>
                         {% else %}
-                        <small>NEWEST FIRST</small>
+                            <small>NEWEST FIRST</small>
                         {% endif %}
                     </a>
                     | <a href="#" id="no-color"><small class="text">DISABLE COLOR</small></a>
@@ -178,7 +178,9 @@
                         <ul>
                             {% for show_id, show_data in show_list.items() %}
                             <li>
-                                <a href="{{ show_data.root }}{{ show_data.url }}" target="_blank" rel="noopener">
+                                <a href="{{ show_data.root }}{{ show_data.url }}" 
+                                   target="_blank" 
+                                   rel="noopener">
                                     {{ show_data.url|replace("_", " ") }}
                                 </a>
                             </li>
