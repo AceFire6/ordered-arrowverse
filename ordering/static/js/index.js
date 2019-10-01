@@ -20,6 +20,15 @@
         Cookies.set('colour', '1');
     };
 
+    var darkModeToggle = function(){
+        $("nav").toggleClass("bg-light")
+            .toggleClass("navbar-light")
+            .toggleClass("bg-dark")
+            .toggleClass("navbar-dark");
+        $("body").toggleClass("dark-mode");
+        $("a").toggleClass("dark-mode");
+    }
+
     var registerListeners = function() {
         $('.episode').click(openWiki);
 
@@ -42,6 +51,10 @@
             }
         }).on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('YYYY-MM-DD'));
+        });
+
+        $('#dark-mode').click(function() {
+            darkModeToggle();
         });
     };
 

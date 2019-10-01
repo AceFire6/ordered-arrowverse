@@ -1,3 +1,11 @@
+body.dark-mode {
+    background: #000;
+}
+
+a.dark-mode {
+    color: #fff;
+}
+
 a.btn {
     display:inline;
 }
