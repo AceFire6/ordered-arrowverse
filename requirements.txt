@@ -9,7 +9,7 @@ cssmin==0.2.0
 entrypoints==0.3
 feedgen==0.8.0
 flake8==3.7.9
-flake8-quotes==2.1.0
+flake8-quotes==2.1.1
 Flask==1.1.1
 Flask-Assets==0.12
 Flask-Caching==1.7.2
