@@ -1,5 +1,5 @@
 aiofiles==0.4.0
-beautifulsoup4==4.8.0
+beautifulsoup4==4.8.1
 blinker==1.4
 Brotli==1.0.7
 certifi==2019.9.11
@@ -18,11 +18,11 @@ h11==0.9.0
 h2==3.1.1
 hpack==3.0.0
 htmlmin==0.1.12
-Hypercorn==0.8.4
+Hypercorn==0.9.0
 hyperframe==5.2.0
 idna==2.8
 itsdangerous==1.1.0
-Jinja2==2.10.1
+Jinja2==2.10.3
 jsmin==2.2.2
 lesscpy==0.13.0
 lxml==4.4.1
@@ -37,7 +37,7 @@ python-dateutil==2.8.0
 Quart==0.10.0
 quart-compress==0.1.0
 quart-minify==0.1.1
-redis==3.3.8
+redis==3.3.11
 requests==2.22.0
 six==1.12.0
 sortedcontainers==2.1.0
@@ -45,7 +45,7 @@ soupsieve==1.9.4
 toml==0.10.0
 typing==3.7.4.1
 typing-extensions==3.7.4.1
-urllib3==1.25.6
+urllib3==1.25.7
 webassets==0.12.1
 Werkzeug==0.16.0
 wsproto==0.15.0
