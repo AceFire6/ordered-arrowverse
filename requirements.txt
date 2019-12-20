@@ -46,6 +46,6 @@ toml==0.10.0
 typing==3.7.4.1
 typing-extensions==3.7.4.1
 urllib3==1.25.7
-webassets==0.12.1
+webassets==2.0
 Werkzeug==0.16.0
 wsproto==0.15.0
