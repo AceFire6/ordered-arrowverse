@@ -28,7 +28,7 @@ lesscpy==0.13.0
 lxml==4.4.1
 MarkupSafe==1.1.1
 mccabe==0.6.1
-multidict==4.5.2
+multidict==4.7.3
 ply==3.11
 priority==1.3.0
 pycodestyle==2.5.0
