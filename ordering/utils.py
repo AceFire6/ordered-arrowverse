@@ -47,9 +47,17 @@ def get_episode_list(series_soup, series):
         season += 1
 
         if not from_wikipedia:
+            table_text = table.getText()
+            # TODO: Kill this HOTFIX
+            if "Crisis on Infinite Earths: Part Five" in table_text:
+                table_text = table_text.replace(
+                    '68\n\n"Crisis on Infinite Earths: Part Five"',
+                    '68\n0\n"Crisis on Infinite Earths: Part Five"',
+                )
+
             table = [
                 row.strip().split('\n')
-                for row in table.getText().split('\n\n') if row.strip()
+                for row in table_text.split('\n\n') if row.strip()
             ]
         else:
             table_heading = table.find(name='tr', class_=None)
