@@ -34,7 +34,7 @@ priority==1.3.0
 pycodestyle==2.5.0
 pyflakes==2.1.1
 python-dateutil==2.8.1
-Quart==0.10.0
+Quart==0.11.2
 quart-compress==0.1.0
 quart-minify==0.1.1
 redis==3.3.11
