@@ -38,7 +38,7 @@ Quart==0.10.0
 quart-compress==0.1.0
 quart-minify==0.1.1
 redis==3.3.11
-requests==2.22.0
+requests==2.23.0
 six==1.13.0
 sortedcontainers==2.1.0
 soupsieve==1.9.5
