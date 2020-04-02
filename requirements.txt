@@ -44,7 +44,7 @@ sortedcontainers==2.1.0
 soupsieve==1.9.5
 toml==0.10.0
 typing==3.7.4.1
-typing-extensions==3.7.4.1
+typing-extensions==3.7.4.2
 urllib3==1.25.7
 webassets==0.12.1
 Werkzeug==0.16.0
