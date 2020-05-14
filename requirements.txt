@@ -42,7 +42,7 @@ requests==2.22.0
 six==1.13.0
 sortedcontainers==2.1.0
 soupsieve==1.9.5
-toml==0.10.0
+toml==0.10.1
 typing==3.7.4.1
 typing-extensions==3.7.4.1
 urllib3==1.25.7
