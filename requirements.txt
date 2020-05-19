@@ -25,7 +25,7 @@ itsdangerous==1.1.0
 Jinja2==2.10.3
 jsmin==2.2.2
 lesscpy==0.13.0
-lxml==4.4.1
+lxml==4.5.1
 MarkupSafe==1.1.1
 mccabe==0.6.1
 multidict==4.5.2
