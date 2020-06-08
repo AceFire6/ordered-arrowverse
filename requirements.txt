@@ -40,7 +40,7 @@ quart-minify==0.1.1
 redis==3.3.11
 requests==2.22.0
 six==1.13.0
-sortedcontainers==2.1.0
+sortedcontainers==2.2.2
 soupsieve==1.9.5
 toml==0.10.0
 typing==3.7.4.1
