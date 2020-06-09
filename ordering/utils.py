@@ -17,6 +17,7 @@ from .constants import (
     FLASH,
     FREEDOM_FIGHTERS,
     LEGENDS_OF_TOMORROW,
+    STARGIRL,
     SUPERGIRL,
     VIXEN,
     WIKIPEDIA,
@@ -61,13 +62,20 @@ def get_episode_list(series_soup, series):
             ]
         else:
             table_heading = table.find(name='tr', class_=None)
+            # NOTE: The split here is a fix for a reference in the Stargirl air date header
             table_headings = [
-                heading.getText().replace(' ', '').lower()
+                heading.getText().replace(' ', '').lower().split('\u200a', 1)[0]
                 for heading in table_heading.children
             ]
-            episode_num_index = table_headings.index('no.inseason')
+            if 'no.inseason' in table_headings:
+                episode_num_index = table_headings.index('no.inseason')
+            else:
+                episode_num_index = 0
             title_index = table_headings.index('title')
-            air_date_index = table_headings.index('originalairdate')
+            if 'originalairdate' in table_headings:
+                air_date_index = table_headings.index('originalairdate')
+            if 'originalreleasedate' in table_headings:
+                air_date_index = table_headings.index('originalreleasedate')
 
             wikipedia_row_unpacker = itemgetter(episode_num_index, title_index, air_date_index)
 

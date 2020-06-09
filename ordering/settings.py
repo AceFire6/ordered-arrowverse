@@ -18,6 +18,7 @@ CONSTANTINE_URL = 'List_of_Constantine_episodes'
 FLASH_URL = 'List_of_The_Flash_(The_CW)_episodes'
 FREEDOM_FIGHTERS_URL = 'List_of_Freedom_Fighters:_The_Ray_episodes'
 LEGENDS_URL = "List_of_DC's_Legends_of_Tomorrow_episodes"
+STARGIRL_URL = 'Stargirl_(TV_series)'
 SUPERGIRL_URL = 'List_of_Supergirl_episodes'
 VIXEN_URL = 'List_of_Vixen_episodes'
 BLACK_LIGHTNING_URL = 'List_of_Black_Lightning_episodes'
@@ -56,6 +57,12 @@ SHOWS = (
         'name': "DC's Legends of Tomorrow",
         'url': LEGENDS_URL,
         'root': FANDOM_ROOT
+    },
+    {
+        'id': 'stargirl',
+        'name': 'Stargirl',
+        'url': STARGIRL_URL,
+        'root': WIKIPEDIA_ROOT
     },
     {
         'id': 'supergirl',

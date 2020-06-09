@@ -48,6 +48,14 @@ a.btn {
     background-color: #002a2a;
 }
 
+.stargirl {
+    background-color: #12223A;
+}
+
+.stargirl:hover {
+    background-color: #120e3a;
+}
+
 .supergirl {
     background-color: #007196;
 }
