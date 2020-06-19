@@ -1,7 +1,7 @@
 from feedgen.entry import FeedEntry
 from feedgen.feed import FeedGenerator
 from quart import jsonify, make_response, render_template, request, url_for
-
+from datetime import date
 from . import app
 from .utils import _get_bool, _get_date, get_full_series_episode_list
 
@@ -14,6 +14,10 @@ async def index():
     hide_shows_list = request.args.getlist('hide_show')
     from_date = request.args.get('from_date', default=None, type=_get_date)
     to_date = request.args.get('to_date', default=None, type=_get_date)
+    to_today = request.args.get('to_today', default=None)
+
+    if to_today:
+        to_date = date.today()
 
     episode_list = get_full_series_episode_list(
         excluded_series=hide_shows_list,
@@ -28,6 +32,7 @@ async def index():
     context['hidden_show_list'] = hide_shows_list
     context['from_date'] = from_date
     context['to_date'] = to_date
+    context['to_today'] = to_today
 
     return await render_template('index.html', **context)
 

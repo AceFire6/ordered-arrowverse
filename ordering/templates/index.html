@@ -13,8 +13,8 @@
           type="application/atom+xml">
     <link type="image/png" href="{{ url_for('static', filename='favicon.png') }}" rel="icon">
     <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
@@ -71,7 +71,7 @@
     <main>
         <div class="container">
             <form action="{{ url_for('index') }}" id="filter-form" method="get" class="row form-inline row">
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     <input name="newest_first" value="{{ newest_first }}" title="Newest First" type="hidden">
                     <select id="show-filter-select" 
                             title="Filter options" 
@@ -85,21 +85,36 @@
                             {% endfor %}
                     </select>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-7 form-inline">
                     <input title="From Date" 
-                           class="form-control date-picker" 
+                           class="form-control date-picker mr-sm-2" 
                            type="text" 
                            name="from_date"
                            id="from-date" 
                            {% if from_date %}value="{{ from_date }}" {% endif %} 
                            placeholder="From Date">
                     <input title="To Date" 
-                           class="form-control date-picker" 
+                           class="form-control date-picker mr-sm-2" 
                            type="text" 
                            name="to_date" 
                            id="to-date"
-                           {% if to_date %}value="{{ to_date }}" {% endif %} 
+                           {% if to_date %}value="{{ to_date }}" {% endif %}
+                           {% if to_today %}disabled="true"{% endif %}
                            placeholder="To Date">
+                    <span
+                           class="form-check mr-sm-2"
+                    >
+                        <input
+                            title="To Today"
+                            class="form-check-input"
+                            type="checkbox"
+                            {% if to_today %}checked="true"{% endif %}
+                            name="to_today"
+                            id="to-today">
+                        <label class="form-check-label" for="to-today">
+                            To Today
+                        </label>
+                    </span>
                     <button type="submit" 
                             id="filter-button" 
                             class="btn btn-outline-secondary" 
@@ -113,7 +128,7 @@
             <div class="row row text-center text-sm-right">
                 <div class="col-sm-12">
                     <a href="#end" id="top"><small>END</small></a> |
-                    <a href="{{ url_for('index', newest_first=not newest_first, hide_show=hidden_show_list) }}">
+                    <a href="{{ url_for('index', newest_first=not newest_first, hide_show=hidden_show_list, to_today=to_today, to_date=to_date, from_date=from_date) }}">
                         {% if newest_first %}
                             <small>OLDEST FIRST</small>
                         {% else %}

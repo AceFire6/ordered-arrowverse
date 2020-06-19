@@ -20,8 +20,29 @@
         Cookies.set('colour', '1');
     };
 
+    var dateBeforeDisable = undefined;
+
     var registerListeners = function() {
         $('.episode').click(openWiki);
+
+        $('#to-today').change(
+            function(){
+                if ($(this).is(':checked')) {
+                    $('#to-date').prop( "disabled", true );
+                    dateBeforeDisable = $('#to-date').val();
+                    var now = new Date();
+
+                    var day = ("0" + now.getDate()).slice(-2);
+                    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+                    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+                    $('#to-date').val(today);
+                } else {
+                    $('#to-date').prop( "disabled", false );
+                    $('#to-date').val(dateBeforeDisable);
+                }
+            });
 
         $('#no-color').click(function() {
             if (Cookies.get('colour') === '1') {
