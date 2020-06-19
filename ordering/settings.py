@@ -23,6 +23,8 @@ BATWOMAN_URL = 'List_of_Batwoman_episodes'
 FANDOM_ROOT = 'http://arrow.fandom.com/wiki/'
 WIKIPEDIA_ROOT = 'https://en.wikipedia.org/wiki/'
 
+DB_URL = env('DB_URL', default='postgres://localhost:5432/arrowverse_db')
+
 SHOWS = (
     {
         'id': 'arrow',

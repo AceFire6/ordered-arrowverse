@@ -3,8 +3,10 @@ from quart import Quart
 from flask_caching import Cache
 from quart_compress import Compress
 from quart_minify import Minify
+from tortoise.contrib.quart import register_tortoise
 from webassets import Bundle
 
+from .settings import DB_URL
 from .url_converters import ListConverter
 
 app = Quart(__name__)
@@ -30,3 +32,10 @@ app.url_map.converters['list'] = ListConverter
 
 from . import filters
 from . import views
+
+register_tortoise(
+    app,
+    db_url=DB_URL,
+    modules={'models': ['models']},
+    generate_schemas=False,
+)
