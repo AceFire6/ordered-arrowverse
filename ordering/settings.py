@@ -3,7 +3,7 @@ from environs import Env
 
 env = Env()
 
-DEBUG = env.bool('FLASK_DEBUG', default=False)
+DEBUG = env.bool('QUART_DEBUG', default=False)
 
 CACHE_TYPE = 'redis' if not DEBUG else 'null'
 CACHE_REDIS_URL = env('REDIS_URL', 'redis://localhost:6379')
