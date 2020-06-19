@@ -82,7 +82,7 @@ lxml = "*"
 python-dateutil = "*"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "the modular source code checker: pep8 pyflakes and co"
 name = "flake8"
 optional = false
@@ -99,7 +99,7 @@ python = "<3.8"
 version = "*"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Flake8 lint for quotes."
 name = "flake8-quotes"
 optional = false
@@ -243,7 +243,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "2.9"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Read metadata from Python packages"
 marker = "python_version < \"3.8\""
 name = "importlib-metadata"
@@ -294,7 +294,7 @@ description = "Python LESS compiler"
 name = "lesscpy"
 optional = false
 python-versions = "*"
-version = "0.13.0"
+version = "0.14.0"
 
 [package.dependencies]
 ply = "*"
@@ -323,20 +323,12 @@ python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 version = "1.1.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "McCabe checker, plugin for flake8"
 name = "mccabe"
 optional = false
 python-versions = "*"
 version = "0.6.1"
-
-[[package]]
-category = "main"
-description = "multidict implementation"
-name = "multidict"
-optional = false
-python-versions = ">=3.5"
-version = "4.7.6"
 
 [[package]]
 category = "main"
@@ -355,7 +347,7 @@ python-versions = "*"
 version = "1.3.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Python style guide checker"
 name = "pycodestyle"
 optional = false
@@ -363,7 +355,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "2.6.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "passive checker of Python programs"
 name = "pyflakes"
 optional = false
@@ -387,7 +379,7 @@ description = "A Python ASGI web microframework with the same API as Flask"
 name = "quart"
 optional = false
 python-versions = ">=3.7.0"
-version = "0.10.0"
+version = "0.12.0"
 
 [package.dependencies]
 aiofiles = "*"
@@ -396,8 +388,8 @@ click = "*"
 hypercorn = ">=0.7.0"
 itsdangerous = "*"
 jinja2 = "*"
-multidict = "*"
-sortedcontainers = "*"
+toml = "*"
+werkzeug = ">=1.0.0"
 
 [package.extras]
 dotenv = ["python-dotenv"]
@@ -408,11 +400,11 @@ description = "Compress responses in your Quart app with gzip or brotli."
 name = "quart-compress"
 optional = false
 python-versions = "*"
-version = "0.1.0"
+version = "0.2.1"
 
 [package.dependencies]
-Brotli = "1.0.7"
-Quart = "0.10.0"
+Brotli = ">=1.0.7"
+Quart = ">=0.10.0"
 
 [[package]]
 category = "main"
@@ -420,13 +412,13 @@ description = "Quart extension to minify HTML, CSS, JS, and less"
 name = "quart-minify"
 optional = false
 python-versions = ">=3.7"
-version = "0.1.1"
+version = "0.2.0"
 
 [package.dependencies]
 htmlmin = ">=0.1.12,<0.2.0"
 jsmin = ">=2.2,<2.3"
-lesscpy = ">=0.13.0,<0.14.0"
-quart = ">=0.10.0,<0.11.0"
+lesscpy = ">=0.14.0,<0.15.0"
+quart = ">=0.12.0,<0.13.0"
 
 [[package]]
 category = "main"
@@ -464,14 +456,6 @@ name = "six"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 version = "1.15.0"
-
-[[package]]
-category = "main"
-description = "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set"
-name = "sortedcontainers"
-optional = false
-python-versions = "*"
-version = "2.2.2"
 
 [[package]]
 category = "main"
@@ -542,7 +526,7 @@ version = "0.15.0"
 h11 = ">=0.8.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 marker = "python_version < \"3.8\""
 name = "zipp"
@@ -555,7 +539,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "3d40202a1b6bcb40764579418256828e435781d723ffb4162b18cf601d8efb2c"
+content-hash = "e1ba5f015234a1be05bbba3f8159bed7511c235a5841f6e5c82a0d66f00fadcd"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -690,8 +674,8 @@ jsmin = [
     {file = "jsmin-2.2.2.tar.gz", hash = "sha256:b6df99b2cd1c75d9d342e4335b535789b8da9107ec748212706ef7bbe5c2553b"},
 ]
 lesscpy = [
-    {file = "lesscpy-0.13.0-py2.py3-none-any.whl", hash = "sha256:72a38c751681e91e258825c1e826c38508c183f48b2e420e1a65d01eaa04bac3"},
-    {file = "lesscpy-0.13.0.tar.gz", hash = "sha256:f3c6d0b544c5bcdadcd3d8319feccb4128d06676d4117c6c9396ab39c25372ad"},
+    {file = "lesscpy-0.14.0-py2.py3-none-any.whl", hash = "sha256:b0f2f853ee1dfb0891b147b57028057d5389510e079581e7b533d07dc0d95d3e"},
+    {file = "lesscpy-0.14.0.tar.gz", hash = "sha256:7b664f60818a16afa8cc9f1dd6d9b17f944e0ce94e50787d76f81bc7a8648cce"},
 ]
 lxml = [
     {file = "lxml-4.5.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:ee2be8b8f72a2772e72ab926a3bccebf47bb727bda41ae070dc91d1fb759b726"},
@@ -761,25 +745,6 @@ mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
-multidict = [
-    {file = "multidict-4.7.6-cp35-cp35m-macosx_10_14_x86_64.whl", hash = "sha256:275ca32383bc5d1894b6975bb4ca6a7ff16ab76fa622967625baeebcf8079000"},
-    {file = "multidict-4.7.6-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:1ece5a3369835c20ed57adadc663400b5525904e53bae59ec854a5d36b39b21a"},
-    {file = "multidict-4.7.6-cp35-cp35m-win32.whl", hash = "sha256:5141c13374e6b25fe6bf092052ab55c0c03d21bd66c94a0e3ae371d3e4d865a5"},
-    {file = "multidict-4.7.6-cp35-cp35m-win_amd64.whl", hash = "sha256:9456e90649005ad40558f4cf51dbb842e32807df75146c6d940b6f5abb4a78f3"},
-    {file = "multidict-4.7.6-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:e0d072ae0f2a179c375f67e3da300b47e1a83293c554450b29c900e50afaae87"},
-    {file = "multidict-4.7.6-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:3750f2205b800aac4bb03b5ae48025a64e474d2c6cc79547988ba1d4122a09e2"},
-    {file = "multidict-4.7.6-cp36-cp36m-win32.whl", hash = "sha256:f07acae137b71af3bb548bd8da720956a3bc9f9a0b87733e0899226a2317aeb7"},
-    {file = "multidict-4.7.6-cp36-cp36m-win_amd64.whl", hash = "sha256:6513728873f4326999429a8b00fc7ceddb2509b01d5fd3f3be7881a257b8d463"},
-    {file = "multidict-4.7.6-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:feed85993dbdb1dbc29102f50bca65bdc68f2c0c8d352468c25b54874f23c39d"},
-    {file = "multidict-4.7.6-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:fcfbb44c59af3f8ea984de67ec7c306f618a3ec771c2843804069917a8f2e255"},
-    {file = "multidict-4.7.6-cp37-cp37m-win32.whl", hash = "sha256:4538273208e7294b2659b1602490f4ed3ab1c8cf9dbdd817e0e9db8e64be2507"},
-    {file = "multidict-4.7.6-cp37-cp37m-win_amd64.whl", hash = "sha256:d14842362ed4cf63751648e7672f7174c9818459d169231d03c56e84daf90b7c"},
-    {file = "multidict-4.7.6-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:c026fe9a05130e44157b98fea3ab12969e5b60691a276150db9eda71710cd10b"},
-    {file = "multidict-4.7.6-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:51a4d210404ac61d32dada00a50ea7ba412e6ea945bbe992e4d7a595276d2ec7"},
-    {file = "multidict-4.7.6-cp38-cp38-win32.whl", hash = "sha256:5cf311a0f5ef80fe73e4f4c0f0998ec08f954a6ec72b746f3c179e37de1d210d"},
-    {file = "multidict-4.7.6-cp38-cp38-win_amd64.whl", hash = "sha256:7388d2ef3c55a8ba80da62ecfafa06a1c097c18032a501ffd4cabbc52d7f2b19"},
-    {file = "multidict-4.7.6.tar.gz", hash = "sha256:fbb77a75e529021e7c4a8d4e823d88ef4d23674a202be4f5addffc72cbb91430"},
-]
 ply = [
     {file = "ply-3.11-py2.py3-none-any.whl", hash = "sha256:096f9b8350b65ebd2fd1346b12452efe5b9607f7482813ffca50c22722a807ce"},
     {file = "ply-3.11.tar.gz", hash = "sha256:00c7c1aaa88358b9c765b6d3000c6eec0ba42abca5351b095321aef446081da3"},
@@ -801,16 +766,16 @@ python-dateutil = [
     {file = "python_dateutil-2.8.1-py2.py3-none-any.whl", hash = "sha256:75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a"},
 ]
 quart = [
-    {file = "Quart-0.10.0-py3-none-any.whl", hash = "sha256:243db3bcd6698d1d6adb966e2ed5aca5d4d4648345abcaa3f79f14de76fb33be"},
-    {file = "Quart-0.10.0.tar.gz", hash = "sha256:d329f2c392031f87c32ff2dcd6e11dc1fbf94c7449c3afe2d7541326ae390703"},
+    {file = "Quart-0.12.0-py3-none-any.whl", hash = "sha256:f706e6eff0ef756b88d9965359f7445c9c2773551dca822deb8c018c58c00902"},
+    {file = "Quart-0.12.0.tar.gz", hash = "sha256:99a65bc90d0e1260c9cc9a7dd0b8523eb6cd9f4ec146e771e98a55ee180ae6c2"},
 ]
 quart-compress = [
-    {file = "quart-compress-0.1.0.tar.gz", hash = "sha256:7eb6f728aeb3fcecd766a49605c58eaa8285106c44a09642a433c19654a3299c"},
-    {file = "quart_compress-0.1.0-py3-none-any.whl", hash = "sha256:a9b8c83bbc3727377a089b40fe9cd02698245ab56b78204ce23d430a6a33d72b"},
+    {file = "quart-compress-0.2.1.tar.gz", hash = "sha256:63af5e6370aa7850fb219d22e1db89965aeb13b8f27bc83e7f9a44118faa3c54"},
+    {file = "quart_compress-0.2.1-py3-none-any.whl", hash = "sha256:41cd0cc8d26905a45025ddda7022461a71b9d1d950b21b006dc106a1c41c75ef"},
 ]
 quart-minify = [
-    {file = "quart-minify-0.1.1.tar.gz", hash = "sha256:cdf49859cb70a1325b66e7e3daaca2a017d674f84b8f3f4eefcc5a9f47bb0567"},
-    {file = "quart_minify-0.1.1-py3-none-any.whl", hash = "sha256:b5b3cfec958113684058df15c61cbabb7c380e1b66a58331ffe45fc38000e5d7"},
+    {file = "quart-minify-0.2.0.tar.gz", hash = "sha256:afc16b917fffbe05432daf5dc6caf7fb79b33815ffe09c5d44b3144a1898a1cc"},
+    {file = "quart_minify-0.2.0-py3-none-any.whl", hash = "sha256:218ec50fe3a09529c1c0621f6d77dd3d8c7261ea1143995ddb2b18d0795eb400"},
 ]
 redis = [
     {file = "redis-3.5.3-py2.py3-none-any.whl", hash = "sha256:432b788c4530cfe16d8d943a09d40ca6c16149727e4afe8c2c9d5580c59d9f24"},
@@ -823,10 +788,6 @@ requests = [
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
     {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
-]
-sortedcontainers = [
-    {file = "sortedcontainers-2.2.2-py2.py3-none-any.whl", hash = "sha256:c633ebde8580f241f274c1f8994a665c0e54a17724fecd0cae2f079e09c36d3f"},
-    {file = "sortedcontainers-2.2.2.tar.gz", hash = "sha256:4e73a757831fc3ca4de2859c422564239a31d8213d09a2a666e375807034d2ba"},
 ]
 soupsieve = [
     {file = "soupsieve-1.9.6-py2.py3-none-any.whl", hash = "sha256:feb1e937fa26a69e08436aad4a9037cd7e1d4c7212909502ba30701247ff8abd"},
