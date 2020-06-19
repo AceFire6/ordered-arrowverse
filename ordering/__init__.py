@@ -36,6 +36,6 @@ from . import views
 register_tortoise(
     app,
     db_url=DB_URL,
-    modules={'models': ['models']},
+    modules={'models': ['ordering']},
     generate_schemas=False,
 )
