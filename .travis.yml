@@ -1,7 +1,7 @@
 language: python
 cache:
   pip: true
-  timeout: 7200  # 2 hours
+  timeout: 3600  # 1 hour
 
 python:
   - "3.7"
