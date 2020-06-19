@@ -45,7 +45,7 @@ redis==3.5.3
 requests==2.24.0
 six==1.15.0
 sortedcontainers==2.2.2
-soupsieve==1.9.6
+soupsieve==2.0.1
 toml==0.10.1
 tortoise-orm==0.13.2
 typing-extensions==3.7.4.2
