@@ -6,24 +6,24 @@ authors = ["Jethro Muller"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-beautifulsoup4 = "^4.7"
-certifi = "^2019.3"
+beautifulsoup4 = "^4.9"
+certifi = "^2020.4"
 cssmin = "^0.2.0"
-flask-assets = "^0.12.0"
+flask-assets = "^2.0"
 flask-caching = "^1.6"
-gunicorn = "^19.9"
+gunicorn = "^20.0"
 htmlmin = "^0.1.12"
 jsmin = "^2.2"
 python-dateutil = "^2.8"
 redis = "^3.2"
 requests = "^2.21"
-webassets = "^0.12.1"
+webassets = "^2.0"
 quart = "^0.10.0"
 quart-minify = "^0.1.0"
 quart-compress = "^0.1.0"
-feedgen = "^0.7.0"
+feedgen = "^0.9.0"
 flake8 = "^3.7"
-flake8-quotes = "^2.1"
+flake8-quotes = "^3.2"
 
 [tool.poetry.dev-dependencies]
 
