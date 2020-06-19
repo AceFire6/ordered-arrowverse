@@ -1,4 +1,6 @@
 from datetime import timedelta
+from enum import Enum
+
 from environs import Env
 
 env = Env()
@@ -9,6 +11,19 @@ CACHE_TYPE = 'redis' if not DEBUG else 'null'
 CACHE_REDIS_URL = env('REDIS_URL', 'redis://localhost:6379')
 
 SEND_FILE_MAX_AGE_DEFAULT = timedelta(weeks=1)
+
+
+class Shows(str, Enum):
+    ARROW = 'Arrow'
+    CONSTANTINE = 'Constantine'
+    FLASH = 'The Flash'
+    FREEDOM_FIGHTERS = 'Freedom Fighters: The Ray'
+    LEGENDS = "DC's Legends of Tomorrow"
+    SUPERGIRL = 'Supergirl'
+    VIXEN = 'Vixen'
+    BLACK_LIGHTNING = 'Black Lightning'
+    BATWOMAN = 'Batwoman'
+
 
 ARROW_URL = 'List_of_Arrow_episodes'
 CONSTANTINE_URL = 'List_of_Constantine_episodes'
@@ -28,55 +43,55 @@ DB_URL = env('DB_URL', default='postgres://localhost:5432/arrowverse_db')
 SHOWS = (
     {
         'id': 'arrow',
-        'name': 'Arrow',
+        'name': Shows.ARROW,
         'url': ARROW_URL,
         'root': FANDOM_ROOT
     },
     {
         'id': 'constantine',
-        'name': 'Constantine',
+        'name': Shows.CONSTANTINE,
         'url': CONSTANTINE_URL,
         'root': FANDOM_ROOT
     },
     {
         'id': 'flash',
-        'name': 'The Flash',
+        'name': Shows.FLASH,
         'url': FLASH_URL,
         'root': FANDOM_ROOT
     },
     {
         'id': 'freedom-fighters',
-        'name': 'Freedom Fighters: The Ray',
+        'name': Shows.FREEDOM_FIGHTERS,
         'url': FREEDOM_FIGHTERS_URL,
         'root': FANDOM_ROOT
     },
     {
         'id': 'legends',
-        'name': "DC's Legends of Tomorrow",
+        'name': Shows.LEGENDS,
         'url': LEGENDS_URL,
         'root': FANDOM_ROOT
     },
     {
         'id': 'supergirl',
-        'name': 'Supergirl',
+        'name': Shows.SUPERGIRL,
         'url': SUPERGIRL_URL,
         'root': FANDOM_ROOT
     },
     {
         'id': 'vixen',
-        'name': 'Vixen',
+        'name': Shows.VIXEN,
         'url': VIXEN_URL,
         'root': FANDOM_ROOT
     },
     {
         'id': 'black-lightning',
-        'name': 'Black Lightning',
+        'name': Shows.BLACK_LIGHTNING,
         'url': BLACK_LIGHTNING_URL,
         'root': WIKIPEDIA_ROOT
     },
     {
         'id': 'batwoman',
-        'name': 'Batwoman',
+        'name': Shows.BATWOMAN,
         'url': BATWOMAN_URL,
         'root': FANDOM_ROOT
     },
