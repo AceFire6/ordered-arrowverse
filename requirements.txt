@@ -1,6 +1,6 @@
 aiofiles==0.5.0
 aiosqlite==0.10.0
-asyncpg==0.18.3
+asyncpg==0.20.1
 beautifulsoup4==4.9.1
 blinker==1.4
 Brotli==1.0.7
