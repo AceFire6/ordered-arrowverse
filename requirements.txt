@@ -1,5 +1,5 @@
 aiofiles==0.5.0
-aiosqlite==0.10.0
+aiosqlite==0.13.0
 asyncpg==0.18.3
 beautifulsoup4==4.9.1
 blinker==1.4
