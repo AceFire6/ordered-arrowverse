@@ -1,15 +1,12 @@
-import os
 from datetime import timedelta
+from environs import Env
 
-USERNAME = 'user'
-PASSWORD = 'pass'
-HOST = '0.0.0.0'
-PORT = 5000
+env = Env()
 
-DEBUG = os.getenv('FLASK_DEBUG', False)
+DEBUG = env.bool('FLASK_DEBUG', default=False)
 
 CACHE_TYPE = 'redis' if not DEBUG else 'null'
-CACHE_REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
+CACHE_REDIS_URL = env('REDIS_URL', 'redis://localhost:6379')
 
 SEND_FILE_MAX_AGE_DEFAULT = timedelta(weeks=1)
 
