@@ -559,7 +559,7 @@ description = "Easy async ORM for python, built with relations in mind"
 name = "tortoise-orm"
 optional = false
 python-versions = "*"
-version = "0.16.13"
+version = "0.16.14"
 
 [package.dependencies]
 aiosqlite = ">=0.11.0"
@@ -636,7 +636,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "fe2f19244d190229b762831251d5ccb00f3ae29f333d2177b4df911ce020c027"
+content-hash = "ad98660474b4ddbc4f82fa1bdbc55b46d7098f97cc82f7e25a27158613099e86"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -942,7 +942,7 @@ toml = [
     {file = "toml-0.10.1.tar.gz", hash = "sha256:926b612be1e5ce0634a2ca03470f95169cf16f939018233a670519cb4ac58b0f"},
 ]
 tortoise-orm = [
-    {file = "tortoise-orm-0.16.13.tar.gz", hash = "sha256:5f6fa4430a570172cb49517a97d45338dbfb1a690ed707030467efd154e67855"},
+    {file = "tortoise-orm-0.16.14.tar.gz", hash = "sha256:d6ffd4f4cd46d469fa946ca5309768f381640b65d5f5c9e848fb9b50185febee"},
 ]
 typing-extensions = [
     {file = "typing_extensions-3.7.4.2-py2-none-any.whl", hash = "sha256:f8d2bd89d25bc39dabe7d23df520442fa1d8969b82544370e03d88b5a591c392"},
