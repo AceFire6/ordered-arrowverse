@@ -33,10 +33,12 @@ description = "Screen-scraping library"
 name = "beautifulsoup4"
 optional = false
 python-versions = "*"
-version = "4.9.1"
+version = "4.9.2"
 
 [package.dependencies]
-soupsieve = [">1.2", "<2.0"]
+[package.dependencies.soupsieve]
+python = ">=3.0"
+version = ">1.2"
 
 [package.extras]
 html5lib = ["html5lib"]
@@ -540,6 +542,7 @@ version = "1.15.0"
 [[package]]
 category = "main"
 description = "A modern CSS selector implementation for Beautiful Soup."
+marker = "python_version >= \"3.0\""
 name = "soupsieve"
 optional = false
 python-versions = "*"
@@ -637,6 +640,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
 content-hash = "fe2f19244d190229b762831251d5ccb00f3ae29f333d2177b4df911ce020c027"
+lock-version = "1.0"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -672,15 +676,16 @@ asyncpg = [
     {file = "asyncpg-0.20.1.tar.gz", hash = "sha256:394bf19bdddbba07a38cd6fb526ebf66e120444d6b3097332b78efd5b26495b0"},
 ]
 beautifulsoup4 = [
-    {file = "beautifulsoup4-4.9.1-py2-none-any.whl", hash = "sha256:e718f2342e2e099b640a34ab782407b7b676f47ee272d6739e60b8ea23829f2c"},
-    {file = "beautifulsoup4-4.9.1-py3-none-any.whl", hash = "sha256:a6237df3c32ccfaee4fd201c8f5f9d9df619b93121d01353a64a73ce8c6ef9a8"},
-    {file = "beautifulsoup4-4.9.1.tar.gz", hash = "sha256:73cc4d115b96f79c7d77c1c7f7a0a8d4c57860d1041df407dd1aae7f07a77fd7"},
+    {file = "beautifulsoup4-4.9.2-py2-none-any.whl", hash = "sha256:645d833a828722357038299b7f6879940c11dddd95b900fe5387c258b72bb883"},
+    {file = "beautifulsoup4-4.9.2-py3-none-any.whl", hash = "sha256:5dfe44f8fddc89ac5453f02659d3ab1668f2c0d9684839f0785037e8c6d9ac8d"},
+    {file = "beautifulsoup4-4.9.2.tar.gz", hash = "sha256:1edf5e39f3a5bc6e38b235b369128416c7239b34f692acccececb040233032a1"},
 ]
 blinker = [
     {file = "blinker-1.4.tar.gz", hash = "sha256:471aee25f3992bd325afa3772f1063dbdbbca947a041b8b89466dc00d606f8b6"},
 ]
 brotli = [
     {file = "Brotli-1.0.7-cp27-cp27m-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:50dd9ad2a2bb12da4e9002a438672d182f98e546e99952de80280a1e1729664f"},
+    {file = "Brotli-1.0.7-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:aeaae3d60ecd72f04a54f4e7d4fccf2f83aab8e6362c625e003651bebf4347ba"},
     {file = "Brotli-1.0.7-cp27-cp27m-manylinux1_i686.whl", hash = "sha256:c675c6cce4295cb1a692f3de7416aacace7314e064b94bc86e93aceefce7fd3e"},
     {file = "Brotli-1.0.7-cp27-cp27m-manylinux1_x86_64.whl", hash = "sha256:a19ef0952b9d2803df88dff07f45a6c92d5676afb9b8d69cf32232d684036d11"},
     {file = "Brotli-1.0.7-cp27-cp27m-win32.whl", hash = "sha256:0970a47f471782912d7705160b2b0a9306e68e6fadf9cffcaeb42d8f0951e26c"},
@@ -693,16 +698,19 @@ brotli = [
     {file = "Brotli-1.0.7-cp34-cp34m-win32.whl", hash = "sha256:c16201060c5a3f8742e3deae759014251ac92f382f82bc2a41dc079ff18c3f24"},
     {file = "Brotli-1.0.7-cp34-cp34m-win_amd64.whl", hash = "sha256:f9dc52cd70907aafb99a773b66b156f2f995c7a0d284397c487c8b71ddbef2f9"},
     {file = "Brotli-1.0.7-cp35-cp35m-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:f969ec7f56ba9636679e69ca07fba548312ccaca37412ee823c7f413541ad7e0"},
+    {file = "Brotli-1.0.7-cp35-cp35m-macosx_10_6_intel.whl", hash = "sha256:fb7fd630e6096112d9f159cb19516e8eccb9daa1c258608c2cbe21686dea36e8"},
     {file = "Brotli-1.0.7-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:dc91f6129953861a73d9a65c52a8dd682b561a9ebaf65283541645cab6489917"},
     {file = "Brotli-1.0.7-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:5f06b4d5b6f58e5b5c220c2f23cad034dc5efa51b01fde2351ced1605bd980e2"},
     {file = "Brotli-1.0.7-cp35-cp35m-win32.whl", hash = "sha256:5519a4b01b1a4f965083cbfa2ef2b9774c5a5f352341c47b50776ad109423d72"},
     {file = "Brotli-1.0.7-cp35-cp35m-win_amd64.whl", hash = "sha256:ad766ca8b8c1419b71a22756b45264f45725c86133dc80a7cbe30b6b78c75620"},
     {file = "Brotli-1.0.7-cp36-cp36m-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:f775b07026af2b1b0b5a8b05e41571cdcf3a315a67df265d60af301656a5425b"},
+    {file = "Brotli-1.0.7-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:92ae753b9cc13d9d91f5636607afbca961fa7ca9e9770ac2a849b38424bf5bea"},
     {file = "Brotli-1.0.7-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:2f2f4f78f29ac4a45d15b3d9fc3fd9705e0ad313a44b129f6e1d0c6916bad0e2"},
     {file = "Brotli-1.0.7-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:1e1aa9c4d1558889f42749c8baf846007953bfd32c8209230cf1cd1f5ef33495"},
     {file = "Brotli-1.0.7-cp36-cp36m-win32.whl", hash = "sha256:5eb27722d320370315971c427eb8aa7cc0791f2a458840d357ac653bd0ad3a14"},
     {file = "Brotli-1.0.7-cp36-cp36m-win_amd64.whl", hash = "sha256:72848d25a5f9e736db4af4512e0c3feecc094d57d241f8f1ae959115a2c39756"},
     {file = "Brotli-1.0.7-cp37-cp37m-macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:ad7963f261988ee0883816b6b9f206f11461c9b3cb5cfbca0c9ab5adc406d395"},
+    {file = "Brotli-1.0.7-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:315fbb0d1294594a3701d735c44a2a059219b82fc59aa02cd9c827c38b0980c4"},
     {file = "Brotli-1.0.7-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:a13ce9b419fe9f277c63f700efb0e444331509d1881b5610d2ba7e9080606967"},
     {file = "Brotli-1.0.7-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:f192e6d3556714105c10486bbd6d045e38a0c04d9da3cef21e0a8dfd8e162df4"},
     {file = "Brotli-1.0.7-cp37-cp37m-win32.whl", hash = "sha256:743001bca75f4a6b4454be3510feca46f9d61a0c782a9bc2bc684bdb245e279e"},
