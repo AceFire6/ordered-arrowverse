@@ -28,7 +28,7 @@ environs = "^8.0.0"
 
 
 [tool.poetry.dev-dependencies]
-flake8 = "^3.7"
+flake8 = "^3.8"
 flake8-quotes = "^3.2"
 
 [build-system]
