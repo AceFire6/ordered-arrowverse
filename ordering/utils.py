@@ -48,8 +48,8 @@ def get_episode_list(series_soup, series):
 
         if not from_wikipedia:
             table = [
-                row.strip().split('\n')
-                for row in table.getText().split('\n\n') if row.strip()
+                row.strip().split('\n\n')
+                for row in table.getText().split('\n\n\n') if row.strip()
             ]
         else:
             table_heading = table.find(name='tr', class_=None)
