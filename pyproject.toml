@@ -7,7 +7,7 @@ authors = ["Jethro Muller"]
 [tool.poetry.dependencies]
 python = "^3.7"
 beautifulsoup4 = "^4.9"
-certifi = "^2020.6"
+certifi = "^2020.11"
 cssmin = "^0.2.0"
 flask-assets = "^2.0"
 flask-caching = "^1.6"
