@@ -73,7 +73,7 @@ def get_episode_list(series_soup, series):
 
         for row in table:
             # TODO: Make more robust - protects against rows that don't have enough data
-            if len(row) < 2:
+            if len(row) <= 2:
                 continue
 
             if from_wikipedia:
