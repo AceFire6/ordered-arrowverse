@@ -56,8 +56,8 @@ def get_episode_list(series_soup, series):
                 )
 
             table = [
-                row.strip().split('\n')
-                for row in table_text.split('\n\n') if row.strip()
+                row.strip().split('\n\n')
+                for row in table.getText().split('\n\n\n') if row.strip()
             ]
         else:
             table_heading = table.find(name='tr', class_=None)
@@ -81,7 +81,7 @@ def get_episode_list(series_soup, series):
 
         for row in table:
             # TODO: Make more robust - protects against rows that don't have enough data
-            if len(row) < 2:
+            if len(row) <= 2:
                 continue
 
             if from_wikipedia:
