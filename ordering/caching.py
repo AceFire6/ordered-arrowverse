@@ -15,8 +15,8 @@ def safe_cache_content(timeout=None):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            hashed_json = hash(f'{json.dumps(args)}-{json.dumps(kwargs)})')
-            cache_key = f'{func.__name__}-{hashed_json}'
+            hashed_input = hash(f'{args}-{kwargs})')
+            cache_key = f'{func.__name__}-{hashed_input}'
 
             cached_value = cache.get(cache_key)
             if cached_value:
