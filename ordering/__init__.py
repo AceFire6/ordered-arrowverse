@@ -6,7 +6,7 @@ from quart_minify import Minify
 from tortoise.contrib.quart import register_tortoise
 from webassets import Bundle
 
-from .settings import DB_URL, DEBUG
+from .settings import DATABASE_URL, DEBUG
 from .url_converters import ListConverter
 
 app = Quart(__name__)
@@ -35,7 +35,7 @@ from . import views
 
 register_tortoise(
     app,
-    db_url=DB_URL,
+    db_url=DATABASE_URL,
     modules={'models': ['ordering.models']},
     generate_schemas=DEBUG,
 )
