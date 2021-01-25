@@ -264,6 +264,7 @@ def _filter_on_air_date(episode_list, from_date, to_date):
     return episode_list
 
 
+@safe_cache_content(timeout=TWELVE_HOURS)
 def get_url_content(url):
     return requests.get(url).content
 
