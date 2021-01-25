@@ -65,9 +65,17 @@ def get_episode_list(series_soup, series):
                 heading.getText().replace(' ', '').lower()
                 for heading in table_heading.children
             ]
-            episode_num_index = table_headings.index('no.inseason')
-            title_index = table_headings.index('title')
-            air_date_index = table_headings.index('originalairdate')
+
+            episode_num_index = None
+            title_index = None
+            air_date_index = None
+            for index, heading in enumerate(table_headings):
+                if 'no.inseason' in heading:
+                    episode_num_index = index
+                elif 'title' in heading:
+                    title_index = index
+                elif 'originalairdate' in heading:
+                    air_date_index = index
 
             wikipedia_row_unpacker = itemgetter(episode_num_index, title_index, air_date_index)
 
