@@ -23,6 +23,9 @@ class Shows(str, Enum):
     BLACK_LIGHTNING = 'Black Lightning'
     BATWOMAN = 'Batwoman'
 
+    def __str__(self):
+        return self.value
+
 
 ARROW_URL = 'List_of_Arrow_episodes'
 CONSTANTINE_URL = 'List_of_Constantine_episodes'
