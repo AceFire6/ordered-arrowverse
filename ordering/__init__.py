@@ -1,6 +1,5 @@
 from flask_assets import Environment
 from quart import Quart
-from flask_caching import Cache
 from quart_compress import Compress
 from quart_minify import Minify
 from tortoise.contrib.quart import register_tortoise
@@ -12,8 +11,6 @@ from .url_converters import ListConverter
 app = Quart(__name__)
 
 app.config.from_pyfile('settings.py')
-
-app.cache = Cache(app)
 
 js_assets = Bundle('js/cookie.js', 'js/index.js', filters='rjsmin', output='gen/bundled.js')
 css_assets = Bundle('css/index.css', filters='cssmin', output='gen/bundled.css')

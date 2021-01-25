@@ -179,17 +179,6 @@ Flask = ">=0.8"
 webassets = ">=2.0"
 
 [[package]]
-name = "flask-caching"
-version = "1.9.0"
-description = "Adds caching support to your Flask application"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-Flask = "*"
-
-[[package]]
 name = "gunicorn"
 version = "20.0.4"
 description = "WSGI HTTP Server for UNIX"
@@ -615,7 +604,7 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "771122bbb2c0f67fb9c5c83b436564a52de0c1f0c9fb7ca8613ecaddbdbe5cc4"
+content-hash = "7dd209206ac1f295bae76cca23fcfa6eae374c2bc6f184174357efc9b96c2067"
 
 [metadata.files]
 aiofiles = [
@@ -727,10 +716,6 @@ flask = [
 flask-assets = [
     {file = "Flask-Assets-2.0.tar.gz", hash = "sha256:1dfdea35e40744d46aada72831f7613d67bf38e8b20ccaaa9e91fdc37aa3b8c2"},
     {file = "Flask_Assets-2.0-py3-none-any.whl", hash = "sha256:2845bd3b479be9db8556801e7ebc2746ce2d9edb4e7b64a1c786ecbfc1e5867b"},
-]
-flask-caching = [
-    {file = "Flask-Caching-1.9.0.tar.gz", hash = "sha256:a0356ad868b1d8ec2d0e675a6fe891c41303128f8904d5d79e180d8b3f952aff"},
-    {file = "Flask_Caching-1.9.0-py2.py3-none-any.whl", hash = "sha256:e6ef2e2af84e13c4fd32c1839c1943a42f11b6b0fbcfdd6bf46547ea5482dbfe"},
 ]
 gunicorn = [
     {file = "gunicorn-20.0.4-py2.py3-none-any.whl", hash = "sha256:cd4a810dd51bf497552cf3f863b575dabd73d6ad6a91075b65936b151cbf4f9c"},

@@ -11,7 +11,6 @@ cssmin==0.2.0
 environs==8.1.0
 feedgen==0.9.0
 flask-assets==2.0
-flask-caching==1.9.0
 flask==1.1.2
 gunicorn==20.0.4
 h11==0.12.0

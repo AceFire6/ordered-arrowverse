@@ -255,7 +255,6 @@ def _filter_on_air_date(episode_list, from_date, to_date):
     return episode_list
 
 
-@app.cache.memoize(timeout=TWELVE_HOURS)
 def get_url_content(url):
     return requests.get(url).content
 
@@ -266,7 +265,6 @@ def get_show_list_from_show_html(show_name, show_html):
     return show_list
 
 
-@app.cache.memoize(timeout=TWELVE_HOURS)
 def get_full_series_episode_list(excluded_series=None, from_date=None, to_date=None):
     excluded_series = [] if excluded_series is None else excluded_series
     shows_to_get = [show for show in app.config['SHOWS'] if show['id'] not in excluded_series]

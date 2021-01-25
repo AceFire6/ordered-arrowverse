@@ -7,8 +7,7 @@ env = Env()
 
 DEBUG = env.bool('QUART_DEBUG', default=False)
 
-CACHE_TYPE = 'redis' if not DEBUG else 'null'
-CACHE_REDIS_URL = env('REDIS_URL', 'redis://localhost:6379')
+REDIS_URL = env('REDIS_URL', 'redis://localhost:6379')
 
 SEND_FILE_MAX_AGE_DEFAULT = timedelta(weeks=1)
 
