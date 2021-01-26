@@ -264,18 +264,18 @@ def _filter_on_air_date(episode_list, from_date, to_date):
     return episode_list
 
 
-@safe_cache_content(timeout=TWELVE_HOURS)
+@safe_cache_content(timeout=TWELVE_HOURS, backup=True)
 def get_url_content(url):
     return requests.get(url).content
 
 
+@safe_cache_content(timeout=TWELVE_HOURS, hash_args=True)
 def get_show_list_from_show_html(show_name, show_html):
     show_soup = BeautifulSoup(show_html, 'html.parser')
     show_list = get_episode_list(show_soup, show_name)
     return show_list
 
 
-@safe_cache_content(timeout=TWELVE_HOURS)
 def get_full_series_episode_list(excluded_series=None, from_date=None, to_date=None):
     excluded_series = [] if excluded_series is None else excluded_series
     shows_to_get = [show for show in app.config['SHOWS'] if show['id'] not in excluded_series]
