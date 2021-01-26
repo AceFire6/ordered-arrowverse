@@ -21,11 +21,14 @@ def serialized_response(response):
     return orjson.dumps(response, default=handle_bytes)
 
 
-def safe_cache_content(timeout=None):
+def safe_cache_content(timeout=None, backup=False, hash_args=False):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
             inputs = f'{args}-{kwargs}'
+            if hash_args:
+                inputs = hash(inputs)
+
             cache_key = f'{func.__name__}-{inputs}'
 
             cached_value = cache.get(cache_key)
@@ -35,18 +38,20 @@ def safe_cache_content(timeout=None):
             try:
                 response = func(*args, **kwargs)
             except Exception as exception:
-                logger.exception(f'Failed to run {func} - using cached LTS response')
+                logger.exception(f'Failed to run {func} - using cached backup response')
 
-                cached_json_lts_response = cache.get(f'{cache_key}-lts')
+                cached_json_lts_response = cache.get(f'{cache_key}-backup')
                 if cached_json_lts_response is None:
-                    logger.error('No valid cached LTS response - returning error response')
+                    logger.error('No valid cached backup response - returning error response')
                     raise exception
 
                 return orjson.loads(cached_json_lts_response.decode('utf-8'))
             else:
                 json_response = serialized_response(response)
                 cache.set(cache_key, json_response, ex=timeout)
-                cache.set(f'{cache_key}-lts', json_response)
+
+                if backup:
+                    cache.set(f'{cache_key}-backup', json_response)
 
                 return response
 
