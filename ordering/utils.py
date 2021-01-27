@@ -115,7 +115,7 @@ def get_episode_list(series_soup, series):
                     'series': series,
                     'episode_id': episode_id,
                     'episode_name': episode_name,
-                    'air_date': air_date,
+                    'air_date': f'{air_date:%Y-%m-%d}',
                 }
                 episode_list.append(episode_data)
 
@@ -225,6 +225,9 @@ def sort_and_filter_episodes(show_list_set, from_date=None, to_date=None):
 
         show_name = show_list[0]['series'].upper()
         shows_in_list.append(show_name)
+
+    for entry in full_list:
+        entry['air_date'] = datetime.strptime(entry['air_date'], '%Y-%m-%d')
 
     full_list = sorted(full_list, key=lambda episode: episode['air_date'])
 
