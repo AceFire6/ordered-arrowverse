@@ -227,7 +227,7 @@ def sort_and_filter_episodes(show_list_set, from_date=None, to_date=None):
         shows_in_list.append(show_name)
 
     for entry in full_list:
-        entry['air_date'] = datetime.strptime(entry['air_date'], '%Y-%m-%d')
+        entry['air_date'] = datetime.strptime(entry['air_date'], '%Y-%m-%d').date()
 
     full_list = sorted(full_list, key=lambda episode: episode['air_date'])
 
