@@ -43,8 +43,6 @@ FANDOM_ROOT = 'http://arrow.fandom.com/wiki/'
 WIKIPEDIA_ROOT = 'https://en.wikipedia.org/wiki/'
 
 DATABASE_URL = env('DATABASE_URL', default='postgres://localhost:5432/arrowverse_db')
-if not DEBUG:
-    DATABASE_URL = f'{DATABASE_URL}?ssl=require'
 
 SHOWS = (
     {
