@@ -14,28 +14,30 @@ SEND_FILE_MAX_AGE_DEFAULT = timedelta(weeks=1)
 
 class Shows(str, Enum):
     ARROW = 'Arrow'
+    BATWOMAN = 'Batwoman'
+    BLACK_LIGHTNING = 'Black Lightning'
     CONSTANTINE = 'Constantine'
     FLASH = 'The Flash'
     FREEDOM_FIGHTERS = 'Freedom Fighters: The Ray'
     LEGENDS = "DC's Legends of Tomorrow"
     SUPERGIRL = 'Supergirl'
+    SUPERMAN_AND_LOIS = 'Superman & Lois'
     VIXEN = 'Vixen'
-    BLACK_LIGHTNING = 'Black Lightning'
-    BATWOMAN = 'Batwoman'
 
     def __str__(self):
         return self.value
 
 
 ARROW_URL = 'List_of_Arrow_episodes'
+BATWOMAN_URL = 'List_of_Batwoman_episodes'
+BLACK_LIGHTNING_URL = 'List_of_Black_Lightning_episodes'
 CONSTANTINE_URL = 'List_of_Constantine_episodes'
 FLASH_URL = 'List_of_The_Flash_(The_CW)_episodes'
 FREEDOM_FIGHTERS_URL = 'List_of_Freedom_Fighters:_The_Ray_episodes'
 LEGENDS_URL = "List_of_DC's_Legends_of_Tomorrow_episodes"
 SUPERGIRL_URL = 'List_of_Supergirl_episodes'
+SUPERMAN_AND_LOIS_URL = 'List_of_Superman_%26_Lois_episodes'
 VIXEN_URL = 'List_of_Vixen_episodes'
-BLACK_LIGHTNING_URL = 'List_of_Black_Lightning_episodes'
-BATWOMAN_URL = 'List_of_Batwoman_episodes'
 
 FANDOM_ROOT = 'http://arrow.fandom.com/wiki/'
 WIKIPEDIA_ROOT = 'https://en.wikipedia.org/wiki/'
@@ -48,6 +50,18 @@ SHOWS = (
         'name': Shows.ARROW,
         'url': ARROW_URL,
         'root': FANDOM_ROOT
+    },
+    {
+        'id': 'batwoman',
+        'name': Shows.BATWOMAN,
+        'url': BATWOMAN_URL,
+        'root': FANDOM_ROOT
+    },
+    {
+        'id': 'black-lightning',
+        'name': Shows.BLACK_LIGHTNING,
+        'url': BLACK_LIGHTNING_URL,
+        'root': WIKIPEDIA_ROOT
     },
     {
         'id': 'constantine',
@@ -80,21 +94,15 @@ SHOWS = (
         'root': FANDOM_ROOT
     },
     {
-        'id': 'vixen',
-        'name': Shows.VIXEN,
-        'url': VIXEN_URL,
+        'id': 'superman-and-lois',
+        'name': Shows.SUPERMAN_AND_LOIS,
+        'url': SUPERMAN_AND_LOIS_URL,
         'root': FANDOM_ROOT
     },
     {
-        'id': 'black-lightning',
-        'name': Shows.BLACK_LIGHTNING,
-        'url': BLACK_LIGHTNING_URL,
-        'root': WIKIPEDIA_ROOT
-    },
-    {
-        'id': 'batwoman',
-        'name': Shows.BATWOMAN,
-        'url': BATWOMAN_URL,
+        'id': 'vixen',
+        'name': Shows.VIXEN,
+        'url': VIXEN_URL,
         'root': FANDOM_ROOT
     },
 )
