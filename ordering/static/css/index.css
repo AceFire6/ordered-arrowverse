@@ -24,6 +24,30 @@ a.btn {
     background-color: #004e00;
 }
 
+.batwoman {
+    background-color: #692e69;
+}
+
+.batwoman:hover {
+    background-color: #470e47;
+}
+
+.black-lightning {
+    background-color: #464340;
+}
+
+.black-lightning:hover {
+    background-color: #383532;
+}
+
+.constantine {
+    background-color: #d74014;
+}
+
+.constantine:hover {
+    background-color: #be3915;
+}
+
 .flash {
     background-color: #a50400;
 }
@@ -62,30 +86,6 @@ a.btn {
 
 .vixen:hover {
     background-color: #280082;
-}
-
-.constantine {
-    background-color: #d74014;
-}
-
-.constantine:hover {
-    background-color: #be3915;
-}
-
-.black-lightning {
-    background-color: #464340;
-}
-
-.black-lightning:hover {
-    background-color: #383532;
-}
-
-.batwoman {
-    background-color: #692e69;
-}
-
-.batwoman:hover {
-    background-color: #470e47;
 }
 
 .no-color {
