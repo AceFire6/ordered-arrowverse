@@ -80,6 +80,14 @@ a.btn {
     background-color: #005e82;
 }
 
+.superman-and-lois {
+    background-color: #4b6c7a;
+}
+
+.superman-and-lois:hover {
+    background-color: #324951;
+}
+
 .vixen {
     background-color: #3c0096;
 }
