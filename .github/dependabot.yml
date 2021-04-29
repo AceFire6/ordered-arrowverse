@@ -1,11 +1,28 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/" # Location of package manifests
-    schedule:
-      interval: "daily"
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: tortoise-orm
+    versions:
+    - 0.16.21
+    - 0.17.0
+    - 0.17.1
+  - dependency-name: urllib3
+    versions:
+    - 1.26.3
+  - dependency-name: environs
+    versions:
+    - 9.3.0
+    - 9.3.1
+  - dependency-name: orjson
+    versions:
+    - 3.4.8
+    - 3.5.0
+  - dependency-name: asyncpg
+    versions:
+    - 0.21.0
