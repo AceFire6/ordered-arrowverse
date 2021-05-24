@@ -112,3 +112,40 @@ nav.navbar {
 table.table {
     margin: 0;
 }
+
+.hidden {
+    display: none;
+}
+
+.watched {
+    background-image: repeating-linear-gradient(
+        -45deg,
+        #00000000,
+        #00000000 10px,
+        #00000077 10px,
+        #00000077 20px
+    );
+}
+.btn-group-vertical {
+    position: fixed;
+    top: 70px;
+    left: 15px;
+    z-index: 999;
+}
+
+.btn-group-vertical button {
+    background-color: #ebe9e7;
+    border: 1px solid #94918f;
+    color: #94918f;
+    cursor: pointer;
+    min-width: 100%;
+    display: block;
+}
+
+.btn-group-vertical button:not(:last-child) {
+    border-bottom: none;
+}
+
+.btn-group-vertical button:hover {
+    background-color: #ccc8c5;
+}

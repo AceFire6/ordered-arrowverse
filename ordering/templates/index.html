@@ -19,18 +19,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 </head>
 
 <body>
+    <div id="side-buttons" class="btn-group-vertical hidden">
+        <button id="goto-top" style="border-top-left-radius: 10px; border-top-right-radius: 10px;"><i class="fa fa-arrow-up"></i></button>
+        <button id="goto-last"><i class="fa fa-arrow-right"></i></button>
+        <button id="goto-bottom" style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;"><i class="fa fa-arrow-down"></i></button>
+    </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <span class="navbar-brand">Arrowverse Episode Order</span>
-            <button class="navbar-toggler" 
-                    type="button" 
-                    data-toggle="collapse" 
+            <button class="navbar-toggler"
+                    type="button"
+                    data-toggle="collapse"
                     data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" 
-                    aria-expanded="false" 
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -49,14 +55,14 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a href="https://github.com/AceFire6/ordered-arrowverse" 
-                           class="nav-link" 
+                        <a href="https://github.com/AceFire6/ordered-arrowverse"
+                           class="nav-link"
                            target="_blank">
                             Project on Github
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}" 
+                        <a href="{{ url_for('recent_episodes', hide_show=hidden_show_list) }}"
                            class="nav-link"
                            target="_blank">
                             RSS Feed
@@ -73,9 +79,9 @@
             <form action="{{ url_for('index') }}" id="filter-form" method="get" class="row form-inline row">
                 <div class="col-sm-6">
                     <input name="newest_first" value="{{ newest_first }}" title="Newest First" type="hidden">
-                    <select id="show-filter-select" 
-                            title="Filter options" 
-                            name="hide_show" 
+                    <select id="show-filter-select"
+                            title="Filter options"
+                            name="hide_show"
                             multiple="multiple"
                             class="form-control">
                             {% for show_id, show_data in show_list.items() %}
@@ -86,23 +92,23 @@
                     </select>
                 </div>
                 <div class="col-sm-6">
-                    <input title="From Date" 
-                           class="form-control date-picker" 
-                           type="text" 
+                    <input title="From Date"
+                           class="form-control date-picker"
+                           type="text"
                            name="from_date"
-                           id="from-date" 
-                           {% if from_date %}value="{{ from_date }}" {% endif %} 
+                           id="from-date"
+                           {% if from_date %}value="{{ from_date }}" {% endif %}
                            placeholder="From Date">
-                    <input title="To Date" 
-                           class="form-control date-picker" 
-                           type="text" 
-                           name="to_date" 
+                    <input title="To Date"
+                           class="form-control date-picker"
+                           type="text"
+                           name="to_date"
                            id="to-date"
-                           {% if to_date %}value="{{ to_date }}" {% endif %} 
+                           {% if to_date %}value="{{ to_date }}" {% endif %}
                            placeholder="To Date">
-                    <button type="submit" 
-                            id="filter-button" 
-                            class="btn btn-outline-secondary" 
+                    <button type="submit"
+                            id="filter-button"
+                            class="btn btn-outline-secondary"
                             form="filter-form">
                             Filter
                     </button>
@@ -121,6 +127,7 @@
                         {% endif %}
                     </a>
                     | <a href="#" id="no-color"><small class="text">DISABLE COLOR</small></a>
+                    | <a href="#" id="enable-watched"><small class="text">ENABLE WATCHED</small></a>
                 </div>
             </div>
         </div>
@@ -130,6 +137,7 @@
                     <table class="table table-bordered col-sm-12" id="episode-list">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th>#</th>
                                 <th>Series</th>
                                 <th>Episode</th>
@@ -140,7 +148,13 @@
                         <tbody>
                             {% for row in table_content %}
                             <tr class='episode {{ series_map[row.series].id }}'
+                                data-unique="{{ row.episode_id | episode_unique(row.series) }}"
                                 data-href="{{ row.episode_name | episode_url(row.series) }}">
+                                <td>
+                                    <i class="fa fa-external-link"
+                                        data-href="{{ row.episode_name | episode_url(row.series) }}">
+                                    </i>
+                                </td>
                                 <td>{{ row.row_number }}</td>
                                 <td>{{ row.series }}</td>
                                 <td>{{ row.episode_id }}</td>
@@ -288,8 +302,9 @@
             <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
             <script type="text/javascript"
                 src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-            <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/watched.js') }}"></script>
             <script src="{{ url_for('static', filename='js/cookie.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/index.js') }}"></script>
             {% include 'analytics.html' %}
         </div>
     </main>

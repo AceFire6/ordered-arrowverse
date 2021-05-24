@@ -19,6 +19,9 @@ def episode_url_filter(episode_name, series):
     else:
         return root_url + url_form(episode_name)
 
+@app.template_filter('episode_unique')
+def episode_unique_filter(episode_id, series):
+    return (series + '-' + episode_id).replace(' ', '_').lower()
 
 @app.context_processor
 def inject_oldest_first_url():

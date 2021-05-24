@@ -1,8 +1,8 @@
 (function($) {
     'use strict';
 
-    var openWiki = function() {
-        var url = $(this).data('href');
+    var openWiki = function(episode) {
+        var url = $(episode).data('href');
         window.open(url, '_blank');
     };
 
@@ -20,8 +20,42 @@
         Cookies.set('colour', '1');
     };
 
+    var disableWatched = function () {
+        $('#enable-watched').find('.text').text('ENABLE WATCHED')
+        $('#side-buttons').addClass('hidden');
+        watched.disable()
+    }
+
+    var enableWatched = function () {
+        $('#enable-watched').find('.text').text('DISABLE WATCHED')
+        $('#side-buttons').removeClass('hidden');
+        watched.enable()
+    }
+
+    var goTo = function (place) {
+        var episodes = document.querySelectorAll('.episode');
+        if (place === 'top') {
+            episodes[0].scrollIntoView();
+        } else if (place === 'last') {
+            document.querySelectorAll('.watched')[document.querySelectorAll('.watched').length-1].scrollIntoView();
+        } else if (place === 'bottom') {
+            episodes[episodes.length-1].scrollIntoView();
+        }
+    }
+
     var registerListeners = function() {
-        $('.episode').click(openWiki);
+        $('.episode').click(function () {
+            if (watched.enabled) {
+                watched.toggle(this);
+            } else {
+                openWiki(this);
+            }
+        });
+
+        $('.episode i').click(function (event) {
+            event.stopPropagation();
+            openWiki(this);
+        })
 
         $('#no-color').click(function() {
             if (Cookies.get('colour') === '1') {
@@ -30,6 +64,18 @@
                 enableColours();
             }
         });
+
+        $('#enable-watched').click(function () {
+            if (watched.enabled) {
+                disableWatched();
+            } else {
+                enableWatched();
+            }
+        });
+
+        $('#goto-top').click(function () { goTo('top') })
+        $('#goto-last').click(function () { goTo('last') })
+        $('#goto-bottom').click(function () { goTo('bottom') })
 
         $('.date-picker').daterangepicker({
             autoUpdateInput: false,
@@ -45,6 +91,8 @@
         });
     };
 
+    var watched = new Watched()
+
     $(document).ready(function() {
         $('#show-filter-select').select2({
           placeholder: 'Select shows to exclude...',
@@ -59,6 +107,10 @@
             Cookies.set('colour', '1');
         } else if (colourSetting === '0') {
             disableColours();
+        }
+
+        if (watched.enabled) {
+            enableWatched();
         }
     });
 })(jQuery);
