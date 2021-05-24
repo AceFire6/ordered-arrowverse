@@ -8,6 +8,21 @@
         WATCHED_EPISODES: "watchedEpisodes",
     };
 
+    /**
+     * CSS class names used to change visual display of "watched" episodes
+     */
+    let watchedStateClasses = {
+        HIDDEN: 'hidden',
+        FAINT: 'faint',
+    };
+
+    /**
+     * Config values for the current running instance.
+     */
+    let instanceConfig = {
+        watchedEpisodesCssClass: watchedStateClasses.FAINT,
+    };
+
     var disableColours = function() {
         $('.episode, thead').addClass('no-color');
         $('#episode-list').addClass('table-striped table-hover');
@@ -98,28 +113,53 @@
         localStorage.setItem(
             localStorageKeys.WATCHED_EPISODES, JSON.stringify(watchedEpisodes)
         );
-        setWatchedDisplayState();
+        setWatchedDisplayState(instanceConfig.watchedEpisodesCssClass);
     };
 
     /**
      * Hide/Show episodes, according to the "watched" state
+     * 
+     * @param {String} watchedClass The CSS class to apply for "watched" episodes
      */
-    var setWatchedDisplayState = function () {
+    var setWatchedDisplayState = function (watchedClass) {
         let watchedEpisodes = JSON.parse(
             localStorage.getItem(localStorageKeys.WATCHED_EPISODES) || "[]"
         );
         $('.episode').map(function() {
             let key = getLSEpisodeKey(this);
+            for (const [_, value] of Object.entries(watchedStateClasses)) {
+                $(this).removeClass(value)
+            }
             if (watchedEpisodes.includes(key)) {
-                this.style.display = 'none';
+                $(this).addClass(watchedClass)
             } else {
-                this.style.display = 'tableRow';
+                $(this).removeClass(watchedClass)
             }
         });
     };
 
     var registerListeners = function() {
         $('.watchedToggle').change(updateWatched);
+
+        $('#show-watched').click(function() {
+            let linkText = "SHOW WATCHED";
+            if (instanceConfig.watchedEpisodesCssClass === watchedStateClasses.FAINT) {
+                instanceConfig.watchedEpisodesCssClass = watchedStateClasses.HIDDEN;
+                linkText = "SHOW WATCHED";
+            } else {
+                instanceConfig.watchedEpisodesCssClass = watchedStateClasses.FAINT;
+                linkText = "HIDE WATCHED";
+            }
+            setWatchedDisplayState(instanceConfig.watchedEpisodesCssClass);
+
+            // Accessing "firstChild.innerHTML" is brittle. But I deemed this an
+            // acceptable trade-off to keep code-churn minimal (unless I missed
+            // something). Also, the text-value is decoupled from the HTML
+            // template for the same reason. This might lead to subtle
+            // display-bugs (only the text-value) if the template is updated.
+            this.firstChild.innerHTML = linkText;
+        });
+
         $('#no-color').click(function() {
             if (Cookies.get('colour') === '1') {
                 disableColours();
@@ -154,7 +194,7 @@
           width: '100%',
         });
         registerListeners();
-        setWatchedDisplayState();
+        setWatchedDisplayState(instanceConfig.watchedEpisodesCssClass);
 
         var colourSetting = Cookies.get('colour');
         if (colourSetting === undefined) {
