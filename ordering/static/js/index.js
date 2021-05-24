@@ -169,6 +169,21 @@ class UserPreferences {
         });
     };
 
+    /**
+     * Load and initialise checkbox-states for "watched" episodes.
+     */
+    var initWatchedStates = function () {
+        let watchedEpisodes = prefs.get(UserPreferences.WATCHED_EPISODES, []);
+        $('.watchedToggle').map(function() {
+            let key = UserPreferences.getEpisodeKey(this);
+            if (watchedEpisodes.includes(key)) {
+                this.checked = true;
+            } else {
+                this.checked = false;
+            }
+        });
+    }
+
     var registerListeners = function() {
         $('.watchedToggle').change(updateWatched);
 
@@ -228,6 +243,7 @@ class UserPreferences {
           width: '100%',
         });
         registerListeners();
+        initWatchedStates();
         setWatchedDisplayState(prefs.get(UserPreferences.HIDE_WATCHED, true));
 
         var colourSetting = Cookies.get('colour');
