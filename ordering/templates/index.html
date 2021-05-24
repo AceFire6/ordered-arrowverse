@@ -160,6 +160,7 @@
                         <table class="table table-bordered col-sm-12" id="episode-list">
                             <thead>
                                 <tr>
+                                    <th>Watched</th>
                                     <th>#</th>
                                     <th>Series</th>
                                     <th>Episode</th>
@@ -170,7 +171,13 @@
                             </thead>
                             <tbody>
                                 {% for row in table_content %}
-                                    <tr class="episode {{ series_map[row.series].id }}">
+                                    <tr class="episode {{ series_map[row.series].id }}"
+                                        data-series="{{ row.series }}"
+                                        data-episode-id="{{ row.episode_id }}">
+                                        <td><input type="checkbox"
+                                                   class="watchedToggle"
+                                                   data-series="{{ row.series }}"
+                                                   data-episode-id="{{ row.episode_id }}"></td>
                                         <td>{{ row.row_number }}</td>
                                         <td>{{ row.series }}</td>
                                         <td>{{ row.episode_id }}</td>
@@ -189,6 +196,7 @@
                             </tbody>
                         </table>
                     </div>
+
                 </div>
 
             </div>
