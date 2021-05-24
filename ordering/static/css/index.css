@@ -112,3 +112,14 @@ nav.navbar {
 table.table {
     margin: 0;
 }
+
+
+.hidden {
+    display: none;
+}
+
+.faint {
+    color: #bbb;
+    text-decoration: line-through;
+    background: #ccc;
+}
