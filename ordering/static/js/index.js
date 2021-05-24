@@ -11,6 +11,20 @@ class Config {
     constructor (){}
 
     /**
+     * Convert the "data-series" and "data-episode-id" into a sinlge key for
+     * LocalStorage.
+     * 
+     * @param  {Element} element the element which contains the data attributes.
+     * @returns A string identifying the episode
+     */
+    static getEpisodeKey (element) {
+        let series = element.attributes["data-series"].value;
+        let episode = element.attributes["data-episode-id"].value;
+        let key = `${series}-${episode}`;
+        return key;
+    }
+
+    /**
      * Retrieve a value from persistent user-storage.
      * 
      * @param {String} key The name/key of the config-value to retrieve
@@ -113,20 +127,6 @@ class Config {
     };
 
     /**
-     * Convert the "data-series" and "data-episode-id" into a sinlge key for
-     * LocalStorage.
-     * 
-     * @param  {Element} element the element which contains the data attributes.
-     * @returns A string identifying the episode
-     */
-    var getLSEpisodeKey = function (element) {
-        let series = element.attributes["data-series"].value;
-        let episode = element.attributes["data-episode-id"].value;
-        let key = `${series}-${episode}`;
-        return key;
-    }
-
-    /**
      * Updates localStorage with "watched" information of an episode
      * 
      * 
@@ -134,7 +134,7 @@ class Config {
      */
     var updateWatched = function (evt) {
         let newValue = evt.target.checked;
-        let key = getLSEpisodeKey(evt.target);
+        let key = Config.getEpisodeKey(evt.target);
         let watchedEpisodes = config.get(Config.WATCHED_EPISODES, []);
         let index = watchedEpisodes.indexOf(key)
         if (newValue === true && index === -1) {
@@ -157,7 +157,7 @@ class Config {
             doHide ? watchedStateClasses.HIDDEN : watchedStateClasses.FAINT
         );
         $('.episode').map(function() {
-            let key = getLSEpisodeKey(this);
+            let key = Config.getEpisodeKey(this);
             for (const [_, value] of Object.entries(watchedStateClasses)) {
                 $(this).removeClass(value)
             }
