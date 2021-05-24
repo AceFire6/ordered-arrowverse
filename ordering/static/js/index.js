@@ -4,7 +4,7 @@
  * The class provides static variables with the available keys and get/put
  * functions to access the storage.
  */
-class Config {
+class UserPreferences {
     static WATCHED_EPISODES = "watchedEpisodes";
     static HIDE_WATCHED = "hideWatched";
 
@@ -70,7 +70,7 @@ class Config {
         FAINT: 'faint',
     };
 
-    let config = new Config();
+    let prefs = new UserPreferences();
     var disableColours = function() {
         $('.episode, thead').addClass('no-color');
         $('#episode-list').addClass('table-striped table-hover');
@@ -93,16 +93,16 @@ class Config {
      */
     var updateWatched = function (evt) {
         let newValue = evt.target.checked;
-        let key = Config.getEpisodeKey(evt.target);
-        let watchedEpisodes = config.get(Config.WATCHED_EPISODES, []);
+        let key = UserPreferences.getEpisodeKey(evt.target);
+        let watchedEpisodes = prefs.get(UserPreferences.WATCHED_EPISODES, []);
         let index = watchedEpisodes.indexOf(key)
         if (newValue === true && index === -1) {
             watchedEpisodes.push(key);
         } else if (newValue === false && index !== -1) {
             watchedEpisodes.splice(index, 1);
         }
-        config.put(Config.WATCHED_EPISODES, watchedEpisodes);
-        setWatchedDisplayState(config.get(Config.HIDE_WATCHED, true));
+        prefs.put(UserPreferences.WATCHED_EPISODES, watchedEpisodes);
+        setWatchedDisplayState(prefs.get(UserPreferences.HIDE_WATCHED, true));
     };
 
     /**
@@ -111,12 +111,12 @@ class Config {
      * @param {Boolean} doHide Whether to hide the rows or not
      */
     var setWatchedDisplayState = function (doHide) {
-        let watchedEpisodes = config.get(Config.WATCHED_EPISODES, []);
+        let watchedEpisodes = prefs.get(UserPreferences.WATCHED_EPISODES, []);
         let watchedClass = (
             doHide ? watchedStateClasses.HIDDEN : watchedStateClasses.FAINT
         );
         $('.episode').map(function() {
-            let key = Config.getEpisodeKey(this);
+            let key = UserPreferences.getEpisodeKey(this);
             for (const [_, value] of Object.entries(watchedStateClasses)) {
                 $(this).removeClass(value)
             }
@@ -134,7 +134,7 @@ class Config {
         $('#show-watched').click(function() {
             let linkText;
             let newState;
-            let currentState = config.get(Config.HIDE_WATCHED, true);
+            let currentState = prefs.get(UserPreferences.HIDE_WATCHED, true);
             if (currentState) {
                 linkText = "HIDE WATCHED";
                 newState = false;
@@ -142,8 +142,8 @@ class Config {
                 linkText = "SHOW WATCHED";
                 newState = true;
             }
-            config.put(Config.HIDE_WATCHED, newState);
-            setWatchedDisplayState(config.get(Config.HIDE_WATCHED, true));
+            prefs.put(UserPreferences.HIDE_WATCHED, newState);
+            setWatchedDisplayState(prefs.get(UserPreferences.HIDE_WATCHED, true));
 
             // Accessing "firstChild.innerHTML" is brittle. But I deemed this an
             // acceptable trade-off to keep code-churn minimal (unless I missed
@@ -183,7 +183,7 @@ class Config {
           width: "100%",
         });
         registerListeners();
-        setWatchedDisplayState(config.get(Config.HIDE_WATCHED, true));
+        setWatchedDisplayState(prefs.get(UserPreferences.HIDE_WATCHED, true));
 
         var colourSetting = Cookies.get('colour');
         if (colourSetting === undefined) {
