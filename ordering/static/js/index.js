@@ -6,6 +6,7 @@
      */
     let localStorageKeys = {
         WATCHED_EPISODES: "watchedEpisodes",
+        CONFIG: "config",
     };
 
     /**
@@ -35,6 +36,20 @@
         $('#episode-list').removeClass('table-striped table-hover');
         $('#no-color').find('.text').text('DISABLE COLOR');
         Cookies.set('colour', '1');
+    };
+
+    /**
+     * Load config-values from localStorage into the "instanceConfig"
+     */
+    var loadConfig = function () {
+        let config = JSON.parse(
+            localStorage.getItem(localStorageKeys.CONFIG) || '{}'
+        );
+        if (config.hideWatched) {
+            instanceConfig.watchedEpisodesCssClass = watchedStateClasses.HIDDEN;
+        } else {
+            instanceConfig.watchedEpisodesCssClass = watchedStateClasses.FAINT;
+        }
     };
 
     /**
@@ -101,14 +116,23 @@
         $('.watchedToggle').change(updateWatched);
 
         $('#show-watched').click(function() {
-            let linkText = "SHOW WATCHED";
+            let linkText;
+            let hideWatched;
             if (instanceConfig.watchedEpisodesCssClass === watchedStateClasses.FAINT) {
                 instanceConfig.watchedEpisodesCssClass = watchedStateClasses.HIDDEN;
                 linkText = "SHOW WATCHED";
+                hideWatched = true;
             } else {
                 instanceConfig.watchedEpisodesCssClass = watchedStateClasses.FAINT;
                 linkText = "HIDE WATCHED";
+                hideWatched = false;
             }
+            let config = JSON.parse(
+                localStorage.getItem(localStorageKeys.CONFIG) || "{}"
+            );
+            config.hideWatched = hideWatched;
+            localStorage.setItem(localStorageKeys.CONFIG, JSON.stringify(config))
+
             setWatchedDisplayState(instanceConfig.watchedEpisodesCssClass);
 
             // Accessing "firstChild.innerHTML" is brittle. But I deemed this an
@@ -142,6 +166,7 @@
     };
 
     $(document).ready(function() {
+        loadConfig();
         $('#show-filter-select').select2({
           placeholder: 'Select shows to exclude...',
           allowClear: true,
