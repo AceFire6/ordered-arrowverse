@@ -1,6 +1,9 @@
 (function($) {
     'use strict';
 
+    /**
+     * key-names for local-storage data
+     */
     let localStorageKeys = {
         WATCHED_EPISODES: "watchedEpisodes",
     };
