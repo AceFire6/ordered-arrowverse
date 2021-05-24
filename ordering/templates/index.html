@@ -130,22 +130,37 @@
                     <table class="table table-bordered col-sm-12" id="episode-list">
                         <thead>
                             <tr>
+                                <th>Watched</th>
                                 <th>#</th>
                                 <th>Series</th>
                                 <th>Episode</th>
                                 <th>Name</th>
                                 <th>Original Air Date</th>
+                                <th>&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for row in table_content %}
                             <tr class='episode {{ series_map[row.series].id }}'
-                                data-href="{{ row.episode_name | episode_url(row.series) }}">
+                                data-series="{{ row.series }}"
+                                data-episode-id="{{ row.episode_id }}">
+                                <td><input type="checkbox"
+                                           class="watchedToggle"
+                                           data-series="{{ row.series }}"
+                                           data-episode-id="{{ row.episode_id }}"></td>
                                 <td>{{ row.row_number }}</td>
                                 <td>{{ row.series }}</td>
                                 <td>{{ row.episode_id }}</td>
                                 <td>{{ row.episode_name }}</td>
                                 <td>{{ row.air_date }}</td>
+                                <td><a
+                                    href="{{ row.episode_name | episode_url(row.series) }}"
+                                    title="Open Episode Info"
+                                    target="_blank">
+                                    <span class="iconify"
+                                          data-icon="mdi-information-outline"
+                                          style="font-size: 36px; line-height:1em;">
+                                    </span></a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -290,6 +305,7 @@
                 src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
             <script src="{{ url_for('static', filename='js/index.js') }}"></script>
             <script src="{{ url_for('static', filename='js/cookie.js') }}"></script>
+            <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
             {% include 'analytics.html' %}
         </div>
     </main>
