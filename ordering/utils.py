@@ -62,8 +62,9 @@ def get_episode_list(series_soup, series):
             ]
         else:
             table_heading = table.find(name='tr', class_=None)
+            # NOTE: The split here is a fix for a reference in the Stargirl air date header
             table_headings = [
-                heading.getText().replace(' ', '').lower()
+                heading.getText().replace(' ', '').lower().split('\u200a', 1)[0]
                 for heading in table_heading.children
             ]
 
@@ -76,6 +77,8 @@ def get_episode_list(series_soup, series):
                 elif 'title' in heading:
                     title_index = index
                 elif 'originalairdate' in heading:
+                    air_date_index = index
+                elif 'originalreleasedate' in heading:
                     air_date_index = index
 
             wikipedia_row_unpacker = itemgetter(episode_num_index, title_index, air_date_index)

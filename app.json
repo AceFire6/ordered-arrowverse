@@ -5,9 +5,6 @@
   "repository": "https://github.com/AceFire6/ordered-arrowverse/",
   "logo": "https://arrowverse.info/static/favicon.png",
   "env": {
-    "DATABASE_URL": {
-      "description": "DB URL"
-    },
     "REDIS_URL": {
       "description": "Redis URL"
     }
@@ -19,24 +16,11 @@
   },
   "image": "heroku/python",
   "addons": [
-    "heroku-redis",
-    {
-      "plan": "heroku-postgresql",
-      "options": {
-        "version": "13.3"
-      }
-    }
+    "heroku-redis:hobby-dev"
   ],
   "buildpacks": [
     {
       "url": "heroku/python"
     }
-  ],
-  "environments": {
-    "test": {
-      "scripts": {
-        "test": "bundle exec rake test"
-      }
-    }
-  }
+  ]
 }
