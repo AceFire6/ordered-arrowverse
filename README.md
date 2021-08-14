@@ -21,6 +21,7 @@ Data is also drawn from Wikipedia when necessary.
 * DC's Legends of Tomorrow
 * The Flash
 * Freedom Fighters: The Ray
+* Stargirl
 * Supergirl
 * Superman & Lois
 * Vixen
