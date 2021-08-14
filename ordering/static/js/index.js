@@ -42,6 +42,8 @@
             }
         }).on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('YYYY-MM-DD'));
+        }).on('cancel.daterangepicker', function (event, picker) {
+            $(event.currentTarget).val('');
         });
     };
 
