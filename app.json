@@ -1,20 +1,42 @@
 {
+  "name": "ordered-arrowverse",
+  "description": "Ordered Arrowverse website",
+  "website": "https://arrowverse.info/",
+  "repository": "https://github.com/AceFire6/ordered-arrowverse/",
+  "logo": "https://arrowverse.info/static/favicon.png",
+  "env": {
+    "DATABASE_URL": {
+      "description": "DB URL"
+    },
+    "REDIS_URL": {
+      "description": "Redis URL"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "image": "heroku/python",
   "addons": [
-    "heroku-redis"
+    "heroku-redis",
+    {
+      "plan": "heroku-postgresql",
+      "options": {
+        "version": "13.3"
+      }
+    }
   ],
   "buildpacks": [
     {
       "url": "heroku/python"
     }
   ],
-  "description": "",
-  "formation": {
-    "web": {
-      "quantity": 1
+  "environments": {
+    "test": {
+      "scripts": {
+        "test": "bundle exec rake test"
+      }
     }
-  },
-  "name": "ordered-arrowverse",
-  "scripts": {
-  },
-  "stack": "heroku-20",
+  }
 }
