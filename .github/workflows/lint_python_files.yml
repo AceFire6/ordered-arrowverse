@@ -1,0 +1,42 @@
+name: Lint Python Files
+
+on: [pull_request]
+
+concurrency:
+  group: lint-python-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-python:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Get OS Version
+      run: echo "os_version=$(lsb_release -sr)" >> "$GITHUB_ENV"
+
+    - name: Cache pip
+      id: cache-pip
+      uses: actions/cache@v2
+      with:
+        path: |
+          ${{ env.pythonLocation }}
+          ~/.cache/pip
+        key: ${{ runner.os }}-${{ env.os_version }}-${{ env.pythonLocation }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ env.os_version }}-${{ env.pythonLocation }}-pip-
+
+    - name: Install Poetry
+      run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: Lint with flake8
+      run: poetry run flake8 --count --show-source --statistics .

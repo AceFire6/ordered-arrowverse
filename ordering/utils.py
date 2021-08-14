@@ -9,6 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from . import app
+from .caching import safe_cache_content
 from .constants import (
     ARROW,
     BATWOMAN,
@@ -47,9 +48,17 @@ def get_episode_list(series_soup, series):
         season += 1
 
         if not from_wikipedia:
+            table_text = table.getText()
+            # TODO: Kill this HOTFIX
+            if 'Crisis on Infinite Earths: Part Five' in table_text:
+                table_text = table_text.replace(
+                    '68\n\n"Crisis on Infinite Earths: Part Five"',
+                    '68\n0\n"Crisis on Infinite Earths: Part Five"',
+                )
+
             table = [
-                row.strip().split('\n')
-                for row in table.getText().split('\n\n') if row.strip()
+                row.strip().split('\n\n')
+                for row in table.getText().split('\n\n\n') if row.strip()
             ]
         else:
             table_heading = table.find(name='tr', class_=None)
@@ -57,9 +66,17 @@ def get_episode_list(series_soup, series):
                 heading.getText().replace(' ', '').lower()
                 for heading in table_heading.children
             ]
-            episode_num_index = table_headings.index('no.inseason')
-            title_index = table_headings.index('title')
-            air_date_index = table_headings.index('originalairdate')
+
+            episode_num_index = None
+            title_index = None
+            air_date_index = None
+            for index, heading in enumerate(table_headings):
+                if 'no.inseason' in heading:
+                    episode_num_index = index
+                elif 'title' in heading:
+                    title_index = index
+                elif 'originalairdate' in heading:
+                    air_date_index = index
 
             wikipedia_row_unpacker = itemgetter(episode_num_index, title_index, air_date_index)
 
@@ -73,7 +90,7 @@ def get_episode_list(series_soup, series):
 
         for row in table:
             # TODO: Make more robust - protects against rows that don't have enough data
-            if len(row) < 2:
+            if len(row) <= 2:
                 continue
 
             if from_wikipedia:
@@ -98,7 +115,7 @@ def get_episode_list(series_soup, series):
                     'series': series,
                     'episode_id': episode_id,
                     'episode_name': episode_name,
-                    'air_date': air_date,
+                    'air_date': f'{air_date:%Y-%m-%d}',
                 }
                 episode_list.append(episode_data)
 
@@ -124,7 +141,7 @@ def _handle_screening_day_error(episode_list):
 def _handle_air_time_error(episode_list):
     # handles when two episodes air on the same day
     seasons = ['', 'Midseason', 'Midseason', 'Midseason', 'Midseason', 'Midseason', 'Midseason',
-               'Summer', 'Summer', 'Summer', 'Fall', 'Fall', 'Fall']
+               'Summer', 'Summer', 'Fall', 'Fall', 'Fall', 'Fall']
     air_orders = {'Fall 2016': [(LEGENDS_OF_TOMORROW, VIXEN)],
                   'Midseason 2017': [(FLASH, LEGENDS_OF_TOMORROW)],
                   'Fall 2017': [(FLASH, LEGENDS_OF_TOMORROW)],
@@ -135,7 +152,10 @@ def _handle_air_time_error(episode_list):
                   'Midseason 2019': [(ARROW, BLACK_LIGHTNING),
                                      (LEGENDS_OF_TOMORROW, ARROW)],
                   'Fall 2019': [(BATWOMAN, SUPERGIRL),
-                                (FLASH, ARROW)]}
+                                (FLASH, ARROW)],
+                  'Midseason 2020': [(BATWOMAN, SUPERGIRL),
+                                     (ARROW, LEGENDS_OF_TOMORROW),
+                                     (FLASH, LEGENDS_OF_TOMORROW)]}
 
     for i in range(len(episode_list)-1):
         curr_ep = episode_list[i]
@@ -209,6 +229,9 @@ def sort_and_filter_episodes(show_list_set, from_date=None, to_date=None):
         show_name = show_list[0]['series'].upper()
         shows_in_list.append(show_name)
 
+    for entry in full_list:
+        entry['air_date'] = datetime.strptime(entry['air_date'], '%Y-%m-%d').date()
+
     full_list = sorted(full_list, key=lambda episode: episode['air_date'])
 
     # Fix screening time error caused by network
@@ -247,18 +270,18 @@ def _filter_on_air_date(episode_list, from_date, to_date):
     return episode_list
 
 
-@app.cache.memoize(timeout=TWELVE_HOURS)
+@safe_cache_content(timeout=TWELVE_HOURS, backup=True)
 def get_url_content(url):
     return requests.get(url).content
 
 
+@safe_cache_content(timeout=TWELVE_HOURS, hash_args=True)
 def get_show_list_from_show_html(show_name, show_html):
     show_soup = BeautifulSoup(show_html, 'html.parser')
     show_list = get_episode_list(show_soup, show_name)
     return show_list
 
 
-@app.cache.memoize(timeout=TWELVE_HOURS)
 def get_full_series_episode_list(excluded_series=None, from_date=None, to_date=None):
     excluded_series = [] if excluded_series is None else excluded_series
     shows_to_get = [show for show in app.config['SHOWS'] if show['id'] not in excluded_series]
