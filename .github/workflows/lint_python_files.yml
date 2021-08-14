@@ -22,7 +22,7 @@ jobs:
         python-version: 3.9
 
     - name: Get OS Version
-      run: echo "os_version=$(lsb_release -sr)" >> $GITHUB_ENV
+      run: echo "os_version=$(lsb_release -sr)" >> "$GITHUB_ENV"
 
     - name: Cache pip
       id: cache-pip
