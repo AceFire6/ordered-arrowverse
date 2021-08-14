@@ -1,0 +1,23 @@
+name: Lint Workflow
+
+on: [pull_request]
+
+concurrency:
+  group: lint-workflow-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-workflows:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Shellcheck
+      run: sudo apt-get install -y shellcheck
+
+    - name: Install Actionlint
+      run: bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+
+    - name: Check workflow files
+      run: ./actionlint -ignore 'SC2129:' -color
