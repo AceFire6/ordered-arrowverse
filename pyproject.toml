@@ -28,7 +28,7 @@ orjson = "^3.6.1"
 
 
 [tool.poetry.dev-dependencies]
-flake8 = "^3.7"
+flake8 = "^3.9"
 flake8-quotes = "^3.2"
 
 [build-system]
