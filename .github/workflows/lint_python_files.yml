@@ -3,7 +3,7 @@ name: Lint Python Files
 on: [pull_request]
 
 concurrency:
-  group: lint-python-${{ github.head_ref }}
+  group: lint-python-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
