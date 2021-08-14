@@ -1,9 +1,6 @@
 name: Lint Workflow
 
-on:
-  pull_request:
-    paths:
-      - '.github/workflows/*.yml'
+on: [pull_request]
 
 concurrency:
   group: lint-workflow-${{ github.ref }}
