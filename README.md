@@ -15,11 +15,12 @@ Data is also drawn from Wikipedia when necessary.
 ### Currently Supported Series:
 
 * Arrow
-* The Flash
+* Batwoman
+* Black Lightning
+* Constantine
 * DC's Legends of Tomorrow
+* The Flash
 * Freedom Fighters: The Ray
 * Supergirl
+* Superman & Lois
 * Vixen
-* Constantine
-* Black Lightning
-* Batwoman
