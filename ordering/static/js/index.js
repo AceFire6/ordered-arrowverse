@@ -1,4 +1,4 @@
-(function($) {
+(function($, Cookies) {
     'use strict';
 
     var openWiki = function() {
@@ -20,14 +20,36 @@
         Cookies.set('colour', '1');
     };
 
-    var darkModeToggle = function(){
-        $('nav').toggleClass('bg-light')
-            .toggleClass('navbar-light')
-            .toggleClass('bg-dark')
-            .toggleClass('navbar-dark');
-        $('body').toggleClass('dark-mode');
-        $('a').toggleClass('dark-mode');
-    }
+    var darkModeEnable = function() {
+        $('nav').removeClass('bg-light')
+            .removeClass('navbar-light')
+            .addClass('bg-dark')
+            .addClass('navbar-dark');
+        $('body').addClass('dark-mode');
+        $('a').addClass('dark-mode');
+
+        Cookies.set('dark-mode', '1');
+    };
+
+    var darkModeDisable = function() {
+        $('nav').addClass('bg-light')
+            .addClass('navbar-light')
+            .removeClass('bg-dark')
+            .removeClass('navbar-dark');
+        $('body').removeClass('dark-mode');
+        $('a').removeClass('dark-mode');
+
+        Cookies.set('dark-mode', '0');
+    };
+
+    var toggleDarkMode = function() {
+        var darkModeSetting = Cookies.get('dark-mode');
+        if (darkModeSetting === '1') {
+            darkModeDisable();
+        } else {
+            darkModeEnable();
+        }
+    };
 
     var registerListeners = function() {
         $('.episode').click(openWiki);
@@ -55,9 +77,7 @@
             $(event.currentTarget).val('');
         });
 
-        $('#dark-mode').click(function() {
-            darkModeToggle();
-        });
+        $('#dark-mode').click(toggleDarkMode);
     };
 
     $(document).ready(function() {
@@ -75,5 +95,12 @@
         } else if (colourSetting === '0') {
             disableColours();
         }
+
+        var darkModeSetting = Cookies.get('dark-mode');
+        if (darkModeSetting === '1') {
+            darkModeEnable();
+        } else {
+            darkModeDisable();
+        }
     });
-})(jQuery);
+})(jQuery, Cookies);
