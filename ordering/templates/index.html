@@ -125,32 +125,48 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
-                <div class="table-responsive">
-                    <table class="table table-bordered col-sm-12" id="episode-list">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Series</th>
-                                <th>Episode</th>
-                                <th>Name</th>
-                                <th>Original Air Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for row in table_content %}
-                            <tr class='episode {{ series_map[row.series].id }}'
-                                data-href="{{ row.episode_name | episode_url(row.series) }}">
-                                <td>{{ row.row_number }}</td>
-                                <td>{{ row.series }}</td>
-                                <td>{{ row.episode_id }}</td>
-                                <td>{{ row.episode_name }}</td>
-                                <td>{{ row.air_date }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                <div class="offset-md-2 col-md-8 col-sm">
+                    <div class="table-responsive">
+                        <table class="table table-bordered col-sm-12" id="episode-list">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Series</th>
+                                    <th>Episode</th>
+                                    <th>Name</th>
+                                    <th>Original Air Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in table_content %}
+                                <tr class='episode {{ series_map[row.series].id }}'
+                                    data-href="{{ row.episode_name | episode_url(row.series) }}">
+                                    <td>{{ row.row_number }}</td>
+                                    <td>{{ row.series }}</td>
+                                    <td>{{ row.episode_id }}</td>
+                                    <td>{{ row.episode_name }}</td>
+                                    <td>{{ row.air_date }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {# ad space #}
+                <div class="col-md d-none d-md-block">
+                    <div id="955455438">
+                        <script type="text/javascript">
+                            try {
+                                window._mNHandle.queue.push(function (){
+                                    window._mNDetails.loadTag("955455438", "160x600", "955455438");
+                                });
+                            }
+                            catch (error) {}
+                        </script>
+                    </div>
                 </div>
             </div>
         </div>
