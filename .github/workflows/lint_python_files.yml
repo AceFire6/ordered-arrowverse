@@ -1,6 +1,9 @@
 name: Lint Python Files
 
-on: [pull_request]
+on:
+  pull_request:
+    paths:
+      - 'ordering/*.py'
 
 concurrency:
   group: lint-python-${{ github.head_ref }}
