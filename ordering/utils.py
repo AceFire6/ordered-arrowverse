@@ -18,7 +18,6 @@ from .constants import (
     FLASH,
     FREEDOM_FIGHTERS,
     LEGENDS_OF_TOMORROW,
-    STARGIRL,
     SUPERGIRL,
     VIXEN,
     WIKIPEDIA,
