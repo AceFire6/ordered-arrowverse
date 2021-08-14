@@ -21,12 +21,12 @@
     };
 
     var darkModeToggle = function(){
-        $("nav").toggleClass("bg-light")
-            .toggleClass("navbar-light")
-            .toggleClass("bg-dark")
-            .toggleClass("navbar-dark");
-        $("body").toggleClass("dark-mode");
-        $("a").toggleClass("dark-mode");
+        $('nav').toggleClass('bg-light')
+            .toggleClass('navbar-light')
+            .toggleClass('bg-dark')
+            .toggleClass('navbar-dark');
+        $('body').toggleClass('dark-mode');
+        $('a').toggleClass('dark-mode');
     }
 
     var registerListeners = function() {
@@ -65,7 +65,7 @@
           placeholder: 'Select shows to exclude...',
           allowClear: true,
           closeOnSelect: false,
-          width: "100%",
+          width: '100%',
         });
         registerListeners();
 
