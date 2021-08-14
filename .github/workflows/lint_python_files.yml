@@ -22,7 +22,7 @@ jobs:
         python-version: 3.9
 
     - name: Get OS Version
-      run: echo "os_version=$(lsb_release -sr)" >> $GITHUB_ENV
+      run: echo "os_version=$(lsb_release -sr)" >> "$GITHUB_ENV"
 
     - name: Cache pip
       id: cache-pip
@@ -35,10 +35,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-${{ env.os_version }}-${{ env.pythonLocation }}-pip-
 
+    - name: Install Poetry
+      run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
+
     - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip wheel setuptools
-        pip install -r requirements.txt
+      run: poetry install
 
     - name: Lint with flake8
-      run: flake8 --count --show-source --statistics .
+      run: poetry run flake8 --count --show-source --statistics .
