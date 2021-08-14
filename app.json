@@ -4,11 +4,6 @@
   "website": "https://arrowverse.info/",
   "repository": "https://github.com/AceFire6/ordered-arrowverse/",
   "logo": "https://arrowverse.info/static/favicon.png",
-  "env": {
-    "REDIS_URL": {
-      "description": "Redis URL"
-    }
-  },
   "formation": {
     "web": {
       "quantity": 1
