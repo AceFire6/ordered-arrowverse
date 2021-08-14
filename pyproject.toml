@@ -15,20 +15,20 @@ htmlmin = "^0.1.12"
 jsmin = "^2.2"
 python-dateutil = "^2.8"
 redis = "^3.2"
-requests = "^2.21"
+requests = "^2.26"
 webassets = "^2.0"
 quart = "^0.12.0"
 quart-minify = "^0.2.0"
 quart-compress = "^0.2.1"
 feedgen = "^0.9.0"
-tortoise-orm = "^0.16.13"
+tortoise-orm = "^0.17.6"
 asyncpg = "^0.22.0"
 environs = "^8.0.0"
-orjson = "^3.5.1"
+orjson = "^3.6.1"
 
 
 [tool.poetry.dev-dependencies]
-flake8 = "^3.7"
+flake8 = "^3.9"
 flake8-quotes = "^3.2"
 
 [build-system]
