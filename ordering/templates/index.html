@@ -200,111 +200,111 @@
                 </div>
             </div>
         </div>
+    </main>
 
-        <div class="modal" tabindex="-1" role="dialog" id="support">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Support Arrowverse</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <p>
-                  Hello! My name is Jethro.
-                  I created and have been working on the Arrowverse website since 2014.
-                </p>
-                <p>
-                  Your support allows me to keep working on and improving Arrowverse.
-                  Thank you for being a part of the Arrowverse community!
-                </p>
-                <p>
-                  If you'd like to support what I do here check out
-                  the project on GitHub or consider buying me a coffee on Ko-Fi or via PayPal!
-                </p>
-                <a href='https://ko-fi.com/B0B4XZIE' target='_blank'>
-                  <img height='36'
-                       style='border:0;height:36px;'
-                       src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2'
-                       alt='Buy Me a Coffee at ko-fi.com'/>
-                </a>
-                <a class="btn btn-primary"
-                   href="https://paypal.me/AceFire6"
-                   role="button"
-                   target="_blank">
-                  Support me on PayPal
-                </a>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                  Close
-                </button>
-              </div>
-            </div>
+    <div class="modal" tabindex="-1" role="dialog" id="support">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Support Arrowverse</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Hello! My name is Jethro.
+              I created and have been working on the Arrowverse website since 2014.
+            </p>
+            <p>
+              Your support allows me to keep working on and improving Arrowverse.
+              Thank you for being a part of the Arrowverse community!
+            </p>
+            <p>
+              If you'd like to support what I do here check out
+              the project on GitHub or consider buying me a coffee on Ko-Fi or via PayPal!
+            </p>
+            <a href='https://ko-fi.com/B0B4XZIE' target='_blank'>
+              <img height='36'
+                   style='border:0;height:36px;'
+                   src='https://az743702.vo.msecnd.net/cdn/kofi1.png?v=2'
+                   alt='Buy Me a Coffee at ko-fi.com'/>
+            </a>
+            <a class="btn btn-primary"
+               href="https://paypal.me/AceFire6"
+               role="button"
+               target="_blank">
+              Support me on PayPal
+            </a>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
           </div>
         </div>
+      </div>
+    </div>
 
-        <div class="modal" tabindex="-1" role="dialog" id="acknowledgements">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Acknowledgements</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Content is drawn from:
-                        <ul>
-                            {% for show_id, show_data in show_list.items() %}
-                            <li>
-                                <a href="{{ show_data.root }}{{ show_data.url }}"
-                                   target="_blank"
-                                   rel="noopener">
-                                    {{ show_data.url|replace("_", " ") }}
-                                </a>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="acknowledgements">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Acknowledgements</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Content is drawn from:
+                    <ul>
+                        {% for show_id, show_data in show_list.items() %}
+                        <li>
+                            <a href="{{ show_data.root }}{{ show_data.url }}"
+                               target="_blank"
+                               rel="noopener">
+                                {{ show_data.url|replace("_", " ") }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="modal" tabindex="-1" role="dialog" id="contact">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Contact</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <p>Made by Jethro Muller</p>
-                        <p>To contact me, <a href="mailto:arrowverse.info@gmail.com" target="_blank">email me</a>.
-                        </p>
-                        <p>Or, view my other projects on <a href="https://www.github.com/AceFire6" target="_blank">Github</a>.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="contact">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Contact</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Made by Jethro Muller</p>
+                    <p>To contact me, <a href="mailto:arrowverse.info@gmail.com" target="_blank">email me</a>.
+                    </p>
+                    <p>Or, view my other projects on <a href="https://www.github.com/AceFire6" target="_blank">Github</a>.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
                 </div>
             </div>
-
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
-            <script src="{{ url_for('static', filename='js/index.js') }}"></script>
-            {% include 'analytics.html' %}
         </div>
-    </main>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    {% include 'analytics.html' %}
 </body>
 </html>
