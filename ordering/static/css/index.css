@@ -1,9 +1,22 @@
 body.dark-mode {
-    background: #000;
+    background-color: #1c1c1c;
 }
 
 a.dark-mode {
-    color: #fff;
+    color: #f6f6f6;
+}
+
+.modal-content.dark-mode {
+    color: #f6f6f6;
+    background-color: #212121;
+}
+
+.btn-close.dark-mode {
+    background-color: #f6f6f6;
+}
+
+#episode-list td a {
+    color: #f6f6f6;
 }
 
 a.btn {
@@ -11,7 +24,7 @@ a.btn {
 }
 
 #episode-list thead {
-    color: #FFF;
+    color: #f6f6f6;
     background-color: #333333;
 }
 
@@ -20,8 +33,7 @@ a.btn {
 }
 
 .episode {
-    cursor: pointer;
-    color: #FFF;
+    color: #f6f6f6;
 }
 
 .arrow {

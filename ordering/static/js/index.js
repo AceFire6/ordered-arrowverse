@@ -27,6 +27,8 @@
             .addClass('navbar-dark');
         $('body').addClass('dark-mode');
         $('a').addClass('dark-mode');
+        $('.modal-content').addClass('dark-mode');
+        $('.btn-close').addClass('dark-mode');
 
         Cookies.set('dark-mode', '1');
     };
@@ -38,6 +40,8 @@
             .removeClass('navbar-dark');
         $('body').removeClass('dark-mode');
         $('a').removeClass('dark-mode');
+        $('.modal-content').removeClass('dark-mode');
+        $('.btn-close').removeClass('dark-mode');
 
         Cookies.set('dark-mode', '0');
     };
