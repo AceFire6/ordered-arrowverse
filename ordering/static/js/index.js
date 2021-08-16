@@ -104,8 +104,19 @@
             disableColours();
         }
 
+        var userPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         var darkModeSetting = Cookies.get('dark-mode');
-        if (darkModeSetting === '1') {
+
+        var darkModeEnabled;
+        if (darkModeSetting === undefined) {
+            // If no user-defined setting set we defer to media setting
+            darkModeEnabled = userPrefersDark;
+        } else {
+            // otherwise we use user setting
+            darkModeEnabled = darkModeSetting === '1';
+        }
+
+        if (darkModeEnabled) {
             darkModeEnable();
         } else {
             darkModeDisable();
