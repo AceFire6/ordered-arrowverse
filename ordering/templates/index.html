@@ -147,18 +147,26 @@
                                     <th>Episode</th>
                                     <th>Name</th>
                                     <th>Original Air Date</th>
+                                    <th>Source</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for row in table_content %}
-                                <tr class='episode {{ series_map[row.series].id }}'
-                                    data-href="{{ row.episode_name | episode_url(row.series) }}">
-                                    <td>{{ row.row_number }}</td>
-                                    <td>{{ row.series }}</td>
-                                    <td>{{ row.episode_id }}</td>
-                                    <td>{{ row.episode_name }}</td>
-                                    <td>{{ row.air_date }}</td>
-                                </tr>
+                                    <tr class="episode {{ series_map[row.series].id }}">
+                                        <td>{{ row.row_number }}</td>
+                                        <td>{{ row.series }}</td>
+                                        <td>{{ row.episode_id }}</td>
+                                        <td>{{ row.episode_name }}</td>
+                                        <td>{{ row.air_date }}</td>
+                                        <td>
+                                            <a href="{{ row.episode_name | episode_url(row.series) }}" target="_blank">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
+                                                    <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"></path>
+                                                    <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"></path>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
