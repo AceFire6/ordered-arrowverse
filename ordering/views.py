@@ -128,6 +128,11 @@ async def index_with_hidden_newest_first(hide_list):
     return await render_template('index.html', **context)
 
 
+@app.route('/legal/privacy-policy/', methods=['GET'])
+async def privacy_policy():
+    return await render_template('legal/privacy_policy.html')
+
+
 @app.route('/legal/cookie-policy/', methods=['GET'])
 async def cookie_policy():
     return await render_template('legal/cookie_policy.html')
