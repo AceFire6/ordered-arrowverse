@@ -29,6 +29,9 @@
         $('a').addClass('dark-mode');
         $('.modal-content').addClass('dark-mode');
         $('.btn-close').addClass('dark-mode');
+        $('.select2-results__option').addClass('dark-mode');
+        $('.select2-selection.select2-selection--multiple').addClass('dark-mode');
+        $('input.form-control.date-picker').addClass('dark-mode');
 
         Cookies.set('dark-mode', '1');
     };
@@ -42,6 +45,9 @@
         $('a').removeClass('dark-mode');
         $('.modal-content').removeClass('dark-mode');
         $('.btn-close').removeClass('dark-mode');
+        $('.select2-results__option').removeClass('dark-mode');
+        $('.select2-selection.select2-selection--multiple').removeClass('dark-mode');
+        $('input.form-control.date-picker').removeClass('dark-mode');
 
         Cookies.set('dark-mode', '0');
     };

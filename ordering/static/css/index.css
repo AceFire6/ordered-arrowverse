@@ -1,5 +1,5 @@
 body.dark-mode {
-    background-color: #1c1c1c;
+    background-color: #2a2a2a;
 }
 
 a.dark-mode {
@@ -8,11 +8,19 @@ a.dark-mode {
 
 .modal-content.dark-mode {
     color: #d3d3d3;
-    background-color: #212121;
+    background-color: #2a2a2a;
 }
 
 .btn-close.dark-mode {
     background-color: #d3d3d3;
+}
+
+.select2-selection.select2-selection--multiple.dark-mode {
+    background-color: #000000;
+}
+
+input.form-control.date-picker.dark-mode {
+    background-color: #000000;
 }
 
 #episode-list td a {
