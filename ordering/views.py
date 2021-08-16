@@ -126,3 +126,8 @@ async def index_with_hidden_newest_first(hide_list):
     context['show_list'] = app.config['SHOW_DICT']
 
     return await render_template('index.html', **context)
+
+
+@app.route('/legal/cookie-policy/', methods=['GET'])
+async def cookie_policy():
+    return await render_template('legal/cookie_policy.html')
