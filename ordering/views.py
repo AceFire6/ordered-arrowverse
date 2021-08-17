@@ -1,6 +1,6 @@
 from feedgen.entry import FeedEntry
 from feedgen.feed import FeedGenerator
-from quart import jsonify, make_response, render_template, request, url_for
+from quart import jsonify, make_response, render_template, request, send_file, url_for
 
 from . import app
 from .utils import _get_bool, _get_date, get_full_series_episode_list
@@ -136,3 +136,8 @@ async def privacy_policy():
 @app.route('/legal/cookie-policy/', methods=['GET'])
 async def cookie_policy():
     return await render_template('legal/cookie_policy.html')
+
+
+@app.route('/ads.txt')
+async def ads_txt():
+    return await send_file('ordering/static/ads.txt')
