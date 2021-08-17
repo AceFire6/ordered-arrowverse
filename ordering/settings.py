@@ -1,5 +1,6 @@
 from datetime import timedelta
 from enum import Enum
+from uuid import uuid4
 
 from environs import Env
 
@@ -10,6 +11,7 @@ DEBUG = env.bool('QUART_DEBUG', default=False)
 REDIS_URL = env('REDIS_URL', 'redis://localhost:6379')
 
 SEND_FILE_MAX_AGE_DEFAULT = timedelta(weeks=1)
+STATIC_CACHE_ID = env('STATIC_CACHE_ID', default=uuid4().hex[:6])
 
 
 class Shows(str, Enum):
