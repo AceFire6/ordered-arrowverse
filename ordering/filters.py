@@ -1,7 +1,8 @@
-from quart import request
+from quart import request, url_for
 
 from . import app
 from .constants import WIKIPEDIA
+from .settings import STATIC_CACHE_ID
 from .utils import _get_bool
 
 
@@ -18,6 +19,13 @@ def episode_url_filter(episode_name, series):
         return root_url + url_form(episode_name + ' (%s)' % series)
     else:
         return root_url + url_form(episode_name)
+
+
+@app.template_global('static_url')
+def static_url(filename):
+    static_file_url = url_for('static', filename=filename)
+
+    return f'{static_file_url}?{STATIC_CACHE_ID}'
 
 
 @app.context_processor
