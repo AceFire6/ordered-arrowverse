@@ -12,6 +12,7 @@ REDIS_URL = env('REDIS_URL', 'redis://localhost:6379')
 
 SEND_FILE_MAX_AGE_DEFAULT = timedelta(weeks=1)
 STATIC_CACHE_ID = env('STATIC_CACHE_ID', default=uuid4().hex[:6])
+OLD_SITE_HOST = env('OLD_SITE_HOST', default='flash-arrow-order.herokuapp.com')
 
 
 class Shows(str, Enum):
