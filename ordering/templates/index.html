@@ -27,6 +27,20 @@
 </head>
 
 <body>
+    {% if using_old_site %}
+        <section class="old-site-banner container-fluid sticky-top">
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-danger text-center" role="alert">
+                        <p>Hi! You're using the old URL https://{{ old_site_host }}</p>
+                        <p>Please switch to the new URL <a class="alert-link" href="{{ new_site_url }}">{{ new_site_url }}</a></p>
+                        <p>We will be disabling access via the old URL in 2 months. Good things are coming!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <span class="navbar-brand">Arrowverse Episode Order</span>
