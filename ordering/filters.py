@@ -45,7 +45,11 @@ def inject_newest_first():
 @app.context_processor
 def inject_using_old_site():
     using_old_site = request.host == settings.OLD_SITE_HOST
-    return {'using_old_site': using_old_site}
+    return {
+        'using_old_site': using_old_site,
+        'old_site_host': settings.OLD_SITE_HOST,
+        'new_site_url': settings.NEW_SITE_URL,
+    }
 
 
 @app.context_processor
