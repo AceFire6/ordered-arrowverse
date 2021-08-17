@@ -1,6 +1,6 @@
 from quart import request, url_for
 
-from . import app
+from . import app, settings
 from .constants import WIKIPEDIA
 from .settings import STATIC_CACHE_ID
 from .utils import _get_bool
@@ -40,6 +40,12 @@ def inject_oldest_first_url():
 def inject_newest_first():
     newest_first = request.args.get('newest_first', default=False, type=_get_bool)
     return {'newest_first': newest_first}
+
+
+@app.context_processor
+def inject_using_old_site():
+    using_old_site = request.host == settings.OLD_SITE_HOST
+    return {'using_old_site': using_old_site}
 
 
 @app.context_processor
