@@ -1,2 +1,7 @@
 {# Google Adsense #}
-<script data-ad-client="ca-pub-4243272906692681" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+{% if using_old_site %}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4243272906692681"
+         crossorigin="anonymous"></script>
+{% else %}
+    <script data-ad-client="ca-pub-4243272906692681" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+{% endif %}
