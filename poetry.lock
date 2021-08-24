@@ -152,7 +152,7 @@ pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
 name = "flake8-quotes"
-version = "3.2.0"
+version = "3.3.0"
 description = "Flake8 lint for quotes."
 category = "dev"
 optional = false
@@ -586,7 +586,7 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "40c0a0f3227c88fc7567f6c1576e08d07448fd675379b803e290002257aa2d1a"
+content-hash = "020bb043ae72cf4835a395678accaae04931384329031b11fb6ebb173066f7d3"
 
 [metadata.files]
 aiofiles = [
@@ -702,7 +702,7 @@ flake8 = [
     {file = "flake8-3.9.2.tar.gz", hash = "sha256:07528381786f2a6237b061f6e96610a4167b226cb926e2aa2b6b1d78057c576b"},
 ]
 flake8-quotes = [
-    {file = "flake8-quotes-3.2.0.tar.gz", hash = "sha256:3f1116e985ef437c130431ac92f9b3155f8f652fda7405ac22ffdfd7a9d1055e"},
+    {file = "flake8-quotes-3.3.0.tar.gz", hash = "sha256:f1dd87830ed77ff2ce47fc0ee0fd87ae20e8f045355354ffbf4dcaa18d528217"},
 ]
 gunicorn = [
     {file = "gunicorn-20.1.0-py3-none-any.whl", hash = "sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e"},
