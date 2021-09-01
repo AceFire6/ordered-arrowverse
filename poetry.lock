@@ -522,14 +522,14 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "tortoise-orm"
-version = "0.17.6"
+version = "0.17.7"
 description = "Easy async ORM for python, built with relations in mind"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-aiosqlite = ">=0.16.0,<0.17.0"
+aiosqlite = ">=0.16.0,<0.18.0"
 iso8601 = ">=0.1.13,<0.2.0"
 pypika-tortoise = ">=0.1.1,<0.2.0"
 pytz = "*"
@@ -586,7 +586,7 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "40c0a0f3227c88fc7567f6c1576e08d07448fd675379b803e290002257aa2d1a"
+content-hash = "85e5ccfca852d50fd913c70d84875ead585cd3b16ef5200dc6bedb6944f14078"
 
 [metadata.files]
 aiofiles = [
@@ -956,8 +956,8 @@ toml = [
     {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
 ]
 tortoise-orm = [
-    {file = "tortoise-orm-0.17.6.tar.gz", hash = "sha256:f4187cd94b838cdf16aaa4e1ec54852d773c1a37a2a510d05f648d7350ab3c6e"},
-    {file = "tortoise_orm-0.17.6-py3-none-any.whl", hash = "sha256:294b94d04d18cf85cca2a93f708be720005625b5dae3af8e8190f050ddb718d2"},
+    {file = "tortoise-orm-0.17.7.tar.gz", hash = "sha256:74d5c6341fc0e2d4ef7a321f460107715da2679a2b3e2a48e32e276ed7bd3fc0"},
+    {file = "tortoise_orm-0.17.7-py3-none-any.whl", hash = "sha256:36bb0d1f9bd800d3b91d5490cfc13a598c0e0f570a638b185bc4976abfabd135"},
 ]
 typing-extensions = [
     {file = "typing_extensions-3.10.0.0-py2-none-any.whl", hash = "sha256:0ac0f89795dd19de6b97debb0c6af1c70987fd80a2d62d1958f7e56fcc31b497"},
