@@ -111,7 +111,7 @@ def get_episode_list(series_soup, series):
 
             # The rows on wikipedia were combined for some reason
             if series == Shows.STARGIRL and season == 1:
-                _handle_stargirl_episodes(episode_rows)
+                episode_rows = _handle_stargirl_episodes(episode_rows)
 
             table = [
                 [
