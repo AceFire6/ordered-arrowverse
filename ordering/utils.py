@@ -1,4 +1,5 @@
 from concurrent.futures import as_completed, ThreadPoolExecutor
+from dataclasses import dataclass
 from datetime import datetime
 
 from dateutil.parser import parse as parse_date_string
@@ -22,8 +23,31 @@ from .constants import (
     VIXEN,
     WIKIPEDIA,
 )
+from .settings import Shows
 
 TWELVE_HOURS = 43200
+
+
+@dataclass
+class TDShim:
+    td_data: str
+
+    def getText(self):
+        return self.td_data
+
+
+def row_shim(row_data: list[str]) -> list[TDShim]:
+    return list(map(TDShim, row_data))
+
+
+def _handle_stargirl_episodes(episode_rows):
+    episode_rows = list(filter(lambda x: x, episode_rows))
+    episode_rows[6] = row_shim(['7', '7', 'Shiv: Part 1', '', '', 'June 29, 2020'])
+    episode_rows[7] = row_shim(['8', '8', 'Shiv: Part 2', '', '', 'July 6, 2020'])
+    episode_rows[11] = row_shim(['11', '11', 'Stars & S.T.R.I.P.E.: Part 1', '', '', 'August 3, 2020'])  # noqa: E501
+    episode_rows[12] = row_shim(['12', '12', 'Stars & S.T.R.I.P.E.: Part 2', '', '', 'August 10, 2020'])  # noqa: E501
+
+    return episode_rows
 
 
 def get_episode_list(series_soup, series):
@@ -83,12 +107,18 @@ def get_episode_list(series_soup, series):
 
             wikipedia_row_unpacker = itemgetter(episode_num_index, title_index, air_date_index)
 
+            episode_rows = [episode_row.contents for episode_row in table.find_all(class_='vevent')]
+
+            # The rows on wikipedia were combined for some reason
+            if series == Shows.STARGIRL and season == 1:
+                _handle_stargirl_episodes(episode_rows)
+
             table = [
                 [
                     episode_row_col.getText()
-                    for episode_row_col in wikipedia_row_unpacker(episode_row.contents)
+                    for episode_row_col in wikipedia_row_unpacker(episode_row)
                 ]
-                for episode_row in table.find_all(class_='vevent')
+                for episode_row in episode_rows
             ]
 
         for row in table:

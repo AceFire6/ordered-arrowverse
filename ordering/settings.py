@@ -26,6 +26,7 @@ class Shows(str, Enum):
     LEGENDS = "DC's Legends of Tomorrow"
     SUPERGIRL = 'Supergirl'
     SUPERMAN_AND_LOIS = 'Superman & Lois'
+    STARGIRL = 'Stargirl'
     VIXEN = 'Vixen'
 
     def __str__(self):
@@ -44,7 +45,7 @@ SUPERGIRL_URL = 'List_of_Supergirl_episodes'
 SUPERMAN_AND_LOIS_URL = 'List_of_Superman_%26_Lois_episodes'
 VIXEN_URL = 'List_of_Vixen_episodes'
 
-FANDOM_ROOT = 'http://arrow.fandom.com/wiki/'
+FANDOM_ROOT = 'https://arrow.fandom.com/wiki/'
 WIKIPEDIA_ROOT = 'https://en.wikipedia.org/wiki/'
 
 DATABASE_URL = env('DATABASE_URL', default='postgres://localhost:5432/arrowverse_db')
