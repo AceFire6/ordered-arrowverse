@@ -24,6 +24,7 @@ class Shows(str, Enum):
     LEGENDS = "DC's Legends of Tomorrow"
     SUPERGIRL = 'Supergirl'
     SUPERMAN_AND_LOIS = 'Superman & Lois'
+    STARGIRL = 'Stargirl'
     VIXEN = 'Vixen'
 
     def __str__(self):
