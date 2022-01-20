@@ -43,9 +43,9 @@ def row_shim(row_data: list[str]) -> list[TDShim]:
 def _handle_stargirl_episodes(episode_rows):
     episode_rows = list(filter(lambda x: x, episode_rows))
     episode_rows[6] = row_shim(['7', '7', 'Shiv: Part 1', '', '', 'June 29, 2020'])
-    episode_rows[7] = row_shim(['8', '8', 'Shiv: Part 2', '', '', 'July 6, 2020'])
-    episode_rows[11] = row_shim(['11', '11', 'Stars & S.T.R.I.P.E.: Part 1', '', '', 'August 3, 2020'])  # noqa: E501
-    episode_rows[12] = row_shim(['12', '12', 'Stars & S.T.R.I.P.E.: Part 2', '', '', 'August 10, 2020'])  # noqa: E501
+    episode_rows.insert(7, row_shim(['8', '8', 'Shiv: Part 2', '', '', 'July 6, 2020']))
+    episode_rows[11] = row_shim(['12', '12', 'Stars & S.T.R.I.P.E.: Part 1', '', '', 'August 3, 2020'])  # noqa: E501
+    episode_rows.append(row_shim(['13', '13', 'Stars & S.T.R.I.P.E.: Part 2', '', '', 'August 10, 2020']))  # noqa: E501
 
     return episode_rows
 
