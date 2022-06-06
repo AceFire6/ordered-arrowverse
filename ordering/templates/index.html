@@ -173,6 +173,7 @@
                             <tbody>
                                 {% for row in table_content %}
                                     <tr class="episode {{ series_map[row.series].id }}"
+                                        aria-label="Episode Information"
                                         data-series="{{ row.series }}"
                                         data-episode-id="{{ row.episode_id }}">
                                         <td><input type="checkbox"
