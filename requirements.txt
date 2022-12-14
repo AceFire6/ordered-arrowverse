@@ -21,7 +21,7 @@ idna==2.10; python_version >= "3" and python_full_version < "3.0.0" or python_fu
 iso8601==0.1.13; python_version >= "3.7" and python_version < "4.0"
 itsdangerous==1.1.0; python_full_version >= "3.7.0" and python_version >= "3.7"
 jinja2==2.11.3; python_full_version >= "3.7.0" and python_version >= "3.7"
-jsmin==2.2.2
+jsmin==3.0.1
 lesscpy==0.14.0; python_version >= "3.7"
 lxml==4.6.3; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 markupsafe==1.1.1; python_full_version >= "3.7.0"
@@ -46,4 +46,3 @@ typing-extensions==3.7.4.3; python_version >= "3.7" and python_version < "4.0"
 urllib3==1.26.5; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version < "4"
 werkzeug==1.0.1; python_full_version >= "3.7.0" and python_version >= "3.7"
 wsproto==1.0.0; python_version >= "3.7" and python_full_version >= "3.7.0"
-setuptools==57.5.0
