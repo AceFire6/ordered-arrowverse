@@ -1,4 +1,4 @@
-setuptools==57.5.0
+setuptools==67.5.1
 aiofiles==0.6.0; python_full_version >= "3.7.0" and python_version >= "3.7"
 aiosqlite==0.16.1; python_version >= "3.7" and python_version < "4.0"
 asyncpg==0.22.0; python_full_version >= "3.5.0"
