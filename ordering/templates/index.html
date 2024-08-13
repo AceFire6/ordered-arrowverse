@@ -172,7 +172,7 @@
                             <tbody>
                                 {% for row in table_content %}
                                     <tr class="episode {{ series_map[row.series].id }}">
-                                        <td><input type='checkbox' data-episodeId="{{ row.series }} {{ row.episode_id }}" onclick="(event) => bookmarkEpisode(event)"/></td>
+                                        <td><input aria-label="bookmark for {{ row.series }} {{ row.episode_id }}" type='checkbox' data-episodeId="{{ row.series }} {{ row.episode_id }}" onclick="(event) => bookmarkEpisode(event)"/></td>
                                         <td>{{ row.row_number }}</td>
                                         <td>{{ row.series }}</td>
                                         <td>{{ row.episode_id }}</td>
