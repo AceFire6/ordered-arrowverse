@@ -21,3 +21,9 @@ const bookmarkEpisode = ({target}) => {
     }
     if (bookmarks) localStorage.setItem('bookmarks', JSON.stringify(bookmarks)) //if bookmarks array exists, save it to local storage
 }
+
+const setupBookmarks = () => {
+    const elems = document.querySelectorAll('input[type="checkbox"]') // get all inputs
+    const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) //get bookmarks from local storage
+    for (const elem in elems) if (bookmarks && bookmarks.indexOf(elem.dataset.episodeId) !== -1) elem.checked = true //loop through inputs, if bookmarks exist and episode id is found in array, set checked to true
+}
