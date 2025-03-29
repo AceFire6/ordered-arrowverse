@@ -2,7 +2,7 @@ aiofiles==0.6.0; python_full_version >= "3.7.0" and python_version >= "3.7"
 aiosqlite==0.16.1; python_version >= "3.7" and python_version < "4.0"
 asyncpg==0.29.0; python_full_version >= "3.5.0"
 beautifulsoup4==4.9.3
-blinker==1.4; python_full_version >= "3.7.0" and python_version >= "3.7"
+blinker==1.5; python_full_version >= "3.7.0" and python_version >= "3.7"
 brotli==1.0.9
 certifi==2020.12.5
 charset-normalizer==2.0.4; python_full_version >= "3.6.0" and python_version >= "3"
