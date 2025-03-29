@@ -12,6 +12,36 @@ and the episodes are ordered by air date.
 
 Data is also drawn from Wikipedia when necessary.
 
+### Development
+
+The project has been tested in Python 3.9 and will (currently) not run on Python 3.10+
+
+During development, the environment variable `REDIS_URL` can be set to "None"
+removing the requirement of having a Redis instance up and running. This
+effectively disables caching.
+
+Setting up the environment:
+
+```
+poetry install
+```
+
+Running a development instance:
+
+There are two options:
+
+```
+QUART_ENV=development QUART_DEBUG=true QUART_APP=./ordering/ poetry run quart run
+```
+
+and 
+
+```
+poetry shell
+QUART_ENV=development QUART_DEBUG=true QUART_APP=./ordering/ quart run
+```
+
+
 ### Currently Supported Series:
 
 * Arrow

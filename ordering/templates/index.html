@@ -149,6 +149,7 @@
                     </a>
                     | <a href="#" id="no-color"><small class="text">DISABLE COLOR</small></a>
                     | <a href="#" id="dark-mode"><small class="text">TOGGLE DARK MODE</small></a>
+                    | <a href="#" id="show-watched"><small class="text">SHOW/HIDE WATCHED</small></a>
                 </div>
             </div>
         </div>
@@ -159,6 +160,7 @@
                         <table class="table table-bordered col-sm-12" id="episode-list">
                             <thead>
                                 <tr>
+                                    <th>Watched</th>
                                     <th>#</th>
                                     <th>Series</th>
                                     <th>Episode</th>
@@ -169,7 +171,15 @@
                             </thead>
                             <tbody>
                                 {% for row in table_content %}
-                                    <tr class="episode {{ series_map[row.series].id }}">
+                                    <tr class="episode {{ series_map[row.series].id }}"
+                                        aria-label="Episode Information"
+                                        data-series="{{ row.series }}"
+                                        data-episode-id="{{ row.episode_id }}">
+                                        <td><input type="checkbox"
+                                                   name="Toggle watched state"
+                                                   class="watchedToggle"
+                                                   data-series="{{ row.series }}"
+                                                   data-episode-id="{{ row.episode_id }}"></td>
                                         <td>{{ row.row_number }}</td>
                                         <td>{{ row.series }}</td>
                                         <td>{{ row.episode_id }}</td>
@@ -188,6 +198,7 @@
                             </tbody>
                         </table>
                     </div>
+
                 </div>
 
             </div>
