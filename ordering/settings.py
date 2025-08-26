@@ -14,6 +14,7 @@ SEND_FILE_MAX_AGE_DEFAULT = timedelta(weeks=1)
 STATIC_CACHE_ID = env('STATIC_CACHE_ID', default=uuid4().hex[:6])
 OLD_SITE_HOST = env('OLD_SITE_HOST', default='flash-arrow-order.herokuapp.com')
 NEW_SITE_URL = env('NEW_SITE_URL', default='https://arrowverse.info')
+ADMIN_EMAIL = env('ADMIN_EMAIL', default='')
 
 
 class Shows(str, Enum):

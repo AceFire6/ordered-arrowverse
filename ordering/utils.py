@@ -23,7 +23,7 @@ from .constants import (
     VIXEN,
     WIKIPEDIA,
 )
-from .settings import Shows
+from .settings import Shows, ADMIN_EMAIL
 
 TWELVE_HOURS = 43200
 
@@ -303,9 +303,14 @@ def _filter_on_air_date(episode_list, from_date, to_date):
     return episode_list
 
 
+def get_user_agent_headers() -> dict[str, str]:
+    return {
+        "User-Agent": f"ArrowverseBot/1.0 (https://arrowverse.info; {ADMIN_EMAIL})"
+    }
+
 @safe_cache_content(timeout=TWELVE_HOURS, backup=True)
-def get_url_content(url):
-    return requests.get(url).content
+def get_url_content(url: str) -> str:
+    return requests.get(url, headers=get_user_agent_headers()).content
 
 
 @safe_cache_content(timeout=TWELVE_HOURS, hash_args=True)
