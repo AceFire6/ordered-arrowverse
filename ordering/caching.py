@@ -6,9 +6,14 @@ from redis import Redis
 
 from ordering.settings import REDIS_URL
 
-
-cache = Redis.from_url(REDIS_URL)
 logger = getLogger(__name__)
+
+try:
+    cache = Redis.from_url(REDIS_URL)
+except ValueError:
+    logger.warning("Unable to open cache. Caching will be disabled.", exc_info=True)
+    cache = None
+
 
 
 def serialized_response(response):
@@ -23,6 +28,10 @@ def serialized_response(response):
 
 def safe_cache_content(timeout=None, backup=False, hash_args=False):
     def decorator(func):
+
+        if cache is None:
+            return func
+
         @wraps(func)
         def wrapper(*args, **kwargs):
             inputs = f'{args}-{kwargs}'
