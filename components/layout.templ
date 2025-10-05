@@ -1,0 +1,83 @@
+package components
+
+import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
+
+templ NavMenu(reverser frontend.URLReverser) {
+	<li><a href={ templ.SafeURL(reverser.Reverse("view:source_images:list")) }>🖼️ Source Images List</a></li>
+	<li><a href={ templ.SafeURL(reverser.Reverse("view:source_images:upload")) }>💾 Upload Images</a></li>
+}
+
+templ NavBar(pageConfig *frontend.PageConfig) {
+	<nav class="navbar pl-0 pr-0">
+		<div class="md:flex-1">
+			<div class="dropdown">
+				<div tabindex="0" role="button" class="btn btn-ghost md:hidden">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-5 w-5"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6h16M4 12h8m-8 6h16"
+						></path>
+					</svg>
+				</div>
+				<ul
+					tabindex="0"
+					class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+				>
+					@NavMenu(pageConfig)
+				</ul>
+			</div>
+			<a href={ templ.SafeURL(pageConfig.Reverse("view:home")) } class="btn btn-ghost text-2xl">
+				<strong>{ pageConfig.Heading }</strong>
+			</a>
+		</div>
+		<div class="hidden md:flex-none md:inline">
+			<ul class="menu menu-horizontal px-1 text-xl">
+				@NavMenu(pageConfig)
+			</ul>
+		</div>
+	</nav>
+}
+
+templ PageLayout(pageConfig *frontend.PageConfig) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="color-scheme" content="light dark"/>
+			// https://htmx.org/attributes/hx-indicator/
+			<meta name="htmx-config" content='{"includeIndicatorStyles": false}'/>
+			// Security policy
+			// Allow loading all sources from the current site
+			// Allow images to load from this domain, data sources inline, and the two current image buckets
+			// TODO: Move this into the server as a header
+			<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self' data: https://static.ccs.co.za https://ai-output.s3.amazonaws.com https://ai-input.s3.amazonaws.com https://devcarstudio.s3.eu-west-1.amazonaws.com; style-src 'self'; base-uri 'self';form-action 'self'"/>
+			<script src={ pageConfig.Reverse("static:js:htmx") } defer></script>
+			<script src={ pageConfig.Reverse("static:js:htmx-class-tools") } defer></script>
+			<script src={ pageConfig.Reverse("static:js:htmx-response-targets") } defer></script>
+			<script src={ pageConfig.Reverse("static:js:hyperscript") } defer></script>
+			for _, scriptUrl := range pageConfig.JsScripts {
+				<script src={ scriptUrl } defer></script>
+			}
+			<link rel="stylesheet" href={ pageConfig.Reverse("static:css:main") }/>
+			for _, stylesheetUrl := range pageConfig.Stylesheets {
+				<link rel="stylesheet" href={ stylesheetUrl }/>
+			}
+			<title>{ pageConfig.Title }</title>
+		</head>
+		<body hx-boost="true" hx-ext="class-tools">
+			<div class="mx-3">
+				@NavBar(pageConfig)
+				@pageConfig.Contents
+			</div>
+		</body>
+	</html>
+}

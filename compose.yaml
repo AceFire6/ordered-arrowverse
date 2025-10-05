@@ -1,0 +1,20 @@
+name: "arrowverse-dependencies"
+
+services:
+  db:
+    image: postgres:16.3
+    container_name: arrowverse.postgres
+    volumes:
+      - ./.persisted_data/postgres/data:/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=arrowverse
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+
+  redis:
+    image: redis:8
+    container_name: arrowverse.redis
+    ports:
+      - "6379:6379"
