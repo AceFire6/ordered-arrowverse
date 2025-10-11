@@ -8,6 +8,7 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/AceFire6/ordered-arrowverse/internal/build"
+	"github.com/AceFire6/ordered-arrowverse/internal/db"
 	"github.com/AceFire6/ordered-arrowverse/internal/frontend"
 	"github.com/AceFire6/ordered-arrowverse/internal/htmx"
 )
@@ -30,6 +31,7 @@ func Middleware(config MiddlewareConfig) echo.MiddlewareFunc {
 				Environment: config.Environment,
 				Log:         config.Logger,
 				DB:          config.DBPool,
+				ShowDB:      db.New(config.DBPool),
 				Frontend:    config.Frontend,
 				DemoMode:    strings.HasPrefix(reqHost, config.DemoModeHostPrefix),
 				HTMX:        htmx.ContextFromRequestContext(ctx),

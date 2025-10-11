@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -13,15 +14,27 @@ import (
 func Home(c echo.Context) error {
 	cc := c.(*customctx.Context)
 
-	dbResults, err := cc.DB.Query(c.Request().Context(), "select * from episode;")
+	episodes, err := cc.ShowDB.GetEpisodes(c.Request().Context())
 	if err != nil {
 		cc.Log.Err(err).Msg("could not load episodes")
 	}
 
-	cc.Log.Debug().Interface("dbResults", dbResults).Msg("loaded episodes")
 	showList := map[string]components.ShowData{}
 
-	return frontend.Render(c, http.StatusOK, components.Home(cc.Frontend.DefaultPageConfig, []components.TableRow{}, false, showList, []string{}, "", ""))
+	tableRows := make([]components.TableRow, len(episodes))
+	for i, episode := range episodes {
+		tableRows[i] = components.TableRow{
+			ShowSlug:    episode.ShowSlug,
+			RowNumber:   i + 1,
+			Series:      episode.ShowName,
+			EpisodeId:   fmt.Sprintf("S%02dE%02d", episode.Season, episode.Episode),
+			EpisodeName: episode.Name,
+			AirDate:     episode.AirDate.Format("January 2, 2006"),
+			SourceLink:  episode.SourceLink,
+		}
+	}
+
+	return frontend.Render(c, http.StatusOK, components.Home(cc.Frontend.DefaultPageConfig, tableRows, false, showList, []string{}, "", ""))
 }
 
 func NewestFirst(c echo.Context) error {
