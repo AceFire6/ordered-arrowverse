@@ -16,6 +16,9 @@ type PageConfig struct {
 	Contents    templ.Component
 	JsScripts   []string
 	Stylesheets []string
+	// Site data
+	// This is the list shown in the filters and used to generate the acknowledgements on the layouts page
+	ShowList []ShowData
 }
 
 type URLReverser interface {

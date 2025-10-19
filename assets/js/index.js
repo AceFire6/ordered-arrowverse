@@ -1,11 +1,6 @@
 (function($, Cookies) {
     'use strict';
 
-    var openWiki = function() {
-        var url = $(this).data('href');
-        window.open(url, '_blank');
-    };
-
     var disableColours = function() {
         $('.episode, thead').addClass('no-color');
         $('#episode-list').addClass('table-striped table-hover');

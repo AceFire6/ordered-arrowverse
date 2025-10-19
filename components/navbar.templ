@@ -1,0 +1,50 @@
+package components
+
+import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
+
+templ NavBar(pageConfig *frontend.PageConfig) {
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <span class="navbar-brand">Arrowverse Episode Order</span>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#support">
+                           Support Arrowverse.info
+                    </a>
+                </li>
+            </ul>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="https://github.com/AceFire6/ordered-arrowverse"
+                           class="nav-link"
+                           target="_blank">
+                            Project on GitHub
+                        </a>
+                    </li>
+//                        <li class="nav-item">
+//                            <a href={ pageConfig.Reverse("rss:recent-episodes", hide_show=hiddenShowList) }
+//                               class="nav-link"
+//                               target="_blank">
+//                                RSS Feed
+//                                <img src="https://www.mozilla.org/media/img/trademarks/feed-icon-14x14.2168a573d0d4.png"
+//                                     rel="icon"
+//                                     alt="RSS Logo">
+//                            </a>
+//                        </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+}

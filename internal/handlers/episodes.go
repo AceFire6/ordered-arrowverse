@@ -19,11 +19,11 @@ func Home(c echo.Context) error {
 		cc.Log.Err(err).Msg("could not load episodes")
 	}
 
-	showList := map[string]components.ShowData{}
+	showList := map[string]frontend.ShowData{}
 
-	tableRows := make([]components.TableRow, len(episodes))
+	tableRows := make([]frontend.TableRow, len(episodes))
 	for i, episode := range episodes {
-		tableRows[i] = components.TableRow{
+		tableRows[i] = frontend.TableRow{
 			ShowSlug:    episode.ShowSlug,
 			RowNumber:   i + 1,
 			Series:      episode.ShowName,
@@ -34,7 +34,9 @@ func Home(c echo.Context) error {
 		}
 	}
 
-	return frontend.Render(c, http.StatusOK, components.Home(cc.Frontend.DefaultPageConfig, tableRows, false, showList, []string{}, "", ""))
+	pageConfig := frontend.NewPage(components.Home(cc.Frontend.DefaultPageConfig, tableRows, false, showList, []string{}, "", ""))
+
+	return cc.Frontend.RenderPage(c, http.StatusOK, pageConfig)
 }
 
 func NewestFirst(c echo.Context) error {

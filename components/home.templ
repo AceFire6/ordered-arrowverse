@@ -1,102 +1,12 @@
 package components
 
 import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
-import "strings"
 import "slices"
 
-type ShowData struct {
-    Name string
-    Url string
-    RootUrl string
-}
-
-type TableRow struct {
-    ShowSlug string
-    RowNumber int
-    Series string
-    EpisodeId string
-    EpisodeName string
-    AirDate string
-    SourceLink string
-}
-
-templ Home(pageConfig *frontend.PageConfig, tableContent []TableRow, newestFirst bool, showList map[string]ShowData, hiddenShowList []string, fromDate string, toDate string) {
-    <!DOCTYPE html>
-    <html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Arrowverse episode order tracker. Never spoil a crossover episode again!">
-
-        <title>Arrowverse Episode Order</title>
-//        <link href={ pageConfig.Reverse('rss:recent_episodes', hide_show=hiddenShowList) }
-              //rel="alternate"
-              //title="Recent Episodes"
-              //type="application/atom+xml">
-        <script type="text/javascript"
-                src="https://app.termly.io/embed.min.js"
-                data-auto-block="on"
-                data-website-uuid="88925ed4-9c7d-4db6-9d40-7bb146255f0a"></script>
-        <link type="image/png" href={ pageConfig.Reverse("static:favicon") } rel="icon">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-              rel="stylesheet"
-              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-              crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css">
-        <link rel="stylesheet" href={ pageConfig.Reverse("static:css:index") }>
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-        <script data-ad-client="ca-pub-4243272906692681" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    </head>
-
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container">
-                <span class="navbar-brand">Arrowverse Episode Order</span>
-                <button class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent"
-                        aria-controls="navbarSupportedContent"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#support">
-                               Support Arrowverse.info
-                        </a>
-                    </li>
-                </ul>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="https://github.com/AceFire6/ordered-arrowverse"
-                               class="nav-link"
-                               target="_blank">
-                                Project on GitHub
-                            </a>
-                        </li>
-//                        <li class="nav-item">
-//                            <a href={ pageConfig.Reverse("rss:recent-episodes", hide_show=hiddenShowList) }
-//                               class="nav-link"
-//                               target="_blank">
-//                                RSS Feed
-//                                <img src="https://www.mozilla.org/media/img/trademarks/feed-icon-14x14.2168a573d0d4.png"
-//                                     rel="icon"
-//                                     alt="RSS Logo">
-//                            </a>
-//                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newestFirst bool, showList map[string]frontend.ShowData, hiddenShowList []string, fromDate string, toDate string) {
         <main>
             <div class="container">
-                <form action={ pageConfig.Reverse("view:home") } id="filter-form" method="get" class="row form-inline">
+                <form action={ reverser.Reverse("view:home") } id="filter-form" method="get" class="row form-inline">
                     <div class="col-sm">
                         <input name="newest_first" value={ newestFirst } title="Newest First" type="hidden">
                         <select id="show-filter-select"
@@ -154,7 +64,7 @@ templ Home(pageConfig *frontend.PageConfig, tableContent []TableRow, newestFirst
                 <div class="row text-center text-sm-end">
                     <div class="col-sm-12">
                         <a href="#end" id="top"><small>END</small></a> |
-                        <a href={ pageConfig.Reverse("view:home", !newestFirst, hiddenShowList) }>
+                        <a href={ reverser.Reverse("view:home", !newestFirst, hiddenShowList) }>
                             if newestFirst {
                                 <small>OLDEST FIRST</small>
                             } else {
@@ -169,199 +79,16 @@ templ Home(pageConfig *frontend.PageConfig, tableContent []TableRow, newestFirst
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <div class="table-responsive">
-                            <table class="table table-bordered col-sm-12" id="episode-list">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Series</th>
-                                        <th>Episode</th>
-                                        <th>Name</th>
-                                        <th>Original Air Date</th>
-                                        <th>Source</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    if len(tableContent) == 0 {
-                                        <td class="episode"  colspan="6">No episodes found</td>
-                                    } else {
-                                        for _, row := range tableContent {
-                                            <tr class={ "episode", row.ShowSlug }>
-                                                <td>{ row.RowNumber }</td>
-                                                <td>{ row.Series }</td>
-                                                <td>{ row.EpisodeId }</td>
-                                                <td>{ row.EpisodeName }</td>
-                                                <td>{ row.AirDate }</td>
-                                                <td>
-                                                    <a href={ row.SourceLink } target="_blank">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
-                                                            <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"></path>
-                                                            <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"></path>
-                                                        </svg>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                        @EpisodesTable(tableContent)
                     </div>
-
                 </div>
             </div>
-        </main>
-
-        <footer>
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12 text-center">
                         <a href="#top" id="end">BACK TO TOP</a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <div id="footer-buttons">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#contact">
-                                <small>Contact Me</small>
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#acknowledgements">
-                                <small>Acknowledgements</small>
-                            </button>
-                            <a href={ pageConfig.Reverse("static:cookie-policy") } class="btn btn-outline-secondary btn-sm" type="button" target="_blank">
-                                Cookie Policy
-                            </a>
-                            <a href={ pageConfig.Reverse("static:privacy-policy") } class="btn btn-outline-secondary btn-sm" type="button" target="_blank">
-                                Privacy Policy
-                            </a>
-                            <button
-                              class="btn btn-outline-secondary btn-sm termly-cookie-preference-button"
-                              type="button"
-                              onclick="displayPreferenceModal()">
-                                Manage Cookie Preferences
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </footer>
-
-        <div class="modal" tabindex="-1" role="dialog" id="support">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Support Arrowverse</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <p>
-                  Hello! My name is Jethro.
-                  I created and have been working on the Arrowverse website since 2014.
-                </p>
-                <p>
-                  Your support allows me to keep working on and improving Arrowverse.
-                  Thank you for being a part of the Arrowverse community!
-                </p>
-                <p>
-                  If you'd like to support what I do here check out
-                  the project on GitHub or consider buying me a coffee on Ko-Fi or via PayPal!
-                </p>
-                <a href="https://ko-fi.com/B0B4XZIE" target="_blank">
-                  <img height="36"
-                       style="border:0;height:36px;"
-                       src="https://storage.ko-fi.com/cdn/kofi6.png?v=6"
-                       alt="Buy Me a Coffee at ko-fi.com" />
-                </a>
-                <a class="btn btn-primary"
-                   href="https://paypal.me/AceFire6"
-                   role="button"
-                   target="_blank">
-                  Support me on PayPal
-                </a>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal" tabindex="-1" role="dialog" id="acknowledgements">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Acknowledgements</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Content is drawn from:
-                        <ul>
-                            for _, showData := range showList {
-                                <li>
-                                    <a href={ showData.RootUrl + showData.Url }
-                                       target="_blank"
-                                       rel="noopener">
-                                        { strings.ReplaceAll(showData.Url, "_", " ") }
-                                    </a>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal" tabindex="-1" role="dialog" id="contact">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Contact</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <p>Made by Jethro Muller</p>
-                        <p>To contact me, <a href="mailto:arrowverse.info@gmail.com" target="_blank">email me</a>.
-                        </p>
-                        <p>Or, view my other projects on <a href="https://www.github.com/AceFire6" target="_blank">GitHub</a>.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
-        <script src={ pageConfig.Reverse("static:js:index") }></script>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YCYDBGZQM"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
-          gtag('js', new Date());
-
-          gtag('config', 'G-9YCYDBGZQM');
-        </script>
-    </body>
-    </html>
+        </main>
 }
