@@ -1,6 +1,8 @@
 package db
 
 import (
+	"fmt"
+
 	"github.com/AceFire6/ordered-arrowverse/internal/frontend"
 )
 
@@ -22,4 +24,21 @@ func ShowListRowsToShowData(showListRows []GetShowListRow) []frontend.ShowData {
 	}
 
 	return showList
+}
+
+func EpisodeRowsToTableRow(episodeRows []GetEpisodesRow) []frontend.TableRow {
+	tableRows := make([]frontend.TableRow, len(episodeRows))
+	for i, episode := range episodeRows {
+		tableRows[i] = frontend.TableRow{
+			ShowSlug:    episode.ShowSlug,
+			RowNumber:   i + 1,
+			Series:      episode.ShowName,
+			EpisodeId:   fmt.Sprintf("S%02dE%02d", episode.Season, episode.Episode),
+			EpisodeName: episode.Name,
+			AirDate:     episode.AirDate.Format("January 2, 2006"),
+			SourceLink:  episode.SourceLink,
+		}
+	}
+
+	return tableRows
 }
