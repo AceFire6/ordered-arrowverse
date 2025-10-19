@@ -21,10 +21,6 @@ type PageConfig struct {
 	ShowList []ShowData
 }
 
-type URLReverser interface {
-	Reverse(name string, params ...interface{}) string
-}
-
 // NewPage Create a new page - only accept the required arguments as inputs
 func NewPage(contents templ.Component) *PageConfig {
 	// set up the defaults first

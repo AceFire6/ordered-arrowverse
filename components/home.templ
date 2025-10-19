@@ -2,6 +2,7 @@ package components
 
 import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
 import "slices"
+import "strconv"
 
 templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newestFirst bool, showList []frontend.ShowData, hiddenShowList []string, fromDate string, toDate string) {
         <main>
@@ -64,7 +65,7 @@ templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newe
                 <div class="row text-center text-sm-end">
                     <div class="col-sm-12">
                         <a href="#end" id="top"><small>END</small></a> |
-                        <a href={ reverser.Reverse("view:home", !newestFirst, hiddenShowList) }>
+                        <a href={ frontend.AddQueryParams(reverser.Reverse("view:home"), map[string]string{ "newest_first": strconv.FormatBool(!newestFirst) }) }>
                             if newestFirst {
                                 <small>OLDEST FIRST</small>
                             } else {
