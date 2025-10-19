@@ -16,9 +16,9 @@ create table show
     primary_colour   text        not null
         constraint only_hex_primary_colour check (primary_colour ~* '^#[a-f0-9]{6}$'),
     secondary_colour text        not null
-        constraint only_hex_secondary_colour check (primary_colour ~* '^#[a-f0-9]{6}$'),
+        constraint only_hex_secondary_colour check (secondary_colour ~* '^#[a-f0-9]{6}$'),
     accent_colour    text        not null
-        constraint only_hex_accent_colour check (primary_colour ~* '^#[a-f0-9]{6}$'),
+        constraint only_hex_accent_colour check (accent_colour ~* '^#[a-f0-9]{6}$'),
 
     created_at       timestamptz not null default now(),
     modified_at      timestamptz not null default now()
