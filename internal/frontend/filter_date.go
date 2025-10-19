@@ -22,13 +22,13 @@ func (fd *FilterDate) UnmarshalText(text []byte) error {
 	return nil
 }
 
-func (fd FilterDate) String() string {
+func (fd *FilterDate) String() string {
 	// Return an empty string when the filter date is an empty value
-	if fd == FilterDate(time.Time{}) {
+	if fd == nil {
 		return ""
 	}
 
-	return time.Time(fd).Format("2006-01-02")
+	return time.Time(*fd).Format("2006-01-02")
 }
 
 func (fd FilterDate) MarshalJSON() ([]byte, error) {
