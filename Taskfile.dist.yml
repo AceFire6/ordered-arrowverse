@@ -9,12 +9,10 @@ env:
   ENVIRONMENT: "development"
 
 tasks:
-  foo:
-    cmds:
-      - echo $PATH
   dev:
     desc: "Run everything required to standup the development server for local testing"
     deps:
+      - sqlc:generate:dev
       - assets:watch-notify:dev
       - templ:generate:dev
       - compose:dev
@@ -70,7 +68,6 @@ tasks:
       - op run --env-file=".local.env" -- sqlc generate -f ./sqlc.yaml
       - cmd: betteralign -generated_files -apply {{.SQLC_DIR}}
         ignore_error: true
-
     sources:
       - "{{.MIGRATIONS_PATH}}/**/*.sql"
       - "{{.SQLC_DIR}}/queries/**/*.sql"
@@ -84,7 +81,7 @@ tasks:
     deps:
       - compose:dev
     requires:
-      vars: [ENV_FILE, MIGRATIONS_PATH]
+      vars: [ ENV_FILE, MIGRATIONS_PATH ]
     cmds:
       - op run --env-file="{{.ENV_FILE}}" -- tern migrate --migrations {{.MIGRATIONS_PATH}} {{.CLI_ARGS}}
     sources:
@@ -107,7 +104,7 @@ tasks:
     deps:
       - compose:dev
     requires:
-      vars: [ENV_FILE, MIGRATIONS_PATH]
+      vars: [ ENV_FILE, MIGRATIONS_PATH ]
     cmds:
       - op run --env-file="{{.ENV_FILE}}" -- tern migrate -d 0 --migrations "{{.MIGRATIONS_PATH}}"
       - task: db:migrations:dev
@@ -115,7 +112,7 @@ tasks:
   db:migrations:new:
     desc: "Create a new migration. Specify the name after the command using this format: 'task db:migrations:new -- <migration_name>'"
     requires:
-      vars: [CLI_ARGS, MIGRATIONS_PATH]
+      vars: [ CLI_ARGS, MIGRATIONS_PATH ]
     cmds:
       - tern new {{.CLI_ARGS}} --migrations {{.MIGRATIONS_PATH}}
 
@@ -167,7 +164,7 @@ tasks:
     desc: "Run the squawk linter on the migrations files"
     run: when_changed
     requires:
-      vars: [MIGRATIONS_PATH]
+      vars: [ MIGRATIONS_PATH ]
     cmds:
       - squawk {{.MIGRATIONS_PATH}}/*.sql
     sources:
@@ -196,15 +193,14 @@ tasks:
     deps:
       - compose:dev
     vars:
-      SQLC_PATHS: { sh: 'find ./internal -type f -name sqlc.yaml' }
+      SQLC_DIR: "./internal/db"
     cmds:
-      - for: { var: "SQLC_PATHS", as: "SQLC_PATH" }
-        cmd: op run --env-file="{{.ENV_FILE}}" -- sqlc compile -f {{.SQLC_PATH}}
-      - for: { var: "SQLC_PATHS", as: "SQLC_PATH" }
-        cmd: op run --env-file="{{.ENV_FILE}}" -- sqlc vet -f {{.SQLC_PATH}}
+      - cmd: op run --env-file="{{.ENV_FILE}}" -- sqlc compile -f ./sqlc.yaml
+      - cmd: op run --env-file="{{.ENV_FILE}}" -- sqlc vet -f ./sqlc.yaml
     sources:
-      - "./**/*.sql"
-      - "./**/sqlc.yaml"
+      - "{{.MIGRATIONS_PATH}}/**/*.sql"
+      - "{{.SQLC_DIR}}/queries/**/*.sql"
+      - "./sqlc.yaml"
 
   lint:go:
     desc: "Run all the go related formatters and linters on the project"
