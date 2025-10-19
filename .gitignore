@@ -28,6 +28,7 @@
 
 # Vendored CSS
 !/assets/css/
+!/assets/css/index.css
 !/assets/css/**.min.css
 
 # Vendored JS
