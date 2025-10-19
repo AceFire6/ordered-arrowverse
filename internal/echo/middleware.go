@@ -39,6 +39,8 @@ type CustomContextParams struct {
 
 func SetEchoMiddlewareStack(e *echo.Echo, params *CustomContextParams) {
 	e.Use(
+		// Set 2mb body size limit
+		middleware.BodyLimit("2MB"),
 		customctx.Middleware(customctx.MiddlewareConfig{
 			Logger:             params.Log,
 			DBPool:             params.DBPool,
