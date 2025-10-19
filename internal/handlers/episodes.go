@@ -8,18 +8,25 @@ import (
 
 	"github.com/AceFire6/ordered-arrowverse/components"
 	"github.com/AceFire6/ordered-arrowverse/internal/customctx"
+	"github.com/AceFire6/ordered-arrowverse/internal/db"
 	"github.com/AceFire6/ordered-arrowverse/internal/frontend"
 )
 
 func Home(c echo.Context) error {
 	cc := c.(*customctx.Context)
 
+	dbShowList, err := cc.ShowDB.GetShowList(c.Request().Context())
+	if err != nil {
+		cc.Log.Err(err).Msg("could not load episodes")
+		return err
+	}
+	showList := db.ShowListRowsToShowData(dbShowList)
+
 	episodes, err := cc.ShowDB.GetEpisodes(c.Request().Context())
 	if err != nil {
 		cc.Log.Err(err).Msg("could not load episodes")
+		return err
 	}
-
-	showList := map[string]frontend.ShowData{}
 
 	tableRows := make([]frontend.TableRow, len(episodes))
 	for i, episode := range episodes {
@@ -34,7 +41,7 @@ func Home(c echo.Context) error {
 		}
 	}
 
-	pageConfig := frontend.NewPage(components.Home(cc.Frontend.DefaultPageConfig, tableRows, false, showList, []string{}, "", ""))
+	pageConfig := frontend.NewPage(components.Home(cc.Echo(), tableRows, false, showList, []string{}, "", ""))
 
 	return cc.Frontend.RenderPage(c, http.StatusOK, pageConfig)
 }

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"time"
 
 	"github.com/AceFire6/ordered-arrowverse/components"
 	"github.com/AceFire6/ordered-arrowverse/internal/db"
@@ -85,12 +86,24 @@ func startServer() int {
 		appLogger.Err(err).Msg("could not load frontend config")
 		return 1
 	}
+
+	timeoutCtx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	showList, err := getShowList(timeoutCtx, dbPool)
+	if err != nil {
+		appLogger.Err(err).Msg("could not load show list")
+		return 1
+	}
+
 	// This uses the echo apps reverse function
 	appFrontend := frontend.New(frontend.NewParams{
 		Reverser: echoApp,
 		Title:    frontendConfig.Title,
 		Heading:  frontendConfig.Heading,
+		ShowList: showList,
 	}).WithLayout(components.PageLayout)
+
+	appLogger.Info().Interface("showList", appFrontend.DefaultPageConfig.ShowList).Msg("frontend default page config show list")
 
 	// We add the custom context middle here using echo.Pre which is meant to execute before the routing stack
 	echo.SetEchoMiddlewareStack(echoApp, &echo.CustomContextParams{
@@ -171,4 +184,15 @@ func getHandlerConfig(dbPool *pgxpool.Pool) *handlers.HandlerConfig {
 	return &handlers.HandlerConfig{
 		HealthCheckHandler: healthCheckHandler,
 	}
+}
+
+func getShowList(ctx context.Context, dbPool *pgxpool.Pool) ([]frontend.ShowData, error) {
+	dbShowList, err := db.New(dbPool).GetShowList(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	showList := db.ShowListRowsToShowData(dbShowList)
+
+	return showList, nil
 }

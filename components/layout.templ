@@ -1,7 +1,6 @@
 package components
 
 import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
-import "strings"
 
 templ PageLayout(pageConfig *frontend.PageConfig) {
 	<!DOCTYPE html>
@@ -115,13 +114,15 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
                             Content is drawn from:
                             <ul>
                                 for _, showData := range pageConfig.ShowList {
-                                    <li>
-                                        <a href={ showData.RootURL + showData.URL }
-                                           target="_blank"
-                                           rel="noopener">
-                                            { strings.ReplaceAll(showData.URL, "_", " ") }
-                                        </a>
-                                    </li>
+                                    for _, source := range showData.DataSources {
+                                        <li>
+                                            <a href={ source }
+                                               target="_blank"
+                                               rel="noopener">
+                                               { source }
+                                            </a>
+                                        </li>
+                                    }
                                 }
                             </ul>
                         </div>

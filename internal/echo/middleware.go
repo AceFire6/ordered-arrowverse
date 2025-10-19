@@ -22,7 +22,6 @@ func addContextToLog(next echo.HandlerFunc) echo.HandlerFunc {
 			return c.Str("request_id", rid).
 				Str("uri", ctx.Path()).
 				Str("host", ctx.Request().Host).
-				Bool("demo_mode", cc.DemoMode).
 				Interface("htmx", cc.HTMX)
 		})
 

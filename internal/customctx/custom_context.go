@@ -21,6 +21,4 @@ type Context struct {
 
 	Environment build.Environment
 	HTMX        htmx.Context
-	// DemoMode indicates that we should anonymize the image providers
-	DemoMode bool
 }

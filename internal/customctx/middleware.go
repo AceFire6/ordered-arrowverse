@@ -1,8 +1,6 @@
 package customctx
 
 import (
-	"strings"
-
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog"
@@ -24,8 +22,6 @@ type MiddlewareConfig struct {
 func Middleware(config MiddlewareConfig) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(ctx echo.Context) error {
-			reqHost := ctx.Request().Host
-
 			customContext := &Context{
 				Context:     ctx,
 				Environment: config.Environment,
@@ -33,7 +29,6 @@ func Middleware(config MiddlewareConfig) echo.MiddlewareFunc {
 				DB:          config.DBPool,
 				ShowDB:      db.New(config.DBPool),
 				Frontend:    config.Frontend,
-				DemoMode:    strings.HasPrefix(reqHost, config.DemoModeHostPrefix),
 				HTMX:        htmx.ContextFromRequestContext(ctx),
 			}
 

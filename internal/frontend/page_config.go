@@ -35,6 +35,7 @@ func NewPage(contents templ.Component) *PageConfig {
 		Reverser:    nil,
 		JsScripts:   []string{},
 		Stylesheets: []string{},
+		ShowList:    []ShowData{},
 	}
 
 	return pageConfig
@@ -102,6 +103,7 @@ func (page *PageConfig) Copy() *PageConfig {
 
 	pageCopy.JsScripts = append(pageCopy.JsScripts, page.JsScripts...)
 	pageCopy.Stylesheets = append(pageCopy.Stylesheets, page.Stylesheets...)
+	pageCopy.ShowList = append(pageCopy.ShowList, page.ShowList...)
 
 	return pageCopy
 }

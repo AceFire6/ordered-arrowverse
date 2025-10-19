@@ -28,8 +28,9 @@ type NewParams struct {
 	// Reverser is the function we call to derive the URLs for named URLs by their names
 	Reverser URLReverser
 	// Heading is the text displayed next to the logo in the navbar
-	Heading string
-	Title   string
+	Heading  string
+	Title    string
+	ShowList []ShowData
 }
 
 func New(frontendParams NewParams) *Frontend {
@@ -41,6 +42,7 @@ func New(frontendParams NewParams) *Frontend {
 			Contents:    nil,
 			JsScripts:   []string{},
 			Stylesheets: []string{},
+			ShowList:    frontendParams.ShowList,
 		},
 		Title:   frontendParams.Title,
 		Heading: frontendParams.Heading,

@@ -3,7 +3,7 @@ package components
 import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
 import "slices"
 
-templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newestFirst bool, showList map[string]frontend.ShowData, hiddenShowList []string, fromDate string, toDate string) {
+templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newestFirst bool, showList []frontend.ShowData, hiddenShowList []string, fromDate string, toDate string) {
         <main>
             <div class="container">
                 <form action={ reverser.Reverse("view:home") } id="filter-form" method="get" class="row form-inline">
@@ -14,9 +14,9 @@ templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newe
                                 name="hide_show"
                                 multiple="multiple"
                                 class="form-control">
-                                for showId, showData := range showList {
-                                    <option value={ showId }
-                                       if slices.Contains(hiddenShowList, showId) {
+                                for _, showData := range showList {
+                                    <option value={ showData.Slug }
+                                       if slices.Contains(hiddenShowList, showData.Slug) {
                                         selected
                                        }>
                                         { showData.Name }

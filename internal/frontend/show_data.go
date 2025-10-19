@@ -1,9 +1,9 @@
 package frontend
 
 type ShowData struct {
-	Name    string
-	URL     string
-	RootURL string
+	Slug        string
+	Name        string
+	DataSources []string
 }
 
 type TableRow struct {

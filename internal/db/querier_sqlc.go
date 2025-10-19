@@ -10,6 +10,7 @@ import (
 
 type Querier interface {
 	GetEpisodes(ctx context.Context) ([]GetEpisodesRow, error)
+	GetShowList(ctx context.Context) ([]GetShowListRow, error)
 }
 
 var _ Querier = (*Queries)(nil)
