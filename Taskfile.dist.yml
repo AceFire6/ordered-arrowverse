@@ -1,0 +1,252 @@
+# https://taskfile.dev
+version: '3'
+
+vars:
+  MIGRATIONS_PATH: ./migrations
+  ENV_FILE: .local.env
+
+env:
+  ENVIRONMENT: "development"
+
+tasks:
+  foo:
+    cmds:
+      - echo $PATH
+  dev:
+    desc: "Run everything required to standup the development server for local testing"
+    deps:
+      - assets:watch-notify:dev
+      - templ:generate:dev
+      - compose:dev
+      - db:migrations:dev
+      - build:dev
+
+  build:dev:
+    desc: "Run this package in development mode using air"
+    run: when_changed
+    internal: true
+    cmd: air
+
+  build:ci:lint:
+    desc: "Run all commands needed to successfully lint this package in the CI workflow"
+    deps:
+      - templ:generate
+
+  assets:watch-notify:dev:
+    desc: "Notify templ when the ./assets/ directory changes"
+    run: once
+    cmd: |
+      air \
+        --build.cmd "templ generate --notify-proxy" \
+        --build.bin "true" \
+        --build.delay "100" \
+        --build.exclude_dir "" \
+        --build.include_dir "assets" \
+        --build.include_ext "js,css"
+
+  templ:generate:dev:
+    desc: "Generate the component functions defined in ./components in watch mode with hot-reloading"
+    run: once
+    cmd: "templ generate -path ./components --watch --proxy='http://0.0.0.0:8080' --open-browser=false"
+
+  templ:generate:
+    desc: "Generate the component functions defined in ./components"
+    run: when_changed
+    cmd: "templ generate -path ./components"
+    sources:
+      - "./components/**/*.templ"
+      - "./components/**/*.go"
+      - exclude: "./components/**/*_templ.go"
+    generates:
+      - "./components/**/*_templ.go"
+
+  sqlc:generate:dev:
+    desc: "Generate database access code using sqlc"
+    run: when_changed
+    vars:
+      SQLC_DIR: "./internal/db"
+    cmds:
+      - "rm -f {{.SQLC_DIR}}/*_sqlc.go"
+      - op run --env-file=".local.env" -- sqlc generate -f ./sqlc.yaml
+      - cmd: betteralign -generated_files -apply {{.SQLC_DIR}}
+        ignore_error: true
+
+    sources:
+      - "{{.MIGRATIONS_PATH}}/**/*.sql"
+      - "{{.SQLC_DIR}}/queries/**/*.sql"
+      - "./sqlc.yaml"
+    generates:
+      - "{{.SQLC_DIR}}/*_sqlc.go"
+
+  db:migrations:dev:
+    desc: "Run migrations for local development"
+    run: when_changed
+    deps:
+      - compose:dev
+    requires:
+      vars: [ENV_FILE, MIGRATIONS_PATH]
+    cmds:
+      - op run --env-file="{{.ENV_FILE}}" -- tern migrate --migrations {{.MIGRATIONS_PATH}} {{.CLI_ARGS}}
+    sources:
+      - "{{.MIGRATIONS_PATH}}/**/*.sql"
+    preconditions:
+      # Only run this when we're explicitly in the development environment
+      - '[ "$ENVIRONMENT" == "development" ]'
+    status:
+      # Only run migrations if the migration status indicates that the local DB needs them
+      # This works with sources to ensure we only run migrations if there are new migrations or there is a new DB
+      # Grep portion taken from: https://stackoverflow.com/a/75086890
+      # The -v inverts the match, the -z makes the input a single line, and the -q makes the output quiet
+      - op run --env-file="{{.ENV_FILE}}" -- tern status --migrations {{.MIGRATIONS_PATH}} | grep -vzq "migration(s) pending"
+      # This will make the migration run for any CLI_ARGS input
+      - "[ -z '{{.CLI_ARGS}}' ]"
+
+  db:migrations:dev:clean:
+    desc: "Reset the local development database running all the down migrations"
+    prompt: "WARNING: This will destroy all data in the database. Continue?"
+    deps:
+      - compose:dev
+    requires:
+      vars: [ENV_FILE, MIGRATIONS_PATH]
+    cmds:
+      - op run --env-file="{{.ENV_FILE}}" -- tern migrate -d 0 --migrations "{{.MIGRATIONS_PATH}}"
+      - task: db:migrations:dev
+
+  db:migrations:new:
+    desc: "Create a new migration. Specify the name after the command using this format: 'task db:migrations:new -- <migration_name>'"
+    requires:
+      vars: [CLI_ARGS, MIGRATIONS_PATH]
+    cmds:
+      - tern new {{.CLI_ARGS}} --migrations {{.MIGRATIONS_PATH}}
+
+  docker:check:running:
+    desc: "Check that the container with the given service name is running"
+    internal: true
+    run: when_changed
+    silent: true
+    requires:
+      vars: [ SERVICE_NAME ]
+    vars:
+      SERVICE_PID:
+        sh: op run --env-file="{{.ENV_FILE}}" -- docker compose ps -q {{.SERVICE_NAME}}
+    cmds:
+      - echo "Waiting for '{{.SERVICE_NAME}}' to be ready..."
+      - |
+        until [ "$(docker inspect -f {{`{{.State.Status}}`}} {{.SERVICE_PID}})" = "running" ];
+          do sleep 0.5;
+        done
+
+  compose:dev:
+    desc: "Stand up the containers listed in compose.yaml"
+    run: when_changed
+    vars:
+      COMPOSE_SERVICES:
+        sh: op run --env-file="{{.ENV_FILE}}" -- docker compose config --services | sort
+    cmds:
+      - op run --env-file="{{.ENV_FILE}}" -- docker compose up --detach --no-recreate
+      - for: { var: 'COMPOSE_SERVICES', as: 'SERVICE_NAME' }
+        task: 'docker:check:running'
+        vars:
+          SERVICE_NAME: '{{.SERVICE_NAME}}'
+    sources:
+      - compose.yaml
+    status:
+      - op run --env-file="{{.ENV_FILE}}" -- test "$(docker compose config --services | sort)" = "$(docker compose ps --services | sort)"
+    preconditions:
+      - sh: '[ `command -v docker` ]'
+        msg: "You need to install Docker Desktop to run the compose file - https://www.docker.com/products/docker-desktop/"
+
+  lint:db:
+    desc: "Run all database linting operations"
+    cmds:
+      - task: lint:db:sql
+      - task: lint:db:sqlc
+      - task: lint:db:migrations
+
+  lint:db:migrations:
+    desc: "Run the squawk linter on the migrations files"
+    run: when_changed
+    requires:
+      vars: [MIGRATIONS_PATH]
+    cmds:
+      - squawk {{.MIGRATIONS_PATH}}/*.sql
+    sources:
+      - "{{.MIGRATIONS_PATH}}/**/*.sql"
+    preconditions:
+      - sh: '[ `command -v squawk` ]'
+        msg: "You need to install squawk to lint migrations - https://github.com/sbdchd/squawk"
+
+  lint:db:sql:
+    desc: "Run the sqlfluff linter on all SQL files"
+    run: when_changed
+    cmds:
+      - sqlfluff fix --warn-unused-ignores --show-lint-violations ./
+    sources:
+      - "./**/*.sql"
+    preconditions:
+      - sh: '[ `command -v sqlfluff` ]'
+        msg: |
+          You need to install sqlfluff to lint migrations - https://github.com/sqlfluff/sqlfluff.
+
+          The recommended way is using pipx (https://github.com/pypa/pipx) via `pipx install sqlfluff`
+
+  lint:db:sqlc:
+    desc: "Run sqlc compile & vet on SQL files"
+    run: when_changed
+    deps:
+      - compose:dev
+    vars:
+      SQLC_PATHS: { sh: 'find ./internal -type f -name sqlc.yaml' }
+    cmds:
+      - for: { var: "SQLC_PATHS", as: "SQLC_PATH" }
+        cmd: op run --env-file="{{.ENV_FILE}}" -- sqlc compile -f {{.SQLC_PATH}}
+      - for: { var: "SQLC_PATHS", as: "SQLC_PATH" }
+        cmd: op run --env-file="{{.ENV_FILE}}" -- sqlc vet -f {{.SQLC_PATH}}
+    sources:
+      - "./**/*.sql"
+      - "./**/sqlc.yaml"
+
+  lint:go:
+    desc: "Run all the go related formatters and linters on the project"
+    deps:
+      - templ:generate
+    cmds:
+      - task: lint:betteralign
+      - task: lint:gofumpt
+      - task: lint:golangci-lint
+      - task: lint:templ
+
+  lint:templ:
+    desc: "Lint and format all the templ files"
+    run: when_changed
+    cmds:
+      - templ fmt ./components
+    sources:
+      - ./components/*.templ
+
+  lint:golangci-lint:
+    desc: "Run golangci-lint on all go files"
+    run: when_changed
+    cmds:
+      - golangci-lint run
+    sources:
+      - "**/*.go"
+      - ".golangci.yml"
+
+  lint:gofumpt:
+    desc: "Run gofumpt formatter on all package code"
+    run: when_changed
+    cmds:
+      - gofumpt -w -extra ./
+    sources:
+      - "**/*.go"
+
+  lint:betteralign:
+    desc: "Run betteralign to align all structs in all package code including generated files"
+    run: when_changed
+    deps:
+      - templ:generate
+    cmds:
+      - betteralign -generated_files -apply ./...
+    sources:
+      - "**/*.go"
