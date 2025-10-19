@@ -3,9 +3,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-	"time"
 
-	"github.com/goccy/go-json"
 	"github.com/labstack/echo/v4"
 
 	"github.com/AceFire6/ordered-arrowverse/components"
@@ -14,40 +12,11 @@ import (
 	"github.com/AceFire6/ordered-arrowverse/internal/frontend"
 )
 
-type FilterDate time.Time
-
-func (fd *FilterDate) UnmarshalText(text []byte) error {
-	if len(text) == 0 {
-		return nil
-	}
-
-	t, err := time.Parse("2006-01-02", string(text))
-	if err != nil {
-		return err
-	}
-
-	*fd = FilterDate(t)
-	return nil
-}
-
-func (fd FilterDate) String() string {
-	// Return an empty string when the filter date is an empty value
-	if fd == FilterDate(time.Time{}) {
-		return ""
-	}
-
-	return time.Time(fd).Format("2006-01-02")
-}
-
-func (fd FilterDate) MarshalJSON() ([]byte, error) {
-	return json.Marshal(fd.String())
-}
-
 type PageOptions struct {
-	FromDate      *FilterDate `query:"from_date"`
-	ToDate        *FilterDate `query:"to_date"`
-	HideShowsList []string    `query:"hide_show"`
-	NewestFirst   bool        `query:"newest_first"`
+	FromDate      *frontend.FilterDate `query:"from_date"`
+	ToDate        *frontend.FilterDate `query:"to_date"`
+	HideShowsList []string             `query:"hide_show"`
+	NewestFirst   bool                 `query:"newest_first"`
 }
 
 func Home(c echo.Context) error {
