@@ -56,7 +56,7 @@ func Home(c echo.Context) error {
 		}
 	}
 
-	pageConfig := frontend.NewPage(components.Home(cc.Echo(), tableRows, pageOpts.NewestFirst, showList, []string{}, pageOpts.FromDate.String(), pageOpts.ToDate.String()))
+	pageConfig := frontend.NewPage(components.Home(cc.Echo(), tableRows, pageOpts.NewestFirst, showList, pageOpts.HideShowsList, pageOpts.FromDate.String(), pageOpts.ToDate.String()))
 
 	return cc.Frontend.RenderPage(c, http.StatusOK, pageConfig)
 }
