@@ -4,6 +4,7 @@ import (
 	"crypto"
 	"encoding/base64"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 
@@ -11,12 +12,28 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
+	"github.com/AceFire6/ordered-arrowverse/assets"
 	"github.com/AceFire6/ordered-arrowverse/internal/build"
 	"github.com/AceFire6/ordered-arrowverse/internal/healthcheck"
 )
 
 type HandlerConfig struct {
 	HealthCheckHandler *healthcheck.Handler
+}
+
+func getFileSystem(useOS bool) fs.FS {
+	if useOS {
+		log.Debug().Msg("using live mode")
+		return os.DirFS("assets")
+	}
+
+	log.Debug().Msg("using embed mode")
+	fsys, err := fs.Sub(assets.AssetFiles, ".")
+	if err != nil {
+		panic(err)
+	}
+
+	return fsys
 }
 
 func getMd5Base64(filePath string) string {
@@ -41,26 +58,29 @@ func RegisterRoutes(e *echo.Echo, handlerConfig *HandlerConfig, environment buil
 	cacheBustStr := getMd5Base64("./assets/css/main.min.css")
 	mainCSSURL := fmt.Sprintf("/static/css/main-%s.min.css", cacheBustStr)
 
+	inDevelopment := environment == build.Development
+	assetsFs := getFileSystem(inDevelopment)
+
 	// Static routes
 	// TODO: Decide on serving the whole directory or only specific files
 	// This links to the unminified files during development
-	if environment == build.Development {
-		e.File(mainCSSURL, "assets/css/main.css").Name = "static:css:main"
-		e.File("/static/js/htmx.min.js", "assets/js/htmx.js").Name = "static:js:htmx"
+	if inDevelopment {
+		e.FileFS(mainCSSURL, "css/main.css", assetsFs).Name = "static:css:main"
+		e.FileFS("/static/js/htmx.min.js", "js/htmx.js", assetsFs).Name = "static:js:htmx"
 	} else {
-		e.File(mainCSSURL, "assets/css/main.min.css").Name = "static:css:main"
-		e.File("/static/js/htmx.min.js", "assets/js/htmx.min.js").Name = "static:js:htmx"
+		e.FileFS(mainCSSURL, "css/main.min.css", assetsFs).Name = "static:css:main"
+		e.FileFS("/static/js/htmx.min.js", "js/htmx.min.js", assetsFs).Name = "static:js:htmx"
 	}
-	e.File("/static/css/index.css", "assets/css/index.css").Name = "static:css:index"
-	e.File("/static/js/index.js", "assets/js/index.js").Name = "static:js:index"
-	e.File("/static/js/htmx-class-tools.js", "assets/js/htmx-class-tools.js").Name = "static:js:htmx-class-tools"
-	e.File("/static/js/response-targets.js", "assets/js/response-targets.js").Name = "static:js:htmx-response-targets"
-	e.File("/static/js/hyperscript.min.js", "assets/js/hyperscript.min.js").Name = "static:js:hyperscript"
+	e.FileFS("/static/css/index.css", "css/index.css", assetsFs).Name = "static:css:index"
+	e.FileFS("/static/js/index.js", "js/index.js", assetsFs).Name = "static:js:index"
+	e.FileFS("/static/js/htmx-class-tools.js", "js/htmx-class-tools.js", assetsFs).Name = "static:js:htmx-class-tools"
+	e.FileFS("/static/js/response-targets.js", "js/response-targets.js", assetsFs).Name = "static:js:htmx-response-targets"
+	e.FileFS("/static/js/hyperscript.min.js", "js/hyperscript.min.js", assetsFs).Name = "static:js:hyperscript"
 
-	e.File("/favicon.png", "assets/favicon.png").Name = "static:favicon"
-	e.File("/adsRoute.txt", "assets/templates/ads.txt").Name = "static:adsRoute.txt"
-	e.File("/legal/privacy-policy", "assets/templates/privacy_policy.html").Name = "static:privacy-policy"
-	e.File("/legal/cookie-policy", "assets/templates/cookie_policy.html").Name = "static:cookie-policy"
+	e.FileFS("/favicon.png", "favicon.png", assetsFs).Name = "static:favicon"
+	e.FileFS("/adsRoute.txt", "templates/ads.txt", assetsFs).Name = "static:adsRoute.txt"
+	e.FileFS("/legal/privacy-policy", "templates/privacy_policy.html", assetsFs).Name = "static:privacy-policy"
+	e.FileFS("/legal/cookie-policy", "templates/cookie_policy.html", assetsFs).Name = "static:cookie-policy"
 
 	// Health check routes
 	healthCheck := e.Group("/health")

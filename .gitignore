@@ -23,6 +23,7 @@
 
 # Track assets
 !/assets/
+!/assets/assets.go
 !/assets/templates/ads.txt
 !/assets/favicon.png
 
