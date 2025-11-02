@@ -142,8 +142,15 @@ a.btn {
     color: #000;
 }
 
+.dark-mode .no-color {
+    color: #d3d3d3 !important;
+}
+
 .no-color:hover {
     background-color: transparent;
+}
+.dark-mode .no-color:hover {
+    color: #d3d3d3 !important;
 }
 
 nav.navbar {
