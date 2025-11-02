@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"slices"
 
 	"github.com/labstack/echo/v4"
 
@@ -35,6 +36,9 @@ func Home(c echo.Context) error {
 		return err
 	}
 	tableRows := db.EpisodeRowsToTableRow(episodes)
+	if pageOpts.NewestFirst {
+		slices.Reverse(tableRows)
+	}
 
 	// use the Frontend.DefaultPageConfig.ShowList instead of loading it on each request - we can do that later if needed
 	pageConfig := frontend.NewPage(components.Home(cc.Echo(), tableRows, pageOpts.NewestFirst, cc.Frontend.DefaultPageConfig.ShowList, pageOpts.HideShowsList, pageOpts.FromDate.String(), pageOpts.ToDate.String()))
