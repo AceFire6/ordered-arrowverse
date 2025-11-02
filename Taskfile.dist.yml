@@ -13,10 +13,17 @@ tasks:
     desc: "Run everything required to standup the development server for local testing"
     deps:
       - sqlc:generate:dev
-      - assets:watch-notify:dev
-      - templ:generate:dev
       - compose:dev
-      - db:migrations:dev
+      # Run the standard generate before running the watch version to ensure the deps ordering doesn't matter
+      - templ:generate
+    cmds:
+      - task: db:migrations:dev
+      - task: dev:run-templ-watch-and-air
+
+  dev:run-templ-watch-and-air:
+    internal: true
+    deps:
+      - templ:generate:dev
       - build:dev
 
   build:dev:
@@ -30,6 +37,7 @@ tasks:
     deps:
       - templ:generate
 
+  # NOTE: This is only important once we start using dynamic JS/CSS bundles
   assets:watch-notify:dev:
     desc: "Notify templ when the ./assets/ directory changes"
     run: once
