@@ -310,7 +310,11 @@ def get_user_agent_headers() -> dict[str, str]:
 
 @safe_cache_content(timeout=TWELVE_HOURS, backup=True)
 def get_url_content(url: str) -> str:
-    return requests.get(url, headers=get_user_agent_headers()).content
+    response = requests.get(url, headers=get_user_agent_headers())
+    # Ensure we raise an error for non-200 status codes so our caching backup works as expected
+    response.raise_for_status()
+
+    return response.content
 
 
 @safe_cache_content(timeout=TWELVE_HOURS, hash_args=True)
