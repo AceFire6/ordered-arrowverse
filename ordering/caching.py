@@ -45,6 +45,8 @@ def safe_cache_content(timeout=None, backup=False, hash_args=False):
                     logger.error('No valid cached backup response - returning error response')
                     raise exception
 
+                # Update the key so it isn't expired
+                cache.touch(f'{cache_key}-backup')
                 return orjson.loads(cached_json_lts_response.decode('utf-8'))
             else:
                 json_response = serialized_response(response)
