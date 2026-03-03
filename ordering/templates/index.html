@@ -26,7 +26,7 @@
     {% include 'ads.html' %}
 </head>
 
-<body>
+<body onload="setupBookmarks()">
     {% if using_old_site %}
         <section class="old-site-banner container-fluid sticky-top">
             <div class="row">
@@ -157,6 +157,7 @@
                         <table class="table table-bordered col-sm-12" id="episode-list">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>#</th>
                                     <th>Series</th>
                                     <th>Episode</th>
@@ -168,6 +169,7 @@
                             <tbody>
                                 {% for row in table_content %}
                                     <tr class="episode {{ series_map[row.series].id }}">
+                                        <td><input aria-label="bookmark for {{ row.series }} {{ row.episode_id }}" type='checkbox' data-episodeId="{{ row.series }} {{ row.episode_id }}" onclick="(event) => bookmarkEpisode(event)"/></td>
                                         <td>{{ row.row_number }}</td>
                                         <td>{{ row.series }}</td>
                                         <td>{{ row.episode_id }}</td>
@@ -331,6 +333,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
     <script src="{{ static_url('js/index.js') }}"></script>
+    <script src="{{ static_url('js/bookmark-episode.js') }}"></script>
     {% include 'analytics.html' %}
 </body>
 </html>
