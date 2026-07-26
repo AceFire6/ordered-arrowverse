@@ -72,28 +72,36 @@ body.dark-mode .navbar {
 }
 
 .filter-form {
-	display: grid;
-	grid-template-columns: minmax(260px, 1fr) auto;
-	gap: 1rem;
 	margin: 1rem 0;
-	align-items: end;
 }
 
-.filter-block { display: flex; flex-direction: column; gap: 0.5rem; }
-.filter-block-wide { min-width: 280px; }
-.filter-block-dates {
-	flex-direction: row;
-	align-items: end;
-	flex-wrap: wrap;
-	gap: 0.75rem;
-}
-.filter-label { font-size: 0.85rem; font-weight: 500; }
-
-.date-row {
+.filter-row {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: flex-end;
 	gap: 0.75rem;
-	flex-wrap: wrap;
+}
+
+.filter-cell {
+	display: flex;
+	flex-direction: column;
+}
+
+.filter-cell-show { flex: 1 1 280px; min-width: 240px; }
+.filter-cell:not(.filter-cell-show):not(.filter-cell-button) { flex: 0 0 auto; }
+.filter-cell-button { flex: 0 0 auto; }
+
+.filter-label { font-size: 0.85rem; font-weight: 500; }
+
+.filter-cell-button .btn {
+	margin: 0;
+	min-height: 2.75rem;
+	padding: 0.55rem 1.25rem;
+	font-weight: 500;
+}
+
+@media (max-width: 720px) {
+	.filter-cell-show { flex-basis: 100%; }
 }
 
 /* Alpine-driven multi-select popover */

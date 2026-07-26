@@ -19,16 +19,19 @@ templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newe
 				class="filter-form">
 				<input name="newest_first" value={ strconv.FormatBool(newestFirst) } title="Newest First" type="hidden"/>
 
-				<div class="filter-block filter-block-wide">
-					@SearchableMultiSelect("hide_show", showList, hiddenShowList, "Hide shows")
-				</div>
-
-				<div class="filter-block filter-block-dates">
-					<div class="date-row">
+				<div class="filter-row">
+					<div class="filter-cell filter-cell-show">
+						@SearchableMultiSelect("hide_show", showList, hiddenShowList, "Hide shows")
+					</div>
+					<div class="filter-cell">
 						@NativeDateInput("from_date", "from-date", "From Date", fromDate)
+					</div>
+					<div class="filter-cell">
 						@NativeDateInput("to_date", "to-date", "To Date", toDate)
 					</div>
-					<button type="submit" id="filter-button" class="btn">Filter</button>
+					<div class="filter-cell filter-cell-button">
+						<button type="submit" id="filter-button" class="btn">Filter</button>
+					</div>
 				</div>
 			</form>
 		</div>
