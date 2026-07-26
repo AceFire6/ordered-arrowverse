@@ -1,95 +1,99 @@
 package components
 
-import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
-import "slices"
-import "strconv"
+import (
+	"github.com/AceFire6/ordered-arrowverse/internal/frontend"
+	"strconv"
+)
 
 templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newestFirst bool, showList []frontend.ShowData, hiddenShowList []string, fromDate string, toDate string) {
-        <main>
-            <div class="container">
-                <form action={ reverser.Reverse("view:home") } id="filter-form" method="get" class="row form-inline">
-                    <div class="col-sm">
-                        <input name="newest_first" value={ newestFirst } title="Newest First" type="hidden">
-                        <select id="show-filter-select"
-                                title="Filter options"
-                                name="hide_show"
-                                multiple="multiple"
-                                class="form-control">
-                                for _, showData := range showList {
-                                    <option value={ showData.Slug }
-                                       if slices.Contains(hiddenShowList, showData.Slug) {
-                                        selected
-                                       }>
-                                        { showData.Name }
-                                    </option>
-                                }
-                        </select>
-                    </div>
-                    <div class="col-sm">
-                        <div class="row">
-                            <div class="col-6 col-md-5">
-                                <input title="From Date"
-                                   class="form-control date-picker"
-                                   type="text"
-                                   name="from_date"
-                                   id="from-date"
-                                   if len(fromDate) != 0 {
-                                        value={ fromDate }
-                                   }
-                                   placeholder="From Date">
-                            </div>
-                            <div class="col-6 col-md-5">
-                                <input title="To Date"
-                                       class="form-control date-picker"
-                                       type="text"
-                                       name="to_date"
-                                       id="to-date"
-                                       if len(toDate) != 0 {
-                                           value={ toDate }
-                                       }
-                                       placeholder="To Date">
-                            </div>
-                            <div class="col-12 col-md-2">
-                                <button type="submit"
-                                    id="filter-button"
-                                    class="btn btn-outline-secondary"
-                                    form="filter-form">
-                                    Filter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="container">
-                <div class="row text-center text-sm-end">
-                    <div class="col-sm-12">
-                        <a href="#end" id="top"><small>END</small></a> |
-                        <a href={ frontend.AddQueryParams(reverser.Reverse("view:home"), map[string]string{ "newest_first": strconv.FormatBool(!newestFirst) }) }>
-                            if newestFirst {
-                                <small>OLDEST FIRST</small>
-                            } else {
-                                <small>NEWEST FIRST</small>
-                            }
-                        </a>
-                        | <a href="#" id="no-color"><small class="text">DISABLE COLOR</small></a>
-                        | <a href="#" id="dark-mode"><small class="text">TOGGLE DARK MODE</small></a>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        @EpisodesTable(tableContent)
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12 text-center">
-                        <a href="#top" id="end">BACK TO TOP</a>
-                    </div>
-                </div>
-            </div>
-        </main>
+	<main>
+		<div class="container">
+			<form hx-get={ reverser.Reverse("view:home") }
+				hx-target="#episode-list"
+				hx-swap="outerHTML"
+				hx-trigger="change from:select, change from:input[type=date], submit"
+				hx-push-url="true"
+				id="filter-form"
+				class="filter-form">
+				<input name="newest_first" value={ strconv.FormatBool(newestFirst) } title="Newest First" type="hidden"/>
+				<label class="filter-block">
+					<span class="filter-label">Hide shows</span>
+					<select id="show-filter-select"
+						title="Filter options"
+						name="hide_show"
+						multiple
+						class="form-control">
+						for _, showData := range showList {
+							<option value={ showData.Slug }
+								if sliceContains(hiddenShowList, showData.Slug) {
+									selected
+								}>
+								{ showData.Name }
+							</option>
+						}
+					</select>
+				</label>
+				<div class="filter-block">
+					<div class="date-row">
+						<label class="filter-label">From Date</label>
+						<input title="From Date"
+							class="form-control"
+							type="date"
+							name="from_date"
+							id="from-date"
+							if len(fromDate) != 0 {
+								value={ fromDate }
+							}/>
+					</div>
+					<div class="date-row">
+						<label class="filter-label">To Date</label>
+						<input title="To Date"
+							class="form-control"
+							type="date"
+							name="to_date"
+							id="to-date"
+							if len(toDate) != 0 {
+								value={ toDate }
+							}/>
+					</div>
+					<button type="submit" id="filter-button" class="btn">Filter</button>
+				</div>
+			</form>
+		</div>
+		<div class="container">
+			<div class="row toolbar">
+				<a href="#end" id="top">END</a>
+				|
+				<a href={ frontend.AddQueryParams(reverser.Reverse("view:home"), map[string]string{ "newest_first": strconv.FormatBool(!newestFirst) }) }>
+					if newestFirst {
+						OLDEST FIRST
+					} else {
+						NEWEST FIRST
+					}
+				</a>
+				| <a href="#" id="no-color">DISABLE COLOR</a>
+				| <a href="#" id="dark-mode">TOGGLE DARK MODE</a>
+			</div>
+		</div>
+		<div class="container">
+			@EpisodesTable(tableContent)
+		</div>
+		<div class="container">
+			<div class="row back-to-top">
+				<a href="#top" id="end">BACK TO TOP</a>
+			</div>
+		</div>
+	</main>
+}
+
+// sliceContains is exposed as a package-local helper since templ can't
+// inline the slices.Contains call inside the conditional attribute
+// rendering. Tests live in page_config_test.go (different package).
+func sliceContains(haystack []string, needle string) bool {
+	for _, item := range haystack {
+		if item == needle {
+			return true
+		}
+	}
+	return false
 }

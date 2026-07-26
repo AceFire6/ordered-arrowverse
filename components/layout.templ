@@ -4,179 +4,108 @@ import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
 
 templ PageLayout(pageConfig *frontend.PageConfig) {
 	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-            <meta name="description" content="Arrowverse episode order tracker. Never spoil a crossover episode again!">
-    //        <link href={ pageConfig.Reverse('rss:recent_episodes', hide_show=hiddenShowList) }
-                  //rel="alternate"
-                  //title="Recent Episodes"
-                  //type="application/atom+xml">
-            <link type="image/png" href={ pageConfig.Reverse("static:favicon") } rel="icon">
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-              rel="stylesheet"
-              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-              crossorigin="anonymous">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css">
-            <link rel="stylesheet" href={ pageConfig.Reverse("static:css:index") }>
-            <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />            <script data-ad-client="ca-pub-4243272906692681" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-			<title>{ pageConfig.Title }</title>
-		</head>
-		<body>
-			<div class="mx-3">
+		<html lang="en">
+			<head>
+				<meta charset="UTF-8"/>
+				<meta name="viewport" content="width=device-width, initial-scale=1"/>
+				<meta name="description" content="Arrowverse episode order tracker. Never spoil a crossover episode again!">
+				<link href={ pageConfig.Reverse("view:rss:recent-episodes") }
+					rel="alternate"
+					title="Recent Episodes"
+					type="application/atom+xml"/>
+				<link type="image/png" href={ pageConfig.Reverse("static:favicon") } rel="icon">
+				<link rel="stylesheet" href={ pageConfig.Reverse("static:css:index") }>
+				<script src={ pageConfig.Reverse("static:js:htmx") } defer></script>
+				<title>{ pageConfig.Title }</title>
+			</head>
+			<body class="">
 				@NavBar(pageConfig)
-				@pageConfig.Contents
-			</div>
+				<div class="container">
+					@pageConfig.Contents
+				</div>
+				@Footer()
+				@SupportModal()
+				@AcknowledgementsModal(pageConfig.ShowList)
+				@ContactModal()
+				<script>
+					// Tiny dependency-free controller: cookie plumbing for
+					// dark-mode + colour toggle, and a minimal modal opener.
+					(function() {
+						var COOKIES = (document.cookie || "").split(";");
+						var settings = {};
+						for (var i = 0; i < COOKIES.length; i++) {
+							var parts = COOKIES[i].split("=");
+							if (parts.length !== 2) continue;
+							settings[parts[0].trim()] = parts[1];
+						}
 
-            <footer>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-sm-12 text-center">
-                            <div id="footer-buttons">
-                                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#contact">
-                                    <small>Contact Me</small>
-                                </button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#acknowledgements">
-                                    <small>Acknowledgements</small>
-                                </button>
-                                <a href={ pageConfig.Reverse("static:cookie-policy") } class="btn btn-outline-secondary btn-sm" type="button" target="_blank">
-                                    Cookie Policy
-                                </a>
-                                <a href={ pageConfig.Reverse("static:privacy-policy") } class="btn btn-outline-secondary btn-sm" type="button" target="_blank">
-                                    Privacy Policy
-                                </a>
-                                <button
-                                  class="btn btn-outline-secondary btn-sm termly-cookie-preference-button"
-                                  type="button"
-                                  onclick="displayPreferenceModal()">
-                                    Manage Cookie Preferences
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+						function setCookie(name, value) {
+							document.cookie = name + "=" + value + "; path=/; max-age=" + (60 * 60 * 24 * 365);
+						}
 
-            <div class="modal" tabindex="-1" role="dialog" id="support">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Support Arrowverse</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <p>
-                      Hello! My name is Jethro.
-                      I created and have been working on the Arrowverse website since 2014.
-                    </p>
-                    <p>
-                      Your support allows me to keep working on and improving Arrowverse.
-                      Thank you for being a part of the Arrowverse community!
-                    </p>
-                    <p>
-                      If you'd like to support what I do here check out
-                      the project on GitHub or consider buying me a coffee on Ko-Fi or via PayPal!
-                    </p>
-                    <a href="https://ko-fi.com/B0B4XZIE" target="_blank">
-                      <img height="36"
-                           style="border:0;height:36px;"
-                           src="https://storage.ko-fi.com/cdn/kofi6.png?v=6"
-                           alt="Buy Me a Coffee at ko-fi.com" />
-                    </a>
-                    <a class="btn btn-primary"
-                       href="https://paypal.me/AceFire6"
-                       role="button"
-                       target="_blank">
-                      Support me on PayPal
-                    </a>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+						function readCookie(name, fallback) {
+							var v = settings[name];
+							return v === undefined ? fallback : v;
+						}
 
-            <div class="modal" tabindex="-1" role="dialog" id="acknowledgements">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Acknowledgements</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Content is drawn from:
-                            <ul>
-                                for _, showData := range pageConfig.ShowList {
-                                    for _, source := range showData.DataSources {
-                                        <li>
-                                            <a href={ source }
-                                               target="_blank"
-                                               rel="noopener">
-                                               { source }
-                                            </a>
-                                        </li>
-                                    }
-                                }
-                            </ul>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+						// Initial paint - dark mode honours stored value, falling
+						// back to system preference when unset.
+						var storedDark = settings["dark-mode"];
+						var useDark = storedDark === "1" || (storedDark === undefined &&
+							window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+						document.body.classList.toggle("dark-mode", useDark);
 
-            <div class="modal" tabindex="-1" role="dialog" id="contact">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Contact</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <p>Made by Jethro Muller</p>
-                            <p>To contact me, <a href="mailto:arrowverse.info@gmail.com" target="_blank">email me</a>.
-                            </p>
-                            <p>Or, view my other projects on <a href="https://www.github.com/AceFire6" target="_blank">GitHub</a>.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+						// Initial paint - per-show row tinting.
+						var colour = readCookie("colour", "1");
+						document.body.classList.toggle("no-color", colour === "0");
 
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                    crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-            <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.0/dist/js.cookie.min.js"></script>
-            <script src={ pageConfig.Reverse("static:js:index") }></script>
-            <!-- Global site tag (gtag.js) - Google Analytics -->
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YCYDBGZQM"></script>
-            <script>
-              window.dataLayer = window.dataLayer || [];
-              function gtag() {
-                dataLayer.push(arguments);
-              }
-              gtag('js', new Date());
+						// Click handlers - dark-mode toggle.
+						var darkButton = document.getElementById("dark-mode");
+						if (darkButton) {
+							darkButton.addEventListener("click", function(event) {
+								event.preventDefault();
+								var nextDark = !document.body.classList.contains("dark-mode");
+								document.body.classList.toggle("dark-mode", nextDark);
+								setCookie("dark-mode", nextDark ? "1" : "0");
+								darkButton.textContent = nextDark ? "TOGGLE LIGHT MODE" : "TOGGLE DARK MODE";
+							});
+						}
 
-              gtag('config', 'G-9YCYDBGZQM');
-            </script>
-        </body>
-	</html>
+						// Click handlers - colour toggle.
+						var colourButton = document.getElementById("no-color");
+						if (colourButton) {
+							colourButton.addEventListener("click", function(event) {
+								event.preventDefault();
+								var nextColour = document.body.classList.contains("no-color");
+								document.body.classList.toggle("no-color", !nextColour);
+								setCookie("colour", nextColour ? "1" : "0");
+								colourButton.textContent = nextColour ? "DISABLE COLOR" : "ENABLE COLOR";
+							});
+						}
+
+						// Click handlers - modal opener.
+						document.addEventListener("click", function(event) {
+							var target = event.target.closest("[data-modal-open]");
+							if (!target) return;
+							var modal = document.getElementById(target.getAttribute("data-modal-open"));
+							if (modal && typeof modal.showModal === "function") {
+								event.preventDefault();
+								modal.showModal();
+							}
+						});
+					})();
+				</script>
+			</body>
+		</html>
+}
+
+templ Footer() {
+	<footer class="site-footer container">
+		<div class="row footer-buttons">
+			<button type="button" data-modal-open="contact">Contact Me</button>
+			<button type="button" data-modal-open="acknowledgements">Acknowledgements</button>
+			<a href="/legal/cookie-policy" target="_blank">Cookie Policy</a>
+			<a href="/legal/privacy-policy" target="_blank">Privacy Policy</a>
+		</div>
+	</footer>
 }

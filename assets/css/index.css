@@ -1,162 +1,214 @@
+/* Hand-rolled layout for the post-Bootstrap rewrite.
+   Show-colour rules are kept; replace the navbar/form/grid with
+   plain flex + grid so we can drop Bootstrap entirely. */
+
+* { box-sizing: border-box; }
+
+html, body {
+	margin: 0;
+	padding: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+	color: #1f2937;
+	background: #f9fafb;
+}
+
 body.dark-mode {
-    background-color: #2a2a2a;
+	background: #2a2a2a;
+	color: #d3d3d3;
 }
 
-body.dark-mode .adsbygoogle {
-    background-color: #2a2a2a !important;
+a { color: #0366d6; }
+body.dark-mode a { color: #76b9ed; }
+
+.container {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0.5rem 1rem;
 }
 
-a.dark-mode {
-    color: #d3d3d3;
+.row {
+	display: flex;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+	align-items: center;
 }
 
-.modal-content.dark-mode {
-    color: #d3d3d3;
-    background-color: #2a2a2a;
+.toolbar, .footer-buttons, .back-to-top {
+	justify-content: center;
+	font-size: 0.85rem;
 }
 
-.btn-close.dark-mode {
-    background-color: #d3d3d3;
+.navbar {
+	background: #f3f4f6;
+	border-bottom: 1px solid #e5e7eb;
 }
 
-.select2-selection.select2-selection--multiple.dark-mode {
-    background-color: #000000;
+body.dark-mode .navbar {
+	background: #1f1f1f;
+	border-bottom: 1px solid #404040;
 }
 
-input.form-control.date-picker.dark-mode {
-    color: #d3d3d3;
-    background-color: #000000;
+.nav-inner {
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 0.75rem 1rem;
 }
 
-#episode-list td a {
-    color: #d3d3d3;
+.brand {
+	font-weight: 600;
+	text-decoration: none;
+	color: inherit;
 }
 
-a.btn {
-    display:inline;
+.nav-inner > * + * { margin-left: 0; }
+
+.rss-link img {
+	width: 14px;
+	height: 14px;
+	vertical-align: middle;
+	margin-left: 0.25rem;
 }
 
-#episode-list thead {
-    color: #d3d3d3;
-    background-color: #333333;
+.filter-form {
+	display: grid;
+	grid-template-columns: minmax(220px, 1fr) auto;
+	gap: 1rem;
+	margin: 1rem 0;
 }
 
-#show-filter-select {
-    display: none;
+.filter-block { display: flex; flex-direction: column; gap: 0.5rem; }
+.filter-label { font-size: 0.85rem; font-weight: 500; }
+
+.date-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
 }
 
-.episode {
-    color: #d3d3d3;
+.date-row input { flex: 1; }
+
+select[multiple].form-control,
+input.form-control {
+	font: inherit;
+	padding: 0.4rem 0.5rem;
+	border: 1px solid #d1d5db;
+	border-radius: 4px;
+	background: #fff;
+	min-height: 2.25rem;
 }
 
-.arrow {
-    background-color: #006200;
+body.dark-mode select.form-control,
+body.dark-mode input.form-control {
+	background: #1a1a1a;
+	color: #d3d3d3;
+	border-color: #404040;
 }
 
-.arrow:hover {
-    background-color: #004e00;
+select[multiple].form-control { min-height: 8rem; }
+
+.btn {
+	font: inherit;
+	padding: 0.4rem 0.75rem;
+	border: 1px solid #6b7280;
+	background: #f3f4f6;
+	border-radius: 4px;
+	cursor: pointer;
 }
 
-.batwoman {
-    background-color: #692e69;
+body.dark-mode .btn {
+	background: #1f1f1f;
+	border-color: #404040;
+	color: #d3d3d3;
 }
 
-.batwoman:hover {
-    background-color: #470e47;
+.table-responsive {
+	overflow-x: auto;
+	margin-top: 1rem;
 }
 
-.black-lightning {
-    background-color: #464340;
+.table {
+	width: 100%;
+	border-collapse: collapse;
 }
 
-.black-lightning:hover {
-    background-color: #383532;
+.table th, .table td {
+	padding: 0.5rem 0.75rem;
+	border: 1px solid #e5e7eb;
 }
 
-.constantine {
-    background-color: #d74014;
+body.dark-mode .table th,
+body.dark-mode .table td {
+	border-color: #404040;
 }
 
-.constantine:hover {
-    background-color: #be3915;
+.table thead {
+	background: #f3f4f6;
 }
 
-.flash {
-    background-color: #a50400;
+body.dark-mode .table thead {
+	background: #333;
+	color: #d3d3d3;
 }
 
-.flash:hover {
-    background-color: #910400;
+.episode { color: inherit; }
+
+/* Per-show row tinting. Toggleable via body.no-color. */
+.arrow { background: #006200; color: #fff; }
+.arrow:hover { background: #004e00; }
+.batwoman { background: #692e69; color: #fff; }
+.batwoman:hover { background: #470e47; }
+.black-lightning { background: #464340; color: #fff; }
+.black-lightning:hover { background: #383532; }
+.constantine { background: #d74014; color: #fff; }
+.constantine:hover { background: #be3915; }
+.flash { background: #a50400; color: #fff; }
+.flash:hover { background: #910400; }
+.freedom-fighters { background: #b4a242; color: #fff; }
+.freedom-fighters:hover { background: #a08e41; }
+.legends { background: #003e3e; color: #fff; }
+.legends:hover { background: #002a2a; }
+.stargirl { background: #12223a; color: #fff; }
+.stargirl:hover { background: #120e3a; }
+.supergirl { background: #007196; color: #fff; }
+.supergirl:hover { background: #005e82; }
+.superman-and-lois { background: #4b6c7a; color: #fff; }
+.superman-and-lois:hover { background: #324951; }
+.vixen { background: #3c0096; color: #fff; }
+.vixen:hover { background: #280082; }
+
+body.no-color .episode,
+body.no-color .table thead {
+	background: transparent !important;
+	color: inherit !important;
 }
 
-.freedom-fighters {
-    background-color: #b4a242;
+body.no-color .table tr:nth-child(even) td { background: rgba(0, 0, 0, 0.03); }
+body.dark-mode.no-color .table tr:nth-child(even) td { background: rgba(255, 255, 255, 0.04); }
+
+/* Modal - native <dialog> */
+.modal {
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+	padding: 1rem 1.25rem;
+	max-width: 32rem;
+	background: #fff;
+	color: #1f2937;
 }
 
-.freedom-fighters:hover {
-    background-color: #a08e41;
+body.dark-mode .modal {
+	background: #1f1f1f;
+	color: #d3d3d3;
+	border-color: #404040;
 }
 
-.legends {
-    background-color: #003E3E;
-}
+.modal::backdrop { background: rgba(0, 0, 0, 0.5); }
+.modal h2 { margin-top: 0; }
 
-.legends:hover {
-    background-color: #002a2a;
-}
+/* htmx loading indicator styling */
+.htmx-indicator { display: none; }
+.htmx-request .htmx-indicator { display: inline; }
+.htmx-request.htmx-indicator { display: inline; }
 
-.stargirl {
-    background-color: #12223A;
-}
-
-.stargirl:hover {
-    background-color: #120e3a;
-}
-
-.supergirl {
-    background-color: #007196;
-}
-
-.supergirl:hover {
-    background-color: #005e82;
-}
-
-.superman-and-lois {
-    background-color: #4b6c7a;
-}
-
-.superman-and-lois:hover {
-    background-color: #324951;
-}
-
-.vixen {
-    background-color: #3c0096;
-}
-
-.vixen:hover {
-    background-color: #280082;
-}
-
-.no-color {
-    background-color: transparent;
-    color: #000;
-}
-
-.dark-mode .no-color {
-    color: #d3d3d3 !important;
-}
-
-.no-color:hover {
-    background-color: transparent;
-}
-.dark-mode .no-color:hover {
-    color: #d3d3d3 !important;
-}
-
-nav.navbar {
-    margin-bottom: 1rem;
-}
-
-table.table {
-    margin: 0;
-}
+.site-footer { margin-top: 2rem; }
