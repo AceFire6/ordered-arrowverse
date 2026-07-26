@@ -170,6 +170,8 @@ body.dark-mode .multiselect-label { color: #9ca3af; }
    removed in a future cleanup pass. */
 .multiselect-trigger .multiselect-label { /* intentionally empty */ }
 body.dark-mode .multiselect-trigger .multiselect-label { /* intentionally empty */ }
+.multiselect-trigger .multiselect-label { /* intentionally empty */ }
+body.dark-mode .multiselect-trigger .multiselect-label { /* intentionally empty */ }
 
 .multiselect-summary {
 	flex: 1;
@@ -345,6 +347,9 @@ body.dark-mode .multiselect-link { color: #fca5a5; }
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
 	font-weight: 500;
+	display: block;
+	margin: 0;
+	padding: 0;
 }
 
 body.dark-mode .date-input-label { color: #9ca3af; }
