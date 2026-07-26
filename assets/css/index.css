@@ -295,7 +295,7 @@ body.dark-mode .multiselect-link { color: #fca5a5; }
 .multiselect-done:hover { background: #005e82; }
 
 
-/* styled native date input + custom picker trigger */
+/* styled native date input */
 .date-input {
 	display: flex;
 	flex-direction: column;
@@ -314,100 +314,75 @@ body.dark-mode .multiselect-link { color: #fca5a5; }
 
 body.dark-mode .date-input-label { color: #9ca3af; }
 
-/* The styled "trigger" acts as the clickable surface. The real
-   <input type="date"> is hidden visually but receives clicks via
-   positioning + pointer-events. */
-.date-input-trigger {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	padding: 0.55rem 0.75rem;
-	min-height: 2.6rem;
+.date-input-control {
+	font: inherit;
+	font-size: 0.95rem;
+	font-weight: 500;
+	color: #1f2937;
+	background: #fff;
 	border: 1px solid #d1d5db;
 	border-radius: 6px;
-	background: #fff;
-	color: #1f2937;
-	font: inherit;
-	font-weight: 500;
+	padding: 0.55rem 2.25rem 0.55rem 2.5rem;
+	min-height: 2.75rem;
+	min-width: 12rem;
+	max-width: 100%;
 	cursor: pointer;
 	transition: border-color 0.15s, box-shadow 0.15s;
-	user-select: none;
+	position: relative;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: left 0.7rem center;
+	background-size: 1.1rem 1.1rem;
 }
 
-body.dark-mode .date-input-trigger {
-	background: #1a1a1a;
-	border-color: #404040;
-	color: #d3d3d3;
+.date-input-control::-webkit-calendar-picker-indicator {
+	background: transparent;
+	color: transparent;
+	cursor: pointer;
+	width: 1.75rem;
+	height: 100%;
+	position: absolute;
+	right: 0.25rem;
+	top: 0;
+	opacity: 0;
 }
 
-.date-input-trigger:hover { border-color: #6b7280; }
+.date-input-control::-webkit-datetime-edit-fields-wrapper { padding: 0; }
+.date-input-control::-webkit-datetime-edit {
+	padding: 0;
+}
+.date-input-control::-webkit-datetime-edit-month-field,
+.date-input-control::-webkit-datetime-edit-day-field,
+.date-input-control::-webkit-datetime-edit-year-field {
+	padding: 0 0.1rem;
+	color: #1f2937;
+}
 
-body.dark-mode .date-input-trigger:hover { border-color: #9ca3af; }
-
-.date-input-trigger:focus-visible,
-.date-input-trigger.is-open {
+.date-input-control:hover { border-color: #6b7280; }
+.date-input-control:focus,
+.date-input-control:focus-within {
 	outline: none;
 	border-color: #007196;
 	box-shadow: 0 0 0 2px rgba(0, 113, 150, 0.18);
 }
 
-.date-input-trigger.is-empty { color: #6b7280; font-weight: 400; }
-
-body.dark-mode .date-input-trigger.is-empty { color: #9ca3af; }
-
-.date-input-icon {
-	width: 1.1rem;
-	height: 1.1rem;
-	flex-shrink: 0;
-	color: inherit;
-}
-
-.date-input-clear {
-	margin-left: auto;
-	font: inherit;
-	background: none;
-	border: none;
-	color: #6b7280;
-	cursor: pointer;
-	padding: 0.2rem 0.4rem;
-	border-radius: 4px;
-}
-
-body.dark-mode .date-input-clear { color: #9ca3af; }
-
-.date-input-clear:hover { background: rgba(0, 0, 0, 0.08); color: #1f2937; }
-
-body.dark-mode .date-input-clear:hover { background: rgba(255, 255, 255, 0.08); color: #d3d3d3; }
-
-/* Native picker is offscreen-positioned but accessible. When the
-   trigger is clicked we focus the input and call showPicker() so the
-   platform calendar opens. */
-.date-input-native {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	opacity: 0;
-	pointer-events: none;
-	left: -9999px;
-	top: -9999px;
-}
-
-input.date-input-control-native {
-	font: inherit;
-	padding: 0.45rem 0.6rem;
-	border: 1px solid #d1d5db;
-	border-radius: 6px;
-	background: #fff;
-	color: #1f2937;
-	min-height: 2.25rem;
-	min-width: 9rem;
-}
-
-body.dark-mode input.date-input-control-native {
-	background: #1a1a1a;
+body.dark-mode .date-input-control {
+	background-color: #1a1a1a;
 	border-color: #404040;
 	color: #d3d3d3;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
 }
+
+body.dark-mode .date-input-control::-webkit-datetime-edit-month-field,
+body.dark-mode .date-input-control::-webkit-datetime-edit-day-field,
+body.dark-mode .date-input-control::-webkit-datetime-edit-year-field {
+	color: #d3d3d3;
+}
+
+body.dark-mode .date-input-control::-webkit-calendar-picker-indicator { filter: invert(1); }
+
+.date-input-control::placeholder { color: #6b7280; }
+body.dark-mode .date-input-control::placeholder { color: #9ca3af; }
 
 select[multiple].form-control,
 input.form-control {
