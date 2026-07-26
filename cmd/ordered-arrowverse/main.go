@@ -14,6 +14,7 @@ import (
 	"github.com/AceFire6/ordered-arrowverse/internal/handlers"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
@@ -22,6 +23,7 @@ import (
 	"github.com/AceFire6/ordered-arrowverse/internal/healthcheck"
 	"github.com/AceFire6/ordered-arrowverse/internal/httpserver"
 	"github.com/AceFire6/ordered-arrowverse/internal/logger"
+	"github.com/AceFire6/ordered-arrowverse/internal/redisx"
 )
 
 func main() {
@@ -87,6 +89,18 @@ func startServer() int {
 	}
 	defer db.CloseDBPool(dbPool, appLogger)
 
+	redisConfig, err := redisx.GetConfig()
+	if err != nil {
+		appLogger.Err(err).Msg("could not load redis config")
+		return 1
+	}
+	redisClient, err := redisx.CreateClient(appLogger, redisConfig)
+	if err != nil {
+		appLogger.Err(err).Msg("could not connect to redis")
+		return 1
+	}
+	defer redisx.Close(redisClient, appLogger)
+
 	echoApp := echo.NewEchoInstance(echo.NewEchoParams{
 		Environment: buildInfo.Environment,
 	})
@@ -125,7 +139,7 @@ func startServer() int {
 		Site:               siteConfig,
 	})
 
-	handlerConfig := getHandlerConfig(dbPool)
+	handlerConfig := getHandlerConfig(dbPool, redisClient)
 	handlers.RegisterRoutes(echoApp, handlerConfig, buildInfo.Environment, appLogger)
 
 	httpServer := httpserver.NewHTTPServer(httpserver.NewServerParams{
@@ -186,9 +200,10 @@ func runServer(httpServer *http.Server, serverConfig *httpserver.Config, logger 
 	return 0
 }
 
-func getHandlerConfig(dbPool *pgxpool.Pool) *handlers.HandlerConfig {
+func getHandlerConfig(dbPool *pgxpool.Pool, redisClient *redis.Client) *handlers.HandlerConfig {
 	healthCheckService := healthcheck.NewService(
 		db.NewDBCheck(dbPool),
+		redisx.NewHealthCheck(redisClient),
 	)
 	healthCheckHandler := healthcheck.NewHealthCheckHandler(healthCheckService)
 
