@@ -30,7 +30,12 @@ func Home(c echo.Context) error {
 
 	cc.Log.Debug().Interface("pageOpts", pageOpts).Msg("page options")
 
-	episodes, err := cc.ShowDB.GetEpisodes(c.Request().Context())
+	episodes, err := cc.ShowDB.GetEpisodesFiltered(
+		c.Request().Context(),
+		pageOpts.HideShowsList,
+		pageOpts.FromDate.TimePtr(),
+		pageOpts.ToDate.TimePtr(),
+	)
 	if err != nil {
 		cc.Log.Err(err).Msg("could not load episodes")
 		return err
@@ -55,6 +60,6 @@ func Hide(c echo.Context) error {
 }
 
 func HideNewestFirst(c echo.Context) error {
-	//return c.Redirect(http.StatusMovedPermanently, "hide?newest_first")
+	// return c.Redirect(http.StatusMovedPermanently, "hide?newest_first")
 	return c.String(http.StatusOK, "hidenewest")
 }

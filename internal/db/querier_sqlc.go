@@ -6,10 +6,12 @@ package db
 
 import (
 	"context"
+	"time"
 )
 
 type Querier interface {
 	GetEpisodes(ctx context.Context) ([]GetEpisodesRow, error)
+	GetEpisodesFiltered(ctx context.Context, hideShowSlugs []string, fromDate *time.Time, toDate *time.Time) ([]GetEpisodesRow, error)
 	GetShowList(ctx context.Context) ([]GetShowListRow, error)
 }
 

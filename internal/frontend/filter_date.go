@@ -34,3 +34,26 @@ func (fd *FilterDate) String() string {
 func (fd FilterDate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(fd.String())
 }
+
+// IsZero reports whether the FilterDate is nil or holds a zero time.Time.
+// A zero FilterDate is treated as "no filter applied".
+func (fd *FilterDate) IsZero() bool {
+	if fd == nil {
+		return true
+	}
+
+	return time.Time(*fd).IsZero()
+}
+
+// TimePtr returns a pointer to the underlying time.Time, or nil when the
+// filter is unset. Useful for handing off to a DB layer that distinguishes
+// nil from zero via *time.Time.
+func (fd *FilterDate) TimePtr() *time.Time {
+	if fd.IsZero() {
+		return nil
+	}
+
+	t := time.Time(*fd)
+
+	return &t
+}
