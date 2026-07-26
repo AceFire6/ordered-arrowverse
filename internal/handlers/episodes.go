@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"net/http"
+	"net/url"
 	"slices"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 
@@ -51,15 +53,47 @@ func Home(c echo.Context) error {
 	return cc.Frontend.RenderPage(c, http.StatusOK, pageConfig)
 }
 
+// NewestFirst is a legacy URL that 301-redirects to the canonical Home view
+// with `newest_first=true`. Replaces the pre-rewrite `/newest_first/` route.
 func NewestFirst(c echo.Context) error {
-	return c.String(http.StatusOK, "newest")
+	return c.Redirect(http.StatusMovedPermanently, "/?newest_first=true")
 }
 
+// Hide 301-redirects the legacy `/hide/<list>/` URL to the canonical Home
+// view with each slug from the `+`-separated list attached as a
+// `hide_show` query parameter.
 func Hide(c echo.Context) error {
-	return c.String(http.StatusOK, "hide")
+	return c.Redirect(http.StatusMovedPermanently, buildHomeFilterURL(c.Param("hideList"), false))
 }
 
+// HideNewestFirst 301-redirects the legacy `/hide/<list>/newest_first/`
+// URL to the canonical Home view with `newest_first=true` and the
+// `+`-separated hide list applied.
 func HideNewestFirst(c echo.Context) error {
-	// return c.Redirect(http.StatusMovedPermanently, "hide?newest_first")
-	return c.String(http.StatusOK, "hidenewest")
+	return c.Redirect(http.StatusMovedPermanently, buildHomeFilterURL(c.Param("hideList"), true))
+}
+
+// buildHomeFilterURL constructs the canonical `/` filter URL from the
+// legacy `+`-separated hide-show list and an optional newest-first flag.
+// Empty hide values are dropped to avoid empty `hide_show` query params.
+func buildHomeFilterURL(hideList string, newestFirst bool) string {
+	query := url.Values{}
+
+	for _, slug := range strings.Split(hideList, "+") {
+		if slug == "" {
+			continue
+		}
+		query.Add("hide_show", slug)
+	}
+
+	if newestFirst {
+		query.Set("newest_first", "true")
+	}
+
+	encoded := query.Encode()
+	if encoded == "" {
+		return "/"
+	}
+
+	return "/?" + encoded
 }
