@@ -40,6 +40,8 @@ type seasonEpisode struct {
 }
 
 // Source URL templates for each show, used to populate data_sources[].
+// Hex colours come from the original CSS palette; the schema checks
+// them against `^#[a-f0-9]{6}$` so only valid hex strings work.
 var showSources = map[string]struct {
 	slug string
 	root string
@@ -50,11 +52,42 @@ var showSources = map[string]struct {
 	"Constantine":               {slug: "constantine", root: "https://arrow.fandom.com/wiki/"},
 	"The Flash":                 {slug: "flash", root: "https://arrow.fandom.com/wiki/"},
 	"Freedom Fighters: The Ray": {slug: "freedom-fighters", root: "https://arrow.fandom.com/wiki/"},
-	"DC's Legends of Tomorrow":  {slug: "legends", root: "https://arrow.fandom.com/wiki/"},
+	"DC's Legends of Tomorrow": {slug: "legends", root: "https://arrow.fandom.com/wiki/"},
 	"Stargirl":                  {slug: "stargirl", root: "https://en.wikipedia.org/wiki/"},
 	"Supergirl":                 {slug: "supergirl", root: "https://arrow.fandom.com/wiki/"},
 	"Superman & Lois":           {slug: "superman-and-lois", root: "https://arrow.fandom.com/wiki/"},
 	"Vixen":                     {slug: "vixen", root: "https://arrow.fandom.com/wiki/"},
+}
+
+// showColours returns the (primary, secondary, accent) hex triple used
+// by the row tinting CSS. Falls back to neutral grays for unknown shows.
+func showColours(name string) (primary, secondary, accent string) {
+	switch name {
+	case "Arrow":
+		return "#006200", "#004e00", "#a0d8a0"
+	case "Batwoman":
+		return "#692e69", "#470e47", "#cea0cd"
+	case "Black Lightning":
+		return "#464340", "#383532", "#a8a4a3"
+	case "Constantine":
+		return "#d74014", "#be3915", "#e9b39c"
+	case "The Flash":
+		return "#a50400", "#910400", "#d18f8d"
+	case "Freedom Fighters: The Ray":
+		return "#b4a242", "#a08e41", "#d8cd9d"
+	case "DC's Legends of Tomorrow":
+		return "#003e3e", "#002a2a", "#88b2b2"
+	case "Stargirl":
+		return "#12223a", "#120e3a", "#94a0b5"
+	case "Supergirl":
+		return "#007196", "#005e82", "#88c1d6"
+	case "Superman & Lois":
+		return "#4b6c7a", "#324951", "#a6b8c0"
+	case "Vixen":
+		return "#3c0096", "#280082", "#a18cd6"
+	default:
+		return "#888888", "#444444", "#cccccc"
+	}
 }
 
 const (
@@ -131,13 +164,59 @@ func fetchEpisodes(logger *slog.Logger, apiURL string) ([]byte, error) {
 
 // parseEpisodes decodes the JSON array. Schema is the legacy JSON shape
 // from ordering/views.py (series / episode_id / episode_name / air_date
-// / row_number).
+// / row_number). Rows with episode IDs whose episode number isn't a
+// plain non-negative integer are dropped, since the SQL targets a
+// smallint column.
 func parseEpisodes(body []byte) ([]episode, error) {
-	var rows []episode
-	if err := json.Unmarshal(body, &rows); err != nil {
+	var raw []episode
+	if err := json.Unmarshal(body, &raw); err != nil {
 		return nil, fmt.Errorf("unmarshal: %w", err)
 	}
-	return rows, nil
+
+	out := make([]episode, 0, len(raw))
+	for _, row := range raw {
+		if !isCleanEpisodeID(row.EpisodeID) {
+			continue
+		}
+		out = append(out, row)
+	}
+
+	return out, nil
+}
+
+// isCleanEpisodeID accepts only "SnnEnn" style IDs where the number
+// components are pure digits. Anything with punctuation, unicode, or
+// leading/trailing whitespace gets dropped from the seed.
+func isCleanEpisodeID(id string) bool {
+	if len(id) < 4 || id[0] != 'S' {
+		return false
+	}
+	idx := indexOfE(id)
+	if idx < 2 || idx == len(id)-1 {
+		return false
+	}
+	return allDigits(id[1:idx]) && allDigits(id[idx+1:])
+}
+
+func indexOfE(s string) int {
+	for i, r := range s {
+		if r == 'E' {
+			return i
+		}
+	}
+	return -1
+}
+
+func allDigits(s string) bool {
+	if s == "" {
+		return false
+	}
+	for _, r := range s {
+		if r < '0' || r > '9' {
+			return false
+		}
+	}
+	return true
 }
 
 // writeSeed groups the parsed rows by show, emits UPSERT statements for
@@ -241,6 +320,8 @@ func emitShow(w io.Writer, name string, agg showAggregate) error {
 	// data_sources carries the canonical URL(s) we want surfaced.
 	dataSources := fmt.Sprintf("ARRAY['%s']::text[]", root+showSlugRelativePath(name, agg.slug))
 
+	primary, secondary, accent := showColours(name)
+
 	_, err := fmt.Fprintf(w, `
 insert into show (name, slug, first_aired, last_aired, data_sources, primary_colour, secondary_colour, accent_colour)
 values (%s, %s, %s::timestamptz, %s::timestamptz, %s, %s, %s, %s)
@@ -250,7 +331,7 @@ on conflict (slug) do update set
     data_sources = excluded.data_sources;
 `,
 		sqlString(name), sqlString(agg.slug), sqlString(firstDate), sqlString(lastDate), dataSources,
-		sqlString("#888888"), sqlString("#444444"), sqlString("#cccccc"))
+		sqlString(primary), sqlString(secondary), sqlString(accent))
 	return err
 }
 
