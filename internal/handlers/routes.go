@@ -79,8 +79,8 @@ func RegisterRoutes(e *echo.Echo, handlerConfig *HandlerConfig, environment buil
 
 	e.FileFS("/favicon.png", "favicon.png", assetsFs).Name = "static:favicon"
 	e.FileFS("/ads.txt", "templates/ads.txt", assetsFs).Name = "static:ads.txt"
-	e.FileFS("/legal/privacy-policy", "templates/privacy_policy.html", assetsFs).Name = "static:privacy-policy"
-	e.FileFS("/legal/cookie-policy", "templates/cookie_policy.html", assetsFs).Name = "static:cookie-policy"
+	e.GET("/legal/privacy-policy", LegalDocument("privacy")).Name = "static:privacy-policy"
+	e.GET("/legal/cookie-policy", LegalDocument("cookie")).Name = "static:cookie-policy"
 
 	// Health check routes
 	healthCheck := e.Group("/health")
