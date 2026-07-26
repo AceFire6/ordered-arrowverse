@@ -1,0 +1,13 @@
+package components
+
+// CsrfMeta emits a `<meta name="csrf-token" content="..." />` tag for
+// htmx to pick up. The corresponding inline JS in the layout reads this
+// value and pushes it into every outgoing request as the
+// `X-CSRF-Token` header. Echo's CSRF middleware expects this header on
+// non-GET methods (which the app doesn't currently use; the wiring is
+// there for safety before any POST/PUT/PATCH/DELETE is added).
+templ CsrfMeta(token string) {
+	if len(token) > 0 {
+		<meta name="csrf-token" content={ token }/>
+	}
+}

@@ -27,6 +27,10 @@ type PageConfig struct {
 	// NewSiteURL is the canonical absolute URL promoted on the legacy
 	// site banner and used in the analytics switch fallback link.
 	NewSiteURL string
+	// CSRFToken is the per-request token Echo's CSRF middleware seeds.
+	// Rendered as a `<meta>` tag and read by inline JS to populate
+	// htmx's X-CSRF-Token header.
+	CSRFToken string
 }
 
 // NewPage Create a new page - only accept the required arguments as inputs
@@ -111,6 +115,7 @@ func (page *PageConfig) Copy() *PageConfig {
 	pageCopy.UsingOldSite = page.UsingOldSite
 	pageCopy.OldSiteHost = page.OldSiteHost
 	pageCopy.NewSiteURL = page.NewSiteURL
+	pageCopy.CSRFToken = page.CSRFToken
 
 	return pageCopy
 }

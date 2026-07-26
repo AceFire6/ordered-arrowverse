@@ -15,6 +15,7 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 					type="application/atom+xml"/>
 				<link type="image/png" href={ pageConfig.Reverse("static:favicon") } rel="icon">
 				<link rel="stylesheet" href={ pageConfig.Reverse("static:css:index") }>
+				@CsrfMeta(pageConfig.CSRFToken)
 				<script src={ pageConfig.Reverse("static:js:htmx") } defer></script>
 				<title>{ pageConfig.Title }</title>
 			</head>
@@ -93,6 +94,16 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 							if (modal && typeof modal.showModal === "function") {
 								event.preventDefault();
 								modal.showModal();
+							}
+						});
+
+						// htmx wiring - propagate the CSRF token (read from the
+						// meta tag Echo's middleware seeded) into every outgoing
+						// request as the X-CSRF-Token header.
+						document.addEventListener("htmx:configRequest", function(event) {
+							var meta = document.querySelector("meta[name=csrf-token]");
+							if (meta) {
+								event.detail.headers["X-CSRF-Token"] = meta.getAttribute("content");
 							}
 						});
 					})();

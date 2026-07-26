@@ -1,6 +1,8 @@
 package echo
 
 import (
+	"net/http"
+
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -66,6 +68,16 @@ func SetEchoMiddlewareStack(e *echo.Echo, params *CustomContextParams) {
 
 				return nil
 			},
+		}),
+		// CSRF protection. Read the token from the X-CSRF-Token header
+		// (set automatically by htmx via the layout's meta tag wiring) and
+		// compare against the cookie value Echo seeds on first request.
+		middleware.CSRFWithConfig(middleware.CSRFConfig{ //nolint:exhaustruct
+			TokenLookup:    "header:X-CSRF-Token",
+			CookieName:     "csrf",
+			CookiePath:     "/",
+			CookieHTTPOnly: false, // false so the layout JS can read it for htmx
+			CookieSameSite: http.SameSiteLaxMode,
 		}),
 		// Add default security
 		middleware.Secure(),

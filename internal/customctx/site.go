@@ -24,3 +24,34 @@ func ApplySiteConfig(cc *Context, pageConfig *frontend.PageConfig) *frontend.Pag
 
 	return pageConfig
 }
+
+// CSRFCsrfToken returns the CSRF token from the Echo context, or an
+// empty string when the middleware hasn't populated one for this
+// request. The token comes from Echo's CSRF middleware which seeds it
+// into the context under the key "csrf".
+func CSRFCsrfToken(cc *Context) string {
+	if cc == nil {
+		return ""
+	}
+	raw := cc.Get("csrf")
+	if token, ok := raw.(string); ok {
+		return token
+	}
+
+	return ""
+}
+
+// ApplyCSRFToken copies Echo's CSRF middleware token onto the supplied
+// PageConfig so the layout can render a <meta> tag for htmx.
+func ApplyCSRFToken(cc *Context, pageConfig *frontend.PageConfig) *frontend.PageConfig {
+	if pageConfig == nil {
+		return nil
+	}
+	if cc == nil {
+		return pageConfig
+	}
+
+	pageConfig.CSRFToken = CSRFCsrfToken(cc)
+
+	return pageConfig
+}
