@@ -24,6 +24,7 @@ import (
 	"github.com/AceFire6/ordered-arrowverse/internal/healthcheck"
 	"github.com/AceFire6/ordered-arrowverse/internal/httpserver"
 	"github.com/AceFire6/ordered-arrowverse/internal/logger"
+	"github.com/AceFire6/ordered-arrowverse/internal/pprofsrv"
 	"github.com/AceFire6/ordered-arrowverse/internal/redisx"
 )
 
@@ -161,10 +162,13 @@ func startServer() int {
 		IdleTimeout:       0,
 	})
 
-	return runServer(httpServer, httpServerConfig, appLogger)
+	pprofServer := pprofsrv.New(pprofsrv.LoadConfig(), appLogger)
+	pprofServer.Start(appLogger)
+
+	return runServer(httpServer, httpServerConfig, appLogger, pprofServer)
 }
 
-func runServer(httpServer *http.Server, serverConfig *httpserver.Config, logger *zerolog.Logger) int {
+func runServer(httpServer *http.Server, serverConfig *httpserver.Config, logger *zerolog.Logger, pprofServer *pprofsrv.Server) int {
 	notifyCtx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 
@@ -199,6 +203,10 @@ func runServer(httpServer *http.Server, serverConfig *httpserver.Config, logger 
 	if err := httpServer.Shutdown(shutdownCtx); err != nil {
 		logger.Err(err).Msg("Server Shutdown")
 		return 1
+	}
+
+	if err := pprofServer.Stop(context.Background()); err != nil {
+		logger.Err(err).Msg("pprof Shutdown")
 	}
 
 	// catching ctx.Done(). timeout of 5 seconds.
