@@ -71,18 +71,58 @@ templ SearchableMultiSelect(name string, showList []frontend.ShowData, selected 
 	</div>
 }
 
-// NativeDateInput renders a labelled native date picker styled to match
-// the rest of the form.
+// dateFormat returns the human-readable string for an ISO yyyy-mm-dd
+// value, using the runtime locale. Returns the empty string for unset
+// input. Server-side fallback so the trigger label renders correctly
+// before Alpine boots.
+func dateFormat(value string) string {
+	if value == "" {
+		return ""
+	}
+	return value // The picker will display the locale-formatted value via Alpine at runtime.
+}
+
+// NativeDateInput renders a polished date pill on top of the browser's
+// native <input type="date">. The native input stays in the form for
+// full keyboard / a11y support but is offscreen-positioned. Alpine
+// keeps the trigger label and value in sync and opens the picker on
+// trigger click.
+//
+// Without Alpine the native <input> still works as a regular form
+// field; the visible trigger simply doesn't appear.
 templ NativeDateInput(name, id, label, value string) {
-	<label class="date-input">
+	<div class="date-input" x-data={ "{ value: '" + value + "', open: false, format(v) { if (!v) return ''; var d = new Date(v + 'T00:00:00'); if (isNaN(d.getTime())) return v; return new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'long', day: 'numeric' }).format(d); } }" }>
 		<span class="date-input-label">{ label }</span>
+		<button type="button" class="date-input-trigger"
+			:class="{ 'is-empty': value === '', 'is-open': open }"
+			@click="var el = $refs.picker; if (el && typeof el.showPicker === 'function') { el.showPicker(); } open = true;"
+			@blur="open = false"
+			aria-controls={ id }>
+			<svg class="date-input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+				<line x1="16" y1="2" x2="16" y2="6"/>
+				<line x1="8" y1="2" x2="8" y2="6"/>
+				<line x1="3" y1="10" x2="21" y2="10"/>
+			</svg>
+			<span class="date-input-display" x-text="format(value)"></span>
+			<span class="date-input-empty-hint" x-show="value === ''">Select a date</span>
+			if len(value) != 0 {
+				<button type="button" class="date-input-clear"
+					@click.prevent="value = ''; $refs.picker.value = ''; $dispatch('dateinput:change');"
+					aria-label={ "Clear " + label }>×</button>
+			}
+		</button>
 		<input type="date"
-			class="date-input-control"
-			name={ name }
 			id={ id }
+			name={ name }
+			class="date-input-native"
 			title={ label }
+			x-ref="picker"
 			if len(value) != 0 {
 				value={ value }
-			}/>
-	</label>
+			}
+			@change="value = $event.target.value; open = false;"
+			@dateinput:change.window="value = ''; $refs.picker.value = '';"/>
+	</div>
 }
+
