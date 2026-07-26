@@ -23,11 +23,9 @@ templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newe
 					@SearchableMultiSelect("hide_show", showList, hiddenShowList, "Hide shows")
 				</div>
 
-				<div class="filter-block">
+				<div class="filter-block filter-block-dates">
 					<div class="date-row">
 						@NativeDateInput("from_date", "from-date", "From Date", fromDate)
-					</div>
-					<div class="date-row">
 						@NativeDateInput("to_date", "to-date", "To Date", toDate)
 					</div>
 					<button type="submit" id="filter-button" class="btn">Filter</button>
