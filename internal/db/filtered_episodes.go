@@ -49,7 +49,25 @@ func (q *Queries) GetEpisodesFiltered(
 	fromDate *time.Time,
 	toDate *time.Time,
 ) ([]GetEpisodesRow, error) {
-	rows, err := q.db.Query(ctx, getEpisodesFiltered, hideShowSlugs, fromDate, toDate)
+	// Normalise an unset filter to an empty slice. pgx sends a nil slice
+	// as SQL NULL, which breaks the `cardinality($1) = 0` short-circuit
+	// below; an explicit empty array gives us the cardinality-0 path
+	// the predicate expects.
+	slugs := hideShowSlugs
+	if slugs == nil {
+		slugs = []string{}
+	}
+
+	fromArg := any(nil)
+	if fromDate != nil {
+		fromArg = *fromDate
+	}
+	toArg := any(nil)
+	if toDate != nil {
+		toArg = *toDate
+	}
+
+	rows, err := q.db.Query(ctx, getEpisodesFiltered, slugs, fromArg, toArg)
 	if err != nil {
 		return nil, err
 	}

@@ -8,7 +8,7 @@ services:
     volumes:
       - ./.persisted_data/postgres/data:/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       - POSTGRES_DB=arrowverse
       - POSTGRES_USER=${DATABASE_USER}
@@ -17,6 +17,5 @@ services:
   redis:
     image: redis:8
     container_name: arrowverse.redis
-    env_file: .local.env
     ports:
       - "6379:6379"

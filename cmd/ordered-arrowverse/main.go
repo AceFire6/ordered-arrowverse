@@ -42,10 +42,17 @@ func main() {
 	}()
 
 	// Load .env files from any of the well-known paths before reading
-	// any environment-driven config. Existing real environment variables
-	// are left untouched so container deployments keep working.
-	if err := godotenv.Overload(".env", ".local.env"); err != nil && !errors.Is(err, os.ErrNotExist) {
-		log.Warn().Err(err).Msg("Failed to load .env/.local.env")
+	// any environment-driven config. Missing files are ignored so a
+	// partial environment (e.g. shipped image with no .env baked in)
+	// keeps working. Existing real environment variables are left
+	// untouched so container deployments keep working.
+	for _, path := range []string{".env", ".local.env"} {
+		if _, statErr := os.Stat(path); statErr != nil {
+			continue
+		}
+		if err := godotenv.Overload(path); err != nil {
+			log.Warn().Err(err).Str("path", path).Msg("Failed to load env file")
+		}
 	}
 
 	exitCode = startServer()
