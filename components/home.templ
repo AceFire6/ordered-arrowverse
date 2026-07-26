@@ -13,6 +13,7 @@ templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newe
 			<form hx-get={ reverser.Reverse("view:home") }
 				hx-target="#episode-list"
 				hx-swap="outerHTML"
+				hx-select="#episode-list"
 				hx-trigger="change from:input, change from:select, submit"
 				hx-push-url="true"
 				id="filter-form"

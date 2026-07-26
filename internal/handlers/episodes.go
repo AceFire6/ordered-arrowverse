@@ -47,6 +47,14 @@ func Home(c echo.Context) error {
 		slices.Reverse(tableRows)
 	}
 
+	// htmx partials: when the request carries the HX-Request header
+	// we only need to ship the swapped region (the episode table) so
+	// the browser doesn't have to reparse the entire 500KB shell.
+	// The full layout is rendered for plain browser navigations.
+	if c.Request().Header.Get("HX-Request") == "true" {
+		return frontend.Render(c, http.StatusOK, components.EpisodesTable(tableRows))
+	}
+
 	// use the Frontend.DefaultPageConfig.ShowList instead of loading it on each request - we can do that later if needed
 	pageConfig := frontend.NewPage(components.Home(cc.Echo(), tableRows, pageOpts.NewestFirst, cc.Frontend.DefaultPageConfig.ShowList, pageOpts.HideShowsList, pageOpts.FromDate.String(), pageOpts.ToDate.String()))
 	customctx.ApplySiteConfig(cc, pageConfig)
