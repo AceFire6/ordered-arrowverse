@@ -143,7 +143,15 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 							return {
 								open: false,
 								search: '',
+								// Bump counter so x-text="summary()" re-evaluates
+								// when a checkbox toggles. summary() reads this
+								// counter to register a dependency on the
+								// Alpine reactive graph (DOM queries alone are
+								// not reactive).
+								n: 0,
 								summary: function() {
+									// Touch the counter so x-text tracks it.
+									this.n;
 									var scope = this.$root;
 									var checked = scope.querySelectorAll(
 										'input[type=checkbox]:checked'
@@ -180,8 +188,9 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 									this.update();
 								},
 								update: function() {
-									// Trigger x-text re-evaluation on summary.
-									this.search = this.search;
+									// Bump the counter so summary() is re-evaluated
+									// by Alpine's reactivity.
+									this.n = this.n + 1;
 								}
 							};
 						};
