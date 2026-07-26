@@ -95,6 +95,9 @@ func RegisterRoutes(e *echo.Echo, handlerConfig *HandlerConfig, environment buil
 	// Programmatic JSON view of the filtered episode list
 	e.GET("/api", API).Name = "view:api"
 
+	// Recent episodes Atom feed (RSS subscribers)
+	e.GET("/recent_episodes.atom", AtomFeed).Name = "view:rss:recent-episodes"
+
 	log.Debug().Msg("Registered routes")
 	for _, route := range e.Routes() {
 		log.Debug().Msgf("(Route) [%s] %s %s", route.Name, route.Method, route.Path)
