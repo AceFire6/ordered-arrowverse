@@ -23,6 +23,8 @@
 
 # Track env example
 !/.local.env.example
+!/Dockerfile
+!/compose.production.yaml
 
 # Track assets
 !/assets/

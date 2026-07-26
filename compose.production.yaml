@@ -1,0 +1,58 @@
+name: "arrowverse"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: arrowverse/app:latest
+    container_name: arrowverse.app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    env_file: .local.env
+    environment:
+      - ENVIRONMENT=production
+      - LOG_LEVEL=info
+    ports:
+      - "8080:8080"
+    # Healthcheck is intentionally omitted at the compose level: the
+    # distroless base image has no shell or HTTP probe tool that can
+    # verify /health/ping. External orchestrators (Kubernetes, ECS,
+    # Docker Swarm) should issue HTTP probes against /health/ping
+    # directly.
+    labels:
+      org.opencontainers.image.title: ordered-arrowverse
+      org.opencontainers.image.description: Arrowverse episode ordering tracker (Go rewrite)
+
+  db:
+    image: postgres:16.3
+    container_name: arrowverse.postgres
+    restart: unless-stopped
+    env_file: .local.env
+    volumes:
+      - arrowverse-postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=arrowverse
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d arrowverse"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:8
+    container_name: arrowverse.redis
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel notice
+    volumes:
+      - arrowverse-redis-data:/data
+
+volumes:
+  arrowverse-postgres-data:
+  arrowverse-redis-data:
