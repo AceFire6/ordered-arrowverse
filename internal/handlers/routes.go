@@ -92,6 +92,9 @@ func RegisterRoutes(e *echo.Echo, handlerConfig *HandlerConfig, environment buil
 	e.GET("/hide/:hideList", Hide).Name = "view:hide"
 	e.GET("/hide/:hideList/newest_first", HideNewestFirst).Name = "view:hide:newest-first"
 
+	// Programmatic JSON view of the filtered episode list
+	e.GET("/api", API).Name = "view:api"
+
 	log.Debug().Msg("Registered routes")
 	for _, route := range e.Routes() {
 		log.Debug().Msgf("(Route) [%s] %s %s", route.Name, route.Method, route.Path)

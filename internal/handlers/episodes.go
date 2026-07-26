@@ -97,3 +97,35 @@ func buildHomeFilterURL(hideList string, newestFirst bool) string {
 
 	return "/?" + encoded
 }
+
+// API returns the same filtered view as Home but as a JSON document.
+// Useful for downstream consumers (and the seed harvester) that need
+// the filtered episode list without the surrounding HTML chrome.
+func API(c echo.Context) error {
+	cc := c.(*customctx.Context)
+
+	var pageOpts PageOptions
+	if err := c.Bind(&pageOpts); err != nil {
+		cc.Log.Err(err).Msg("failed to bind page options")
+		return err
+	}
+
+	cc.Log.Debug().Interface("pageOpts", pageOpts).Msg("api page options")
+
+	episodes, err := cc.ShowDB.GetEpisodesFiltered(
+		c.Request().Context(),
+		pageOpts.HideShowsList,
+		pageOpts.FromDate.TimePtr(),
+		pageOpts.ToDate.TimePtr(),
+	)
+	if err != nil {
+		cc.Log.Err(err).Msg("could not load episodes")
+		return err
+	}
+	tableRows := db.EpisodeRowsToTableRow(episodes)
+	if pageOpts.NewestFirst {
+		slices.Reverse(tableRows)
+	}
+
+	return c.JSON(http.StatusOK, tableRows)
+}
