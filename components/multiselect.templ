@@ -1,54 +1,78 @@
 package components
 
-import (
-	"strconv"
+import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
 
-	"github.com/AceFire6/ordered-arrowverse/internal/frontend"
-)
-
-// SearchableMultiSelect renders a `<details>`-based checkbox list with
-// an inline search field. Each checked value is submitted under the
-// supplied `name` so form encoding works with htmx GET forms.
-//
-// `selected` is the previously-checked set so state survives filter
-// changes (the URL still drives the page; this is just visual).
+// SearchableMultiSelect renders a popover-style multi-select. Alpine.js
+// (loaded once per page by layout.templ) handles the open/close state,
+// the search filter, the trigger summary, and the click-outside / escape
+// dismissals. The actual selection state lives on the checkboxes
+// themselves so form submission keeps working without JavaScript.
 templ SearchableMultiSelect(name string, showList []frontend.ShowData, selected []string, label string) {
-	<details class="multiselect" id={ "multiselect-" + name }>
-		<summary class="multiselect-summary">
+	<div class="multiselect" x-data="multiselectPanel()" x-cloak>
+		<button type="button" class="multiselect-trigger"
+			@click="open = !open"
+			:aria-expanded="open.toString()"
+			aria-controls={ "multiselect-panel-" + name }>
 			<span class="multiselect-label">{ label }</span>
-			if len(selected) == 0 {
-				<span class="multiselect-summary-text">All shows</span>
-			} else if len(selected) == 1 {
-				<span class="multiselect-summary-text">{ selected[0] }</span>
-			} else {
-				<span class="multiselect-summary-text">{ strconv.Itoa(len(selected)) } hidden</span>
-			}
-		</summary>
-		<input type="search"
-			class="multiselect-search"
-			placeholder="Search shows..."
-			aria-label={ "Filter " + label }
-			autocomplete="off"/>
-		<ul class="multiselect-options">
-			for _, showData := range showList {
-				<li>
-					<label class="multiselect-option">
-						<input type="checkbox"
-							name={ name }
-							value={ showData.Slug }
-							if sliceContains(selected, showData.Slug) {
-								checked
-							}/>
-						<span class="multiselect-name">{ showData.Name }</span>
-					</label>
+			<span class="multiselect-summary" x-text="summary()"></span>
+			<svg class="multiselect-chevron" :class="{ 'is-open': open }"
+				xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+				<path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+			</svg>
+		</button>
+
+		<div class="multiselect-panel"
+			id={ "multiselect-panel-" + name }
+			x-show="open"
+			x-transition.opacity.duration.150ms
+			@click.outside="open = false"
+			@keydown.escape.stop="open = false"
+			role="dialog"
+			aria-label={ label }>
+			<input type="search"
+				class="multiselect-search"
+				placeholder="Search shows..."
+				x-model="search"
+				x-ref="search"
+				aria-label={ "Search " + label }
+				autocomplete="off"/>
+
+			<ul class="multiselect-options" role="listbox" aria-multiselectable="true">
+				for _, showData := range showList {
+					<li class="multiselect-option"
+						data-show-name={ showData.Name }
+						x-show="matches($el.dataset.showName)">
+						<label class="multiselect-option-label">
+							<input type="checkbox"
+								name={ name }
+								value={ showData.Slug }
+								if sliceContains(selected, showData.Slug) {
+									checked
+								}
+								@change="$dispatch('multiselect:change'); update()"/>
+							<span class="multiselect-name">{ showData.Name }</span>
+							<svg class="multiselect-checkmark" aria-hidden="true"
+								xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+								<path fill-rule="evenodd" d="M12.416 5.376a.75.75 0 0 1 .083 1.06l-5 5.5a.75.75 0 0 1-1.126-.073l-2.5-3a.75.75 0 0 1 1.093-1.025l2.07 2.484 4.555-5.013a.75.75 0 0 1 1.063-.066Z" clip-rule="evenodd"/>
+							</svg>
+						</label>
+					</li>
+				}
+				<li class="multiselect-empty" x-show="!hasMatches()">
+					<span>No shows match "<span x-text="search"></span>"</span>
 				</li>
-			}
-		</ul>
-	</details>
+			</ul>
+
+			<div class="multiselect-footer">
+				<button type="button" class="multiselect-link" @click="clearAll()">Clear all</button>
+				<button type="button" class="multiselect-done" @click="open = false">Done</button>
+			</div>
+		</div>
+	</div>
 }
 
-// NativeDateInput renders a styled native date picker with an
-// associated label.
+// NativeDateInput renders a labelled native date picker styled to match
+// the rest of the form.
 templ NativeDateInput(name, id, label, value string) {
 	<label class="date-input">
 		<span class="date-input-label">{ label }</span>

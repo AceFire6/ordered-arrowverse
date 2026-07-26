@@ -41,6 +41,7 @@ func RegisterRoutes(e *echo.Echo, handlerConfig *HandlerConfig, environment buil
 	// Static routes
 	e.FileFS("/static/css/index.css", "css/index.css", assetsFs).Name = "static:css:index"
 	e.FileFS("/static/js/htmx.min.js", "js/htmx.min.js", assetsFs).Name = "static:js:htmx"
+	e.FileFS("/static/js/alpine.min.js", "js/alpine.min.js", assetsFs).Name = "static:js:alpine"
 
 	e.FileFS("/favicon.png", "favicon.png", assetsFs).Name = "static:favicon"
 	e.FileFS("/ads.txt", "templates/ads.txt", assetsFs).Name = "static:ads.txt"

@@ -17,6 +17,7 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 				<link rel="stylesheet" href={ pageConfig.Reverse("static:css:index") }>
 				@CsrfMeta(pageConfig.CSRFToken)
 				<script src={ pageConfig.Reverse("static:js:htmx") } defer></script>
+				<script src={ pageConfig.Reverse("static:js:alpine") } defer></script>
 				<title>{ pageConfig.Title }</title>
 			</head>
 			<body class="">
@@ -133,6 +134,57 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 								}
 							}
 						});
+
+						// Alpine component for the searchable multi-select popover.
+						// Kept tiny so it can be inlined alongside the rest of the
+						// dependency-free page controllers. Returns the reactive
+						// scope used by the components/multiselect.templ template.
+						window.multiselectPanel = function() {
+							return {
+								open: false,
+								search: '',
+								summary: function() {
+									var scope = this.$root;
+									var checked = scope.querySelectorAll(
+										'input[type=checkbox]:checked'
+									);
+									if (checked.length === 0) return 'All shows';
+									if (checked.length === 1) {
+										var label = checked[0].closest('label');
+										var name = label ? label.querySelector('.multiselect-name') : null;
+										return name ? name.textContent.trim() : '1 hidden';
+									}
+									return checked.length + ' hidden';
+								},
+								matches: function(name) {
+									if (this.search === '') return true;
+									return String(name).toLowerCase().indexOf(this.search.toLowerCase()) !== -1;
+								},
+								hasMatches: function() {
+									var scope = this.$root;
+									var items = scope.querySelectorAll('.multiselect-options > .multiselect-option');
+									for (var i = 0; i < items.length; i++) {
+										if (this.matches(items[i].dataset.showName)) {
+											return true;
+										}
+									}
+									return false;
+								},
+								clearAll: function() {
+									var scope = this.$root;
+									var boxes = scope.querySelectorAll('input[type=checkbox]');
+									for (var i = 0; i < boxes.length; i++) {
+										boxes[i].checked = false;
+									}
+									this.$dispatch('multiselect:change');
+									this.update();
+								},
+								update: function() {
+									// Trigger x-text re-evaluation on summary.
+									this.search = this.search;
+								}
+							};
+						};
 					})();
 				</script>
 			</body>
