@@ -21,6 +21,9 @@
 !/tern.conf
 !/Taskfile.dist.yml
 
+# Track env example
+!/.local.env.example
+
 # Track assets
 !/assets/
 !/assets/assets.go

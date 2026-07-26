@@ -4,6 +4,7 @@ services:
   db:
     image: postgres:16.3
     container_name: arrowverse.postgres
+    env_file: .local.env
     volumes:
       - ./.persisted_data/postgres/data:/data
     ports:
@@ -16,5 +17,6 @@ services:
   redis:
     image: redis:8
     container_name: arrowverse.redis
+    env_file: .local.env
     ports:
       - "6379:6379"

@@ -1,9 +1,11 @@
 # https://taskfile.dev
 version: '3'
 
+dotenv:
+  - .local.env
+
 vars:
   MIGRATIONS_PATH: ./migrations
-  ENV_FILE: .local.env
 
 env:
   ENVIRONMENT: "development"
@@ -73,7 +75,7 @@ tasks:
       SQLC_DIR: "./internal/db"
     cmds:
       - "rm -f {{.SQLC_DIR}}/*_sqlc.go"
-      - op run --env-file=".local.env" -- sqlc generate -f ./sqlc.yaml
+      - sqlc generate -f ./sqlc.yaml
       - cmd: betteralign -generated_files -apply {{.SQLC_DIR}}
         ignore_error: true
     sources:
@@ -89,9 +91,9 @@ tasks:
     deps:
       - compose:dev
     requires:
-      vars: [ ENV_FILE, MIGRATIONS_PATH ]
+      vars: [ MIGRATIONS_PATH ]
     cmds:
-      - op run --env-file="{{.ENV_FILE}}" -- tern migrate --migrations {{.MIGRATIONS_PATH}} {{.CLI_ARGS}}
+      - tern migrate --migrations {{.MIGRATIONS_PATH}} {{.CLI_ARGS}}
     sources:
       - "{{.MIGRATIONS_PATH}}/**/*.sql"
     preconditions:
@@ -102,7 +104,7 @@ tasks:
       # This works with sources to ensure we only run migrations if there are new migrations or there is a new DB
       # Grep portion taken from: https://stackoverflow.com/a/75086890
       # The -v inverts the match, the -z makes the input a single line, and the -q makes the output quiet
-      - op run --env-file="{{.ENV_FILE}}" -- tern status --migrations {{.MIGRATIONS_PATH}} | grep -vzq "migration(s) pending"
+      - tern status --migrations {{.MIGRATIONS_PATH}} | grep -vzq "migration(s) pending"
       # This will make the migration run for any CLI_ARGS input
       - "[ -z '{{.CLI_ARGS}}' ]"
 
@@ -112,9 +114,9 @@ tasks:
     deps:
       - compose:dev
     requires:
-      vars: [ ENV_FILE, MIGRATIONS_PATH ]
+      vars: [ MIGRATIONS_PATH ]
     cmds:
-      - op run --env-file="{{.ENV_FILE}}" -- tern migrate -d 0 --migrations "{{.MIGRATIONS_PATH}}"
+      - tern migrate -d 0 --migrations "{{.MIGRATIONS_PATH}}"
       - task: db:migrations:dev
 
   db:migrations:new:
@@ -133,7 +135,7 @@ tasks:
       vars: [ SERVICE_NAME ]
     vars:
       SERVICE_PID:
-        sh: op run --env-file="{{.ENV_FILE}}" -- docker compose ps -q {{.SERVICE_NAME}}
+        sh: docker compose ps -q {{.SERVICE_NAME}}
     cmds:
       - echo "Waiting for '{{.SERVICE_NAME}}' to be ready..."
       - |
@@ -146,9 +148,9 @@ tasks:
     run: when_changed
     vars:
       COMPOSE_SERVICES:
-        sh: op run --env-file="{{.ENV_FILE}}" -- docker compose config --services | sort
+        sh: docker compose config --services | sort
     cmds:
-      - op run --env-file="{{.ENV_FILE}}" -- docker compose up --detach --no-recreate
+      - docker compose up --detach --no-recreate
       - for: { var: 'COMPOSE_SERVICES', as: 'SERVICE_NAME' }
         task: 'docker:check:running'
         vars:
@@ -156,7 +158,7 @@ tasks:
     sources:
       - compose.yaml
     status:
-      - op run --env-file="{{.ENV_FILE}}" -- test "$(docker compose config --services | sort)" = "$(docker compose ps --services | sort)"
+      - test "$(docker compose config --services | sort)" = "$(docker compose ps --services | sort)"
     preconditions:
       - sh: '[ `command -v docker` ]'
         msg: "You need to install Docker Desktop to run the compose file - https://www.docker.com/products/docker-desktop/"
@@ -203,8 +205,8 @@ tasks:
     vars:
       SQLC_DIR: "./internal/db"
     cmds:
-      - cmd: op run --env-file="{{.ENV_FILE}}" -- sqlc compile -f ./sqlc.yaml
-      - cmd: op run --env-file="{{.ENV_FILE}}" -- sqlc vet -f ./sqlc.yaml
+      - cmd: sqlc compile -f ./sqlc.yaml
+      - cmd: sqlc vet -f ./sqlc.yaml
     sources:
       - "{{.MIGRATIONS_PATH}}/**/*.sql"
       - "{{.SQLC_DIR}}/queries/**/*.sql"

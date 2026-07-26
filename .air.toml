@@ -12,7 +12,7 @@ tmp_dir = "tmp"
   exclude_regex = ["_test\\.go"]
   exclude_unchanged = false
   follow_symlink = false
-  full_bin = "op run --env-file=\".local.env\" -- ./tmp/ordered-arrowverse"
+  full_bin = "./tmp/ordered-arrowverse"
   include_dir = []
   include_ext = ["go", "tpl", "tmpl", "html", "env"]
   include_file = []

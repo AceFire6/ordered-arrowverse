@@ -14,6 +14,7 @@ import (
 	"github.com/AceFire6/ordered-arrowverse/internal/handlers"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/joho/godotenv"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -38,6 +39,13 @@ func main() {
 	defer func() {
 		os.Exit(exitCode)
 	}()
+
+	// Load .env files from any of the well-known paths before reading
+	// any environment-driven config. Existing real environment variables
+	// are left untouched so container deployments keep working.
+	if err := godotenv.Overload(".env", ".local.env"); err != nil && !errors.Is(err, os.ErrNotExist) {
+		log.Warn().Err(err).Msg("Failed to load .env/.local.env")
+	}
 
 	exitCode = startServer()
 }
