@@ -1,8 +1,10 @@
 package components
 
 import (
-	"github.com/AceFire6/ordered-arrowverse/internal/frontend"
 	"strconv"
+	"strings"
+
+	"github.com/AceFire6/ordered-arrowverse/internal/frontend"
 )
 
 templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newestFirst bool, showList []frontend.ShowData, hiddenShowList []string, fromDate string, toDate string) {
@@ -11,50 +13,22 @@ templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newe
 			<form hx-get={ reverser.Reverse("view:home") }
 				hx-target="#episode-list"
 				hx-swap="outerHTML"
-				hx-trigger="change from:select, change from:input[type=date], submit"
+				hx-trigger="change from:input, change from:select, submit"
 				hx-push-url="true"
 				id="filter-form"
 				class="filter-form">
 				<input name="newest_first" value={ strconv.FormatBool(newestFirst) } title="Newest First" type="hidden"/>
-				<label class="filter-block">
-					<span class="filter-label">Hide shows</span>
-					<select id="show-filter-select"
-						title="Filter options"
-						name="hide_show"
-						multiple
-						class="form-control">
-						for _, showData := range showList {
-							<option value={ showData.Slug }
-								if sliceContains(hiddenShowList, showData.Slug) {
-									selected
-								}>
-								{ showData.Name }
-							</option>
-						}
-					</select>
-				</label>
+
+				<div class="filter-block filter-block-wide">
+					@SearchableMultiSelect("hide_show", showList, hiddenShowList, "Hide shows")
+				</div>
+
 				<div class="filter-block">
 					<div class="date-row">
-						<label class="filter-label">From Date</label>
-						<input title="From Date"
-							class="form-control"
-							type="date"
-							name="from_date"
-							id="from-date"
-							if len(fromDate) != 0 {
-								value={ fromDate }
-							}/>
+						@NativeDateInput("from_date", "from-date", "From Date", fromDate)
 					</div>
 					<div class="date-row">
-						<label class="filter-label">To Date</label>
-						<input title="To Date"
-							class="form-control"
-							type="date"
-							name="to_date"
-							id="to-date"
-							if len(toDate) != 0 {
-								value={ toDate }
-							}/>
+						@NativeDateInput("to_date", "to-date", "To Date", toDate)
 					</div>
 					<button type="submit" id="filter-button" class="btn">Filter</button>
 				</div>
@@ -87,8 +61,8 @@ templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newe
 }
 
 // sliceContains is exposed as a package-local helper since templ can't
-// inline the slices.Contains call inside the conditional attribute
-// rendering. Tests live in page_config_test.go (different package).
+// inline a Contains call inside the conditional attribute rendering.
+// Tests live in page_config_test.go (different package).
 func sliceContains(haystack []string, needle string) bool {
 	for _, item := range haystack {
 		if item == needle {
@@ -96,4 +70,9 @@ func sliceContains(haystack []string, needle string) bool {
 		}
 	}
 	return false
+}
+
+// filterOption keeps the template-time search helper Go-native.
+func filterOption(value, query string) bool {
+	return strings.Contains(strings.ToLower(value), strings.ToLower(query))
 }

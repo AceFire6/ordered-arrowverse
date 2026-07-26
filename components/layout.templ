@@ -106,6 +106,33 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 								event.detail.headers["X-CSRF-Token"] = meta.getAttribute("content");
 							}
 						});
+
+						// Searchable multi-select - debounce-free filter that
+						// hides options whose combined text doesn't contain
+						// the search query.
+						document.addEventListener("input", function(event) {
+							var input = event.target;
+							if (!input.classList || !input.classList.contains("multiselect-search")) {
+								return;
+							}
+							var query = input.value.trim().toLowerCase();
+							var items = input.parentElement.querySelectorAll(".multiselect-options li");
+							for (var i = 0; i < items.length; i++) {
+								var li = items[i];
+								var text = li.textContent.toLowerCase();
+								li.style.display = (query === "" || text.indexOf(query) >= 0) ? "" : "none";
+							}
+						});
+
+						// Click-outside closes any open details/multiselect.
+						document.addEventListener("click", function(event) {
+							var open = document.querySelectorAll(".multiselect[open]");
+							for (var i = 0; i < open.length; i++) {
+								if (!open[i].contains(event.target)) {
+									open[i].removeAttribute("open");
+								}
+							}
+						});
 					})();
 				</script>
 			</body>

@@ -1,0 +1,64 @@
+package components
+
+import (
+	"strconv"
+
+	"github.com/AceFire6/ordered-arrowverse/internal/frontend"
+)
+
+// SearchableMultiSelect renders a `<details>`-based checkbox list with
+// an inline search field. Each checked value is submitted under the
+// supplied `name` so form encoding works with htmx GET forms.
+//
+// `selected` is the previously-checked set so state survives filter
+// changes (the URL still drives the page; this is just visual).
+templ SearchableMultiSelect(name string, showList []frontend.ShowData, selected []string, label string) {
+	<details class="multiselect" id={ "multiselect-" + name }>
+		<summary class="multiselect-summary">
+			<span class="multiselect-label">{ label }</span>
+			if len(selected) == 0 {
+				<span class="multiselect-summary-text">All shows</span>
+			} else if len(selected) == 1 {
+				<span class="multiselect-summary-text">{ selected[0] }</span>
+			} else {
+				<span class="multiselect-summary-text">{ strconv.Itoa(len(selected)) } hidden</span>
+			}
+		</summary>
+		<input type="search"
+			class="multiselect-search"
+			placeholder="Search shows..."
+			aria-label={ "Filter " + label }
+			autocomplete="off"/>
+		<ul class="multiselect-options">
+			for _, showData := range showList {
+				<li>
+					<label class="multiselect-option">
+						<input type="checkbox"
+							name={ name }
+							value={ showData.Slug }
+							if sliceContains(selected, showData.Slug) {
+								checked
+							}/>
+						<span class="multiselect-name">{ showData.Name }</span>
+					</label>
+				</li>
+			}
+		</ul>
+	</details>
+}
+
+// NativeDateInput renders a styled native date picker with an
+// associated label.
+templ NativeDateInput(name, id, label, value string) {
+	<label class="date-input">
+		<span class="date-input-label">{ label }</span>
+		<input type="date"
+			class="date-input-control"
+			name={ name }
+			id={ id }
+			title={ label }
+			if len(value) != 0 {
+				value={ value }
+			}/>
+	</label>
+}
