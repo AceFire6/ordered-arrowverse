@@ -110,15 +110,28 @@ body.dark-mode .navbar {
 .multiselect {
 	position: relative;
 	font: inherit;
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
 }
+
+.multiselect-label {
+	font-size: 0.8rem;
+	color: #6b7280;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	font-weight: 500;
+}
+
+body.dark-mode .multiselect-label { color: #9ca3af; }
 
 .multiselect-trigger {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
 	width: 100%;
-	min-height: 2.5rem;
-	padding: 0.4rem 0.75rem;
+	min-height: 2.75rem;
+	padding: 0.55rem 0.75rem;
 	border: 1px solid #d1d5db;
 	border-radius: 6px;
 	background: #fff;
@@ -147,9 +160,16 @@ body.dark-mode .multiselect-trigger {
 	color: #6b7280;
 	text-transform: uppercase;
 	letter-spacing: 0.04em;
+	font-weight: 500;
 }
 
 body.dark-mode .multiselect-label { color: #9ca3af; }
+
+/* Duplicate rules kept below for compatibility with elements rendered
+   when the label still lives inside the trigger button. They will be
+   removed in a future cleanup pass. */
+.multiselect-trigger .multiselect-label { /* intentionally empty */ }
+body.dark-mode .multiselect-trigger .multiselect-label { /* intentionally empty */ }
 
 .multiselect-summary {
 	flex: 1;

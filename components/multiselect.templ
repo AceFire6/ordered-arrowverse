@@ -9,11 +9,11 @@ import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
 // themselves so form submission keeps working without JavaScript.
 templ SearchableMultiSelect(name string, showList []frontend.ShowData, selected []string, label string) {
 	<div class="multiselect" x-data="multiselectPanel()" x-cloak>
+		<span class="multiselect-label">{ label }</span>
 		<button type="button" class="multiselect-trigger"
 			@click="open = !open"
 			:aria-expanded="open.toString()"
 			aria-controls={ "multiselect-panel-" + name }>
-			<span class="multiselect-label">{ label }</span>
 			<span class="multiselect-summary" x-text="summary()"></span>
 			<svg class="multiselect-chevron" :class="{ 'is-open': open }"
 				xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
