@@ -65,6 +65,9 @@
 !/migrations/
 !/migrations/**/
 !/migrations/**/*.sql
+!/cmd/
+!/cmd/**/
+!/cmd/**/*.go
 
 !/tools/
 !/tools/go.*
