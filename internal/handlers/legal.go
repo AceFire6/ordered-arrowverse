@@ -3,12 +3,17 @@ package handlers
 import (
 	"io/fs"
 	"net/http"
-	"strings"
+	"regexp"
 
 	"github.com/labstack/echo/v4"
 
 	"github.com/AceFire6/ordered-arrowverse/assets"
 	"github.com/AceFire6/ordered-arrowverse/internal/customctx"
+)
+
+var (
+	jinjaDirective = regexp.MustCompile(`\{%[\s\S]*?%\}`)
+	jinjaExpr      = regexp.MustCompile(`\{\{[\s\S]*?\}\}`)
 )
 
 // legalFS is the read-only handle to the embedded templates directory.
@@ -51,34 +56,14 @@ func LegalDocument(name string) echo.HandlerFunc {
 	}
 }
 
-// stripJinja removes Jinja2 `{% ... %}` directive blocks from the input.
-// It does not resolve Jinja expressions; the pre-rewrite HTML only
-// references `{{ static_url('favicon.png') }}` for an icon that is
-// already linked from the application layout, so we drop those too.
+// stripJinja removes every Jinja2 directive block (`{% ... %}`) and
+// expression (`{{ ... }}`) from the input. Block bodies *and* the
+// directives themselves are dropped, which is what the legal pages need:
+// the body text was already rendered by Termly; the Jinja scaffolding
+// only set up template inheritance that no longer applies.
 func stripJinja(in string) string {
-	var out strings.Builder
-	out.Grow(len(in))
+	cleaned := jinjaDirective.ReplaceAllString(in, "")
+	cleaned = jinjaExpr.ReplaceAllString(cleaned, "")
 
-	i := 0
-	for i < len(in) {
-		if i+1 < len(in) && in[i] == '{' && in[i+1] == '%' {
-			end := strings.Index(in[i:], "%}")
-			if end == -1 {
-				// Malformed - emit remainder as-is.
-				out.WriteString(in[i:])
-
-				return out.String()
-			}
-			i += end + 2
-			continue
-		}
-		out.WriteByte(in[i])
-		i++
-	}
-
-	outStr := out.String()
-	outStr = strings.ReplaceAll(outStr, "{{ static_url('favicon.png') }}", "")
-	outStr = strings.ReplaceAll(outStr, `{{ static_url("favicon.png") }}`, "")
-
-	return outStr
+	return cleaned
 }

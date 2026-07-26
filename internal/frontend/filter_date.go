@@ -24,7 +24,7 @@ func (fd *FilterDate) UnmarshalText(text []byte) error {
 
 func (fd *FilterDate) String() string {
 	// Return an empty string when the filter date is an empty value
-	if fd == nil {
+	if fd == nil || time.Time(*fd).IsZero() {
 		return ""
 	}
 

@@ -86,8 +86,11 @@ func Close(client *redis.Client, log *zerolog.Logger) {
 	}
 }
 
-// redactPassword strips the password segment out of a Redis URL before
-// logging it. `redis://:secret@host:6379/0` becomes `redis://host:6379/0`.
+// redactPassword strips the password segment out of any URL before
+// logging it. `redis://:secret@host:6379/0` becomes `redis://host:6379/0`
+// and `postgres://user:secret@host/db` becomes `postgres://host/db`.
+//
+// Used on any DSN-style URL where credentials may appear.
 func redactPassword(url string) string {
 	at := strings.LastIndex(url, "@")
 	scheme := strings.Index(url, "://")
@@ -95,5 +98,13 @@ func redactPassword(url string) string {
 		return url
 	}
 
-	return url[:scheme+3] + url[at+1:]
+	// Drop everything between "://" and "@" but keep the scheme + "@" + host.
+	credBlock := url[scheme+3 : at]
+	colon := strings.Index(credBlock, ":")
+	if colon == -1 {
+		// username only - drop entirely
+		return url[:scheme+3] + url[at+1:]
+	}
+
+	return url[:scheme+3] + credBlock[:colon] + url[at:]
 }
