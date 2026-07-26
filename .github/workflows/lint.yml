@@ -1,0 +1,45 @@
+name: Lint
+
+on:
+  pull_request:
+    branches: [main, arrowverse-v2]
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+    - name: Set up Go via mise
+      uses: jdx/mise-action@c37c93293d6b742fc901e1406b8f764f6fb19dac # v2
+    - name: Install codegen tools
+      run: |
+        go install github.com/a-h/templ/cmd/templ@v0.3.943
+        go install github.com/sqlc-dev/sqlc/cmd/sqlc@v1.30.0
+        go install mvdan.cc/gofumpt@v0.9.1
+    - name: Generate templ + sqlc
+      run: |
+        templ generate -path ./components
+        sqlc generate -f ./sqlc.yaml
+    - name: Cache go modules
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum', '**/tools/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    - name: gofumpt -d
+      run: gofumpt -l -extra ./
+    - name: go vet
+      run: go vet ./...
+    - name: go build (ensures templates compile)
+      run: go build ./...

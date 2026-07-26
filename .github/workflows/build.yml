@@ -1,0 +1,28 @@
+name: Build
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+    - name: Set up QEMU for multi-arch builds
+      uses: docker/setup-qemu-action@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Build (linux/amd64)
+      run: docker buildx build --platform linux/amd64 --load -t arrowverse/app:${{ github.ref_name }} .
+    - name: Build (linux/arm64)
+      run: docker buildx build --platform linux/arm64 --load -t arrowverse/app:${{ github.ref_name }}-arm64 .

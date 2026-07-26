@@ -4,6 +4,7 @@
 !/.github/
 !/.github/dependabot.yml
 !/.github/FUNDING.yml
+!/.github/workflows/
 !/.github/workflows/*.yml
 
 !/.air.toml
