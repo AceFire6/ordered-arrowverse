@@ -35,6 +35,7 @@ type CustomContextParams struct {
 	Frontend           *frontend.Frontend
 	Environment        build.Environment
 	DemoModeHostPrefix string
+	Site               *build.SiteConfig
 }
 
 func SetEchoMiddlewareStack(e *echo.Echo, params *CustomContextParams) {
@@ -47,6 +48,7 @@ func SetEchoMiddlewareStack(e *echo.Echo, params *CustomContextParams) {
 			Frontend:           params.Frontend,
 			Environment:        params.Environment,
 			DemoModeHostPrefix: params.DemoModeHostPrefix,
+			Site:               params.Site,
 		}),
 		middleware.RequestID(),
 		addContextToLog,

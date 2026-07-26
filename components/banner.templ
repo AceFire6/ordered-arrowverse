@@ -1,0 +1,17 @@
+package components
+
+// OldSiteBanner surfaces the legacy-site migration notice. Shown only
+// when `usingOldSite` is true so visitors are nudged toward the
+// canonical arrowverse.info URL.
+templ OldSiteBanner(usingOldSite bool, oldSiteHost string, newSiteURL string) {
+	if usingOldSite {
+		<section class="old-site-banner">
+			<p>Hi! You're using the old URL
+				if len(oldSiteHost) > 0 {
+					<code>https://{ oldSiteHost }</code>
+				}
+			</p>
+			<p>Please switch to the new URL <a href={ newSiteURL }>{ newSiteURL }</a></p>
+		</section>
+	}
+}

@@ -1,0 +1,30 @@
+package components
+
+// Analytics renders either the legacy UA tracker (when usingOldSite
+// is true) or the GA4 tracker for the canonical site. Embeds the
+// AdSense ad-loader too; the old-site variant uses the crossorigin
+// attribute the pre-rewrite Termly export requested.
+templ Analytics(usingOldSite bool) {
+	if usingOldSite {
+		<!-- Global site tag (gtag.js) - Google Analytics UA -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-103362550-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-103362550-1');
+		</script>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4243272906692681"
+			crossorigin="anonymous"></script>
+	} else {
+		<!-- Global site tag (gtag.js) - Google Analytics 4 -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-9YCYDBGZQM"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'G-9YCYDBGZQM');
+		</script>
+		<script data-ad-client="ca-pub-4243272906692681" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	}
+}

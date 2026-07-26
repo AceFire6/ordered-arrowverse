@@ -56,6 +56,16 @@ func startServer() int {
 		return 1
 	}
 
+	siteConfig, err := build.LoadSiteConfig()
+	if err != nil {
+		log.Logger.Err(err).Msg("could not load site config")
+		return 1
+	}
+	log.Logger.Info().
+		Str("old_site_host", siteConfig.OldSiteHost).
+		Str("new_site_url", siteConfig.NewSiteURL).
+		Msg("Site config loaded")
+
 	appLogger := logger.SetupLogger(logger.Settings{
 		BuildInfo:      buildInfo,
 		ServiceName:    buildInfo.ServiceName,
@@ -112,6 +122,7 @@ func startServer() int {
 		Frontend:           appFrontend,
 		DemoModeHostPrefix: httpServerConfig.DemoModeHostPrefix,
 		Environment:        buildInfo.Environment,
+		Site:               siteConfig,
 	})
 
 	handlerConfig := getHandlerConfig(dbPool)

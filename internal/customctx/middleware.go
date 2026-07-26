@@ -17,6 +17,7 @@ type MiddlewareConfig struct {
 	Frontend           *frontend.Frontend
 	Environment        build.Environment
 	DemoModeHostPrefix string
+	Site               *build.SiteConfig
 }
 
 func Middleware(config MiddlewareConfig) echo.MiddlewareFunc {
@@ -30,6 +31,7 @@ func Middleware(config MiddlewareConfig) echo.MiddlewareFunc {
 				ShowDB:      db.New(config.DBPool),
 				Frontend:    config.Frontend,
 				HTMX:        htmx.ContextFromRequestContext(ctx),
+				Site:        config.Site,
 			}
 
 			return next(customContext)

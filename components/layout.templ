@@ -19,6 +19,7 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 				<title>{ pageConfig.Title }</title>
 			</head>
 			<body class="">
+				@OldSiteBanner(pageConfig.UsingOldSite, pageConfig.OldSiteHost, pageConfig.NewSiteURL)
 				@NavBar(pageConfig)
 				<div class="container">
 					@pageConfig.Contents
@@ -27,6 +28,7 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 				@SupportModal()
 				@AcknowledgementsModal(pageConfig.ShowList)
 				@ContactModal()
+				@Analytics(pageConfig.UsingOldSite)
 				<script>
 					// Tiny dependency-free controller: cookie plumbing for
 					// dark-mode + colour toggle, and a minimal modal opener.

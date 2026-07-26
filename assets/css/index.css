@@ -212,3 +212,17 @@ body.dark-mode .modal {
 .htmx-request.htmx-indicator { display: inline; }
 
 .site-footer { margin-top: 2rem; }
+
+.old-site-banner {
+	background: #fee2e2;
+	border-bottom: 1px solid #f87171;
+	padding: 0.75rem 1rem;
+	text-align: center;
+}
+
+body.dark-mode .old-site-banner {
+	background: #5a1a1a;
+	border-bottom-color: #b91c1c;
+}
+
+.old-site-banner p { margin: 0.25rem 0; }

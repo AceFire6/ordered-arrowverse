@@ -49,6 +49,7 @@ func Home(c echo.Context) error {
 
 	// use the Frontend.DefaultPageConfig.ShowList instead of loading it on each request - we can do that later if needed
 	pageConfig := frontend.NewPage(components.Home(cc.Echo(), tableRows, pageOpts.NewestFirst, cc.Frontend.DefaultPageConfig.ShowList, pageOpts.HideShowsList, pageOpts.FromDate.String(), pageOpts.ToDate.String()))
+	customctx.ApplySiteConfig(cc, pageConfig)
 
 	return cc.Frontend.RenderPage(c, http.StatusOK, pageConfig)
 }

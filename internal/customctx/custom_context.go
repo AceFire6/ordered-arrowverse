@@ -21,4 +21,7 @@ type Context struct {
 
 	Environment build.Environment
 	HTMX        htmx.Context
+	// Site carries the OLD_SITE_HOST/NEW_SITE_URL values used to drive
+	// the legacy-site banner and analytics switching.
+	Site *build.SiteConfig
 }

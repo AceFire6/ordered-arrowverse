@@ -19,6 +19,14 @@ type PageConfig struct {
 	// Site data
 	// This is the list shown in the filters and used to generate the acknowledgements on the layouts page
 	ShowList []ShowData
+	// UsingOldSite true when the current request matches OldSiteHost;
+	// surfaces a banner and switches analytics IDs.
+	UsingOldSite bool
+	// OldSiteHost is the legacy hostname (without scheme).
+	OldSiteHost string
+	// NewSiteURL is the canonical absolute URL promoted on the legacy
+	// site banner and used in the analytics switch fallback link.
+	NewSiteURL string
 }
 
 // NewPage Create a new page - only accept the required arguments as inputs
@@ -100,6 +108,9 @@ func (page *PageConfig) Copy() *PageConfig {
 	pageCopy.JsScripts = append(pageCopy.JsScripts, page.JsScripts...)
 	pageCopy.Stylesheets = append(pageCopy.Stylesheets, page.Stylesheets...)
 	pageCopy.ShowList = append(pageCopy.ShowList, page.ShowList...)
+	pageCopy.UsingOldSite = page.UsingOldSite
+	pageCopy.OldSiteHost = page.OldSiteHost
+	pageCopy.NewSiteURL = page.NewSiteURL
 
 	return pageCopy
 }
