@@ -157,12 +157,12 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 										'input[type=checkbox]:checked'
 									);
 									if (checked.length === 0) return 'All shows';
-									if (checked.length === 1) {
-										var label = checked[0].closest('label');
-										var name = label ? label.querySelector('.multiselect-name') : null;
-										return name ? name.textContent.trim() : '1 hidden';
+									var names = [];
+									for (var i = 0; i < checked.length; i++) {
+										var name = checked[i].closest('label').querySelector('.multiselect-name');
+										if (name) names.push(name.textContent.trim());
 									}
-									return checked.length + ' hidden';
+									return names.join(', ');
 								},
 								matches: function(name) {
 									if (this.search === '') return true;
