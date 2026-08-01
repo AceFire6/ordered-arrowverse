@@ -68,9 +68,14 @@ body.dark-mode .navbar {
 
 .brand {
 	font-weight: 600;
+	font-size: 1.25rem;
 	text-decoration: none;
 	color: inherit;
 }
+
+.nav-inner a { text-decoration: none; }
+
+.nav-inner a:hover { text-decoration: underline; }
 
 .nav-inner > * + * { margin-left: 0; }
 
