@@ -71,18 +71,21 @@ templ SearchableMultiSelect(name string, showList []frontend.ShowData, selected 
 	</div>
 }
 
-// NativeDateInput renders a styled native date picker. WebKit and
-// Chromium honour the custom calendar icon via CSS pseudo-elements;
-// Firefox falls back to its default rendering. Wrapped in a labelled
-// container so the layout matches the multi-select trigger.
+// NativeDateInput renders a styled text input bound to flatpickr
+// (vendored at assets/js/flatpickr.min.js). The picker is themed via
+// the CSS below to match the rest of the form chrome; the form still
+// submits the canonical ISO date format so the server-side parser
+// (Y-m-d via time.Parse) keeps working unchanged.
 templ NativeDateInput(name, id, label, value string) {
 	<label class="date-input">
 		<span class="date-input-label">{ label }</span>
-		<input type="date"
-			class="date-input-control"
+		<input type="text"
+			class="date-input-control js-date-input"
 			name={ name }
 			id={ id }
 			title={ label }
+			placeholder="YYYY-MM-DD"
+			autocomplete="off"
 			if len(value) != 0 {
 				value={ value }
 			}/>

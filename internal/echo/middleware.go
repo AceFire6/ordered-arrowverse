@@ -31,6 +31,22 @@ func addContextToLog(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
+// ensureContentType guards against upstream proxies (e.g. air's
+// dev proxy) that strip the Content-Type header on GET requests.
+// Echo's DefaultBinder walks the binder chain and the JSON binder
+// returns 415 when Content-Type is unset; for GETs without a body we
+// explicitly default to form-urlencoded so the form/query binder
+// picks up the request.
+func ensureContentType(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(ctx echo.Context) error {
+		ct := ctx.Request().Header.Get(echo.HeaderContentType)
+		if ct == "" {
+			ctx.Request().Header.Set(echo.HeaderContentType, echo.MIMEApplicationForm)
+		}
+		return next(ctx)
+	}
+}
+
 type CustomContextParams struct {
 	Log                *zerolog.Logger
 	DBPool             *pgxpool.Pool
@@ -52,6 +68,7 @@ func SetEchoMiddlewareStack(e *echo.Echo, params *CustomContextParams) {
 			DemoModeHostPrefix: params.DemoModeHostPrefix,
 			Site:               params.Site,
 		}),
+		ensureContentType,
 		middleware.RequestID(),
 		addContextToLog,
 		middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{ //nolint:exhaustruct // no need to specify all the fields here

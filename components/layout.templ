@@ -15,9 +15,11 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 					type="application/atom+xml"/>
 				<link type="image/png" href={ pageConfig.Reverse("static:favicon") } rel="icon">
 				<link rel="stylesheet" href={ pageConfig.Reverse("static:css:index") }>
+				<link rel="stylesheet" href={ pageConfig.Reverse("static:css:flatpickr") }>
 				@CsrfMeta(pageConfig.CSRFToken)
 				<script src={ pageConfig.Reverse("static:js:htmx") } defer></script>
 				<script src={ pageConfig.Reverse("static:js:alpine") } defer></script>
+				<script src={ pageConfig.Reverse("static:js:flatpickr") } defer></script>
 				<title>{ pageConfig.Title }</title>
 			</head>
 			<body class="">
@@ -195,6 +197,34 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 							};
 						};
 					})();
+
+					// Flatpickr init - upgrades every .js-date-input to a
+					// themed calendar popover. Reads initial value out of the
+					// aria-controls sibling so existing server-rendered values
+					// (e.g. "from_date=2020-01-01") carry over without a
+					// second round-trip.
+					function initFlatpickr() {
+						if (typeof window.flatpickr === 'undefined') return;
+						var inputs = document.querySelectorAll('.js-date-input');
+						for (var i = 0; i < inputs.length; i++) {
+							window.flatpickr(inputs[i], {
+								dateFormat: 'Y-m-d',
+								allowInput: true,
+								disableMobile: true,
+								theme: 'site',
+							});
+						}
+					}
+					if (document.readyState === 'loading') {
+						document.addEventListener('DOMContentLoaded', initFlatpickr);
+					} else {
+						initFlatpickr();
+					}
+					// Re-run after htmx swaps so re-rendered inputs pick up
+					// the picker again.
+					document.body.addEventListener('htmx:afterSwap', function() {
+						initFlatpickr();
+					});
 				</script>
 			</body>
 		</html>
