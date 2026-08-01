@@ -186,6 +186,15 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 									for (var i = 0; i < boxes.length; i++) {
 										boxes[i].checked = false;
 									}
+									// Programmatically setting .checked does not fire
+									// a real 'change' event, so htmx's change trigger
+									// wouldn't fire and the table would stay stale.
+									// Dispatch a bubbling change event on the form so
+									// htmx re-runs the filtered GET.
+									var form = scope.closest('form');
+									if (form) {
+										form.dispatchEvent(new Event('change', { bubbles: true }));
+									}
 									this.$dispatch('multiselect:change');
 									this.update();
 								},
