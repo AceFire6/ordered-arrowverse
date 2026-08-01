@@ -653,13 +653,25 @@ body.dark-mode .btn {
 
 .table {
 	width: 100%;
+	min-width: 56rem;
 	border-collapse: collapse;
+	table-layout: fixed;
 }
 
 .table th, .table td {
 	padding: 0.5rem 0.75rem;
 	border: 1px solid #e5e7eb;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
+
+.table th:nth-child(1), .table td:nth-child(1) { width: 4rem; }
+.table th:nth-child(2), .table td:nth-child(2) { width: 12rem; }
+.table th:nth-child(3), .table td:nth-child(3) { width: 6rem; }
+.table th:nth-child(4), .table td:nth-child(4) { width: auto; }
+.table th:nth-child(5), .table td:nth-child(5) { width: 10rem; }
+.table th:nth-child(6), .table td:nth-child(6) { width: 4rem; text-align: center; }
 
 body.dark-mode .table th,
 body.dark-mode .table td {
