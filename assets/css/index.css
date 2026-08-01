@@ -454,7 +454,11 @@ span.flatpickr-weekday,
 }
 
 .flatpickr-day {
-	border-radius: 4px;
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
 }
 
 .flatpickr-day.selected,
