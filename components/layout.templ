@@ -186,22 +186,20 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 									for (var i = 0; i < boxes.length; i++) {
 										boxes[i].checked = false;
 									}
-									// Programmatically setting .checked does not fire
-									// a real 'change' event, so htmx's change trigger
-									// wouldn't fire and the table would stay stale.
-									// Use htmx's official trigger API to kick the
-									// form's hx-get the same way a real toggle would.
-									var form = scope.closest('form');
-									if (form && window.htmx && typeof window.htmx.trigger === 'function') {
-										window.htmx.trigger(form, 'change');
-									} else if (form) {
-										// Fallback when htmx is unavailable: dispatch a
-										// bubbling change event on a checkbox so the
-										// hx-trigger='change from:input' filter still
-										// matches an input element.
-										if (boxes.length > 0) {
-											boxes[0].dispatchEvent(new Event('change', { bubbles: true }));
-										}
+									// htmx's hx-trigger='change from:input' filter
+									// rejects events that don't originate from an
+									// input element. We have to fire the simulated
+									// change event on a checkbox (not the form) so
+									// event.target is an input.
+									if (boxes.length === 0) {
+										this.$dispatch('multiselect:change');
+										this.update();
+										return;
+									}
+									if (window.htmx && typeof window.htmx.trigger === 'function') {
+										window.htmx.trigger(boxes[0], 'change');
+									} else {
+										boxes[0].dispatchEvent(new Event('change', { bubbles: true }));
 									}
 									this.$dispatch('multiselect:change');
 									this.update();
