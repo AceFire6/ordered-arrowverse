@@ -86,20 +86,21 @@ body.dark-mode .navbar {
 }
 
 .filter-row {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: flex-end;
+	display: grid;
+	grid-template-columns: minmax(180px, 1fr) auto auto auto;
 	gap: 0.75rem;
+	align-items: end;
 }
 
 .filter-cell {
 	display: flex;
 	flex-direction: column;
+	min-width: 0;
 }
 
-.filter-cell-show { flex: 1 1 280px; min-width: 240px; }
-.filter-cell:not(.filter-cell-show):not(.filter-cell-button) { flex: 0 0 auto; }
-.filter-cell-button { flex: 0 0 auto; }
+.filter-cell-show { min-width: 180px; }
+.filter-cell:not(.filter-cell-show):not(.filter-cell-button) { min-width: 9rem; }
+.filter-cell-button { min-width: 5rem; }
 
 .filter-label { font-size: 0.85rem; font-weight: 500; }
 
@@ -111,7 +112,10 @@ body.dark-mode .navbar {
 }
 
 @media (max-width: 720px) {
-	.filter-cell-show { flex-basis: 100%; }
+	.filter-row {
+		grid-template-columns: 1fr 1fr;
+	}
+	.filter-cell-show { grid-column: 1 / -1; }
 }
 
 /* Alpine-driven multi-select popover */
