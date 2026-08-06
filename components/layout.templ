@@ -25,6 +25,7 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 			<title>{ pageConfig.Title }</title>
 		</head>
 		<body class="">
+			<a href="#main-content" class="skip-link">Skip to main content</a>
 			<a id="page-top"></a>
 			@OldSiteBanner(pageConfig.UsingOldSite, pageConfig.OldSiteHost, pageConfig.NewSiteURL)
 			@NavBar(pageConfig)

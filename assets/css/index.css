@@ -1016,6 +1016,37 @@ body.dark-mode .modal {
 	border: 0;
 }
 
+/* Skip-to-content link — first focusable element on the page. Off-screen
+   by default; slides in when focused. Hits WCAG 2.4.1 Bypass Blocks. */
+.skip-link {
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	padding: 0.6rem 1rem;
+	background: #0366d6;
+	color: #ffffff;
+	font-weight: 600;
+	text-decoration: none;
+	border-radius: 6px;
+	z-index: 1000;
+	transform: translateY(-200%);
+	transition: transform .15s ease;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+	transform: translateY(0);
+	outline: 3px solid #fde047;
+	outline-offset: 2px;
+}
+body.dark-mode .skip-link {
+	background: #76b9ed;
+	color: #0a1422;
+}
+body.dark-mode .skip-link:focus,
+body.dark-mode .skip-link:focus-visible {
+	outline-color: #fde047;
+}
+
 /* The FAB lives inside its own <nav> landmark so screen readers
    know it's page-navigation chrome. Element is fixed-positioned; the
    nav wrapper is just an accessibility wrapper, no visual style. */
@@ -1083,4 +1114,41 @@ body.dark-mode .fab {
 body.dark-mode .fab:hover { background: #76b9ed; color: #1f1f1f; }
 @media (prefers-reduced-motion: reduce) {
 	.fab { transition: opacity .01ms; transform: none; }
+}
+
+/* =========================================================================
+   Print stylesheet
+   Fans print this as a reference list. Hide chrome (nav, filter, footer,
+   FAB), drop the per-show row tints (cheaper on ink, better on B&W),
+   expand the table to the page, and force black text on white.
+   ========================================================================= */
+@media print {
+	body { background: #fff !important; color: #000 !important; }
+	.navbar,
+	.site-footer,
+	.fab-nav,
+	.modal,
+	.filter-form,
+	.row.toolbar { display: none !important; }
+	main { padding: 0; }
+	main h1 { position: static; clip: auto; width: auto; height: auto; padding: 0; margin: 0 0 1rem; font-size: 1.5rem; }
+	.table-responsive { max-height: none; overflow: visible; margin-top: 0; }
+	.table,
+	.table th,
+	.table td {
+		background: #fff !important;
+		color: #000 !important;
+		border: 1px solid #999 !important;
+	}
+	.table a { color: #000 !important; }
+	.table thead {
+		background: #f0f0f0 !important;
+		color: #000 !important;
+	}
+	/* Don't break a row across pages. */
+	.table tr,
+	.table thead { page-break-inside: avoid; }
+	/* Show episode URLs so printed copy is still useful. */
+	.table td:last-child a::after { content: " (" attr(href) ")"; font-size: 0.75em; word-break: break-all; }
+	@page { margin: 1.5cm; }
 }
