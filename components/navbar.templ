@@ -13,6 +13,23 @@ templ NavBar(pageConfig *frontend.PageConfig) {
 				<img src="https://www.mozilla.org/media/img/trademarks/feed-icon-14x14.2168a573d0d4.png"
 					alt="RSS Logo"/>
 			</a>
+			<button type="button" id="no-color" class="icon-button" aria-pressed="false" aria-label="Disable row tinting" aria-live="polite" title="Toggle row tinting">
+				<svg class="icon-droplet" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+					<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+				</svg>
+				<svg class="icon-droplet-off" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+				</svg>
+			</button>
+			<button type="button" id="dark-mode" class="icon-button" aria-pressed="false" aria-label="Switch to dark mode" aria-live="polite" title="Toggle dark mode">
+				<svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<circle cx="12" cy="12" r="4"/>
+					<path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+				</svg>
+				<svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+				</svg>
+			</button>
 		</div>
 	</nav>
 }

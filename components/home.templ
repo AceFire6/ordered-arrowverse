@@ -9,17 +9,19 @@ import (
 
 templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newestFirst bool, showList []frontend.ShowData, hiddenShowList []string, fromDate string, toDate string) {
 	<main>
+		<h1 class="visually-hidden">Arrowverse Episode Order</h1>
 		<div class="container">
-			<form hx-get={ reverser.Reverse("view:home") }
+			<form
+				hx-get={ reverser.Reverse("view:home") }
 				hx-target="#episode-list"
 				hx-swap="outerHTML"
 				hx-select="#episode-list"
 				hx-trigger="change from:input, change from:select, submit"
 				hx-push-url="true"
 				id="filter-form"
-				class="filter-form">
+				class="filter-form"
+			>
 				<input name="newest_first" value={ strconv.FormatBool(newestFirst) } title="Newest First" type="hidden"/>
-
 				<div class="filter-row">
 					<div class="filter-cell filter-cell-show">
 						@SearchableMultiSelect("hide_show", showList, hiddenShowList, "Hide shows")
@@ -38,27 +40,36 @@ templ Home(reverser frontend.URLReverser, tableContent []frontend.TableRow, newe
 		</div>
 		<div class="container">
 			<div class="row toolbar">
-				<a href="#end" id="top">END</a>
-				|
-				<a href={ frontend.AddQueryParams(reverser.Reverse("view:home"), map[string]string{ "newest_first": strconv.FormatBool(!newestFirst) }) }>
+				<a
+					class="sort-toggle"
+					href={ frontend.AddQueryParams(reverser.Reverse("view:home"), map[string]string{"newest_first": strconv.FormatBool(!newestFirst)}) }
 					if newestFirst {
-						OLDEST FIRST
+						aria-label="Currently sorted newest first. Click to sort oldest first."
 					} else {
+						aria-label="Currently sorted oldest first. Click to sort newest first."
+					}
+				>
+					if newestFirst {
 						NEWEST FIRST
+					} else {
+						OLDEST FIRST
+					}
+					if newestFirst {
+						<svg class="sort-arrow sort-arrow-down" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M12 5v14M19 12l-7 7-7-7"/>
+						</svg>
+					} else {
+						<svg class="sort-arrow sort-arrow-up" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M12 19V5M5 12l7-7 7 7"/>
+						</svg>
 					}
 				</a>
-				| <a href="#" id="no-color">DISABLE COLOR</a>
-				| <a href="#" id="dark-mode">TOGGLE DARK MODE</a>
 			</div>
 		</div>
 		<div class="container">
 			@EpisodesTable(tableContent)
 		</div>
-		<div class="container">
-			<div class="row back-to-top">
-				<a href="#top" id="end">BACK TO TOP</a>
-			</div>
-		</div>
+		<a id="page-end"></a>
 	</main>
 }
 

@@ -23,6 +23,7 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 				<title>{ pageConfig.Title }</title>
 			</head>
 			<body class="">
+				<a id="page-top"></a>
 				@OldSiteBanner(pageConfig.UsingOldSite, pageConfig.OldSiteHost, pageConfig.NewSiteURL)
 				@NavBar(pageConfig)
 				<div class="container">
@@ -33,6 +34,17 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 				@AcknowledgementsModal(pageConfig.ShowList)
 				@ContactModal()
 				@Analytics(pageConfig.UsingOldSite)
+				<nav class="fab-nav" aria-label="Page navigation">
+					<a href="#page-top" id="back-to-top" class="fab" aria-label="Back to top" title="Back to top">
+						<svg class="fab-icon-up" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M12 19V5M5 12l7-7 7 7"/>
+						</svg>
+						<svg class="fab-icon-down" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M12 5v14M19 12l-7 7-7-7"/>
+						</svg>
+						<span class="fab-label">Back to top</span>
+					</a>
+				</nav>
 				<script>
 					// Tiny dependency-free controller: cookie plumbing for
 					// dark-mode + colour toggle, and a minimal modal opener.
@@ -63,30 +75,118 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 
 						// Initial paint - per-show row tinting.
 						var colour = readCookie("colour", "1");
-						document.body.classList.toggle("no-color", colour === "0");
+						var colourEnabled = colour !== "0";
+						document.body.classList.toggle("no-color", !colourEnabled);
 
-						// Click handlers - dark-mode toggle.
+						// Toggle helper - keep aria-pressed, body class, cookie,
+						// and accessible label in lockstep for one button.
+						function applyToggle(button, pressed, pressedLabel, unpressedLabel) {
+							button.setAttribute("aria-pressed", pressed ? "true" : "false");
+							button.setAttribute("aria-label", pressed ? pressedLabel : unpressedLabel);
+						}
+
+						// Click handler - dark-mode toggle (navbar icon button).
 						var darkButton = document.getElementById("dark-mode");
 						if (darkButton) {
+							applyToggle(darkButton, useDark, "Switch to light mode", "Switch to dark mode");
 							darkButton.addEventListener("click", function(event) {
 								event.preventDefault();
 								var nextDark = !document.body.classList.contains("dark-mode");
 								document.body.classList.toggle("dark-mode", nextDark);
 								setCookie("dark-mode", nextDark ? "1" : "0");
-								darkButton.textContent = nextDark ? "TOGGLE LIGHT MODE" : "TOGGLE DARK MODE";
+								applyToggle(darkButton, nextDark, "Switch to light mode", "Switch to dark mode");
 							});
 						}
 
-						// Click handlers - colour toggle.
+						// Click handler - colour toggle (navbar icon button).
+						// Mirrors the dark-mode pattern: icon-button has no
+						// text, so the accessible name in aria-label flips with
+						// state, and aria-live="polite" announces the change.
 						var colourButton = document.getElementById("no-color");
 						if (colourButton) {
+							applyToggle(colourButton, colourEnabled, "Disable row tinting", "Enable row tinting");
 							colourButton.addEventListener("click", function(event) {
 								event.preventDefault();
-								var nextColour = document.body.classList.contains("no-color");
-								document.body.classList.toggle("no-color", !nextColour);
-								setCookie("colour", nextColour ? "1" : "0");
-								colourButton.textContent = nextColour ? "DISABLE COLOR" : "ENABLE COLOR";
+								document.body.classList.toggle("no-color");
+								var isEnabled = !document.body.classList.contains("no-color");
+								setCookie("colour", isEnabled ? "1" : "0");
+								applyToggle(colourButton, isEnabled, "Disable row tinting", "Enable row tinting");
 							});
+						}
+
+						// Morphing FAB - shows once the user has scrolled past
+						// half a viewport, then reflects what the user most
+						// likely wants next:
+						//   - Top 25% of page    -> "Jump to bottom"
+						//   - Bottom 25% of page -> "Back to top"
+						//   - Middle 50%         -> last scroll direction
+						// Direction is tracked from scrollY delta with a small
+						// noise threshold so wheel jitter doesn't flip the FAB.
+						var fab = document.getElementById("back-to-top");
+						var fabLabel = fab ? fab.querySelector(".fab-label") : null;
+						if (fab && fabLabel) {
+							var currentMode = "";
+							var prevScrollY = window.scrollY;
+							var lastDirection = 1; // 1 = down, -1 = up
+							var DIRECTION_MIN_DELTA = 5;
+
+							function applyMode(mode) {
+								if (mode === currentMode) return;
+								currentMode = mode;
+								if (mode === "") {
+									fab.classList.remove("visible");
+									return;
+								}
+								fab.classList.add("visible");
+								if (mode === "bottom") {
+									fab.classList.add("mode-bottom");
+									fab.setAttribute("href", "#page-end");
+									fab.setAttribute("aria-label", "Jump to bottom");
+									fab.setAttribute("title", "Jump to bottom");
+									fabLabel.textContent = "Jump to bottom";
+								} else {
+									fab.classList.remove("mode-bottom");
+									fab.setAttribute("href", "#page-top");
+									fab.setAttribute("aria-label", "Back to top");
+									fab.setAttribute("title", "Back to top");
+									fabLabel.textContent = "Back to top";
+								}
+							}
+
+							function updateFab() {
+								var docHeight = document.documentElement.scrollHeight;
+								var viewHeight = window.innerHeight;
+								var scrollMax = Math.max(1, docHeight - viewHeight);
+								var currentY = window.scrollY;
+								var delta = currentY - prevScrollY;
+								prevScrollY = currentY;
+
+								if (Math.abs(delta) >= DIRECTION_MIN_DELTA) {
+									lastDirection = delta > 0 ? 1 : -1;
+								}
+
+								var showThreshold = viewHeight * 0.5;
+								if (currentY <= showThreshold) {
+									applyMode("");
+									return;
+								}
+
+								var topZone = scrollMax * 0.25;
+								var bottomZone = scrollMax * 0.75;
+								var mode;
+								if (currentY <= topZone) {
+									mode = "bottom";
+								} else if (currentY >= bottomZone) {
+									mode = "top";
+								} else {
+									mode = lastDirection > 0 ? "bottom" : "top";
+								}
+								applyMode(mode);
+							}
+
+							window.addEventListener("scroll", updateFab, { passive: true });
+							window.addEventListener("resize", updateFab, { passive: true });
+							updateFab();
 						}
 
 						// Click handlers - modal opener.
@@ -236,9 +336,11 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 						initFlatpickr();
 					}
 					// Re-run after htmx swaps so re-rendered inputs pick up
-					// the picker again.
+					// the picker again. Also re-evaluate the back-to-top FAB
+					// since the page height may have changed.
 					document.body.addEventListener('htmx:afterSwap', function() {
 						initFlatpickr();
+						updateFab();
 					});
 				</script>
 			</body>
@@ -248,8 +350,8 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 templ Footer() {
 	<footer class="site-footer container">
 		<div class="row footer-buttons">
-			<button type="button" data-modal-open="contact">Contact Me</button>
-			<button type="button" data-modal-open="acknowledgements">Acknowledgements</button>
+			<button type="button" class="btn btn-sm" data-modal-open="contact">Contact Me</button>
+			<button type="button" class="btn btn-sm" data-modal-open="acknowledgements">Acknowledgements</button>
 			<a href="/legal/cookie-policy" target="_blank">Cookie Policy</a>
 			<a href="/legal/privacy-policy" target="_blank">Privacy Policy</a>
 		</div>

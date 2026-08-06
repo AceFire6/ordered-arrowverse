@@ -4,6 +4,14 @@
 
 * { box-sizing: border-box; }
 
+html {
+	scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+	html { scroll-behavior: auto; }
+	*, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
 html, body {
 	margin: 0;
 	padding: 0;
@@ -30,6 +38,14 @@ body.dark-mode {
 a { color: #0366d6; }
 body.dark-mode a { color: #76b9ed; }
 
+/* Source link in the episodes table sits on per-show row tints.
+   Light mode uses dark text (rows are tinted mid-contrast); dark mode
+   uses white text on saturated dark rows. */
+.table a { color: #1f2937; }
+.table a:hover { color: #0366d6; }
+body.dark-mode .table a { color: #f1f5f9; }
+body.dark-mode .table a:hover { color: #fde047; }
+
 .container {
 	max-width: 1100px;
 	margin: 0 auto;
@@ -48,14 +64,112 @@ body.dark-mode a { color: #76b9ed; }
 	font-size: 0.85rem;
 }
 
+/* Sort toggle right-aligns in the toolbar (modern table convention).
+   Falls back to centered on narrow viewports via flex-wrap. */
+.toolbar { justify-content: flex-end; }
+@media (max-width: 30rem) {
+	.toolbar { justify-content: center; }
+}
+
+/* Drop the container's bottom padding when it wraps the toolbar so the
+   pill sits flush with the table below. */
+.container:has(> .toolbar) { padding-bottom: 0; }
+
+/* Sort toggle pill: anchors the toolbar's single control with a subtle
+   background so it reads as an interactive control, not stray text. */
+.sort-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.3rem 0.75rem;
+	border-radius: 999px;
+	background: #f3f4f6;
+	color: #0366d6;
+	text-decoration: none;
+	transition: background-color .15s ease;
+}
+.sort-toggle:hover { background: #e5e7eb; }
+.sort-toggle:focus-visible {
+	outline: 2px solid #0366d6;
+	outline-offset: 2px;
+}
+.sort-arrow {
+	flex-shrink: 0;
+	vertical-align: middle;
+}
+body.dark-mode .sort-toggle {
+	background: #1f1f1f;
+	color: #76b9ed;
+}
+body.dark-mode .sort-toggle:hover { background: #2a2a2a; }
+body.dark-mode .sort-toggle:focus-visible { outline-color: #76b9ed; }
+
+.link-button {
+	background: none;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	font: inherit;
+	color: #0366d6;
+	cursor: pointer;
+}
+.link-button:focus-visible {
+	outline: 2px solid #0366d6;
+	outline-offset: 2px;
+	border-radius: 2px;
+}
+body.dark-mode .link-button { color: #76b9ed; }
+body.dark-mode .link-button:focus-visible { outline-color: #76b9ed; }
+.link-button[aria-pressed="true"] { text-decoration: underline; }
+
+/* Icon-only button (e.g. navbar dark-mode toggle). Round, transparent,
+   inherits colour from surrounding text so it adapts to dark mode. */
+.icon-button {
+	--icon-size: 2.25rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: none;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	color: inherit;
+	inline-size: var(--icon-size);
+	block-size: var(--icon-size);
+	aspect-ratio: 1;
+	border-radius: 50%;
+	cursor: pointer;
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
+}
+.icon-button:focus-visible {
+	outline: 2px solid #0366d6;
+	outline-offset: 3px;
+}
+body.dark-mode .icon-button:focus-visible { outline-color: #76b9ed; }
+
+/* Dark-mode toggle: show the icon for the CURRENT state (sun = light,
+   moon = dark). Click flips both. */
+.icon-button .icon-moon { display: none; }
+body.dark-mode .icon-button .icon-sun { display: none; }
+body.dark-mode .icon-button .icon-moon { display: block; }
+
+/* Colour-toggle: filled droplet when tinting is ON, outline when OFF.
+   Same pattern as dark-mode above. */
+.icon-button .icon-droplet-off { display: none; }
+body.no-color .icon-button .icon-droplet { display: none; }
+body.no-color .icon-button .icon-droplet-off { display: block; }
+
 .navbar {
 	background: #f3f4f6;
 	border-bottom: 1px solid #e5e7eb;
+	color: #1f2937;
 }
 
 body.dark-mode .navbar {
 	background: #1f1f1f;
 	border-bottom: 1px solid #404040;
+	color: #ffffff;
 }
 
 .nav-inner {
@@ -70,12 +184,50 @@ body.dark-mode .navbar {
 	font-weight: 600;
 	font-size: 1.25rem;
 	text-decoration: none;
-	color: inherit;
+	color: #1f2937;
 }
 
-.nav-inner a { text-decoration: none; }
+body.dark-mode .brand { color: #ffffff; }
 
-.nav-inner a:hover { text-decoration: underline; }
+nav.navbar .nav-inner a {
+	color: #1f2937;
+	text-decoration: none;
+}
+
+body.dark-mode nav.navbar .nav-inner a {
+	color: #ffffff;
+}
+
+nav.navbar .nav-inner a:hover {
+	color: #d97706;
+	text-decoration: underline;
+}
+
+body.dark-mode nav.navbar .nav-inner a:hover {
+	color: #fde047;
+}
+
+/* Support link stays the same colour on hover (no orange/yellow flash)
+   but still gets the underline so it reads as clickable. */
+nav.navbar .nav-inner a.support-link:hover {
+	color: #1f2937;
+	text-decoration: underline;
+}
+
+body.dark-mode nav.navbar .nav-inner a.support-link:hover {
+	color: #ffffff;
+}
+
+nav.navbar .nav-inner a:visited {
+	color: #1f2937;
+}
+
+body.dark-mode nav.navbar .nav-inner a:visited {
+	color: #ffffff;
+}
+
+nav.navbar .nav-inner .icon-button { color: #1f2937; }
+body.dark-mode nav.navbar .nav-inner .icon-button { color: #ffffff; }
 
 .nav-inner > * + * { margin-left: 0; }
 
@@ -638,22 +790,69 @@ select[multiple].form-control { min-height: 8rem; }
 
 .btn {
 	font: inherit;
-	padding: 0.4rem 0.75rem;
-	border: 1px solid #6b7280;
-	background: #f3f4f6;
-	border-radius: 4px;
+	padding: 0.45rem 0.9rem;
+	border: 1px solid #d1d5db;
+	background: #ffffff;
+	color: #1f2937;
+	border-radius: 6px;
 	cursor: pointer;
+	font-weight: 500;
+	transition: background-color .15s ease, border-color .15s ease, transform .05s ease;
+}
+.btn:hover {
+	background: #f3f4f6;
+	border-color: #9ca3af;
+}
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible {
+	outline: 2px solid #0366d6;
+	outline-offset: 2px;
+}
+
+.btn-primary {
+	background: #0366d6;
+	border-color: #0366d6;
+	color: #ffffff;
+}
+.btn-primary:hover {
+	background: #0250a8;
+	border-color: #0250a8;
+}
+
+/* Smaller button — used in the footer so the toolbar there doesn't
+   compete with the main Filter button. */
+.btn-sm {
+	padding: 0.3rem 0.65rem;
+	font-size: 0.85rem;
+	font-weight: 500;
+	border-radius: 5px;
 }
 
 body.dark-mode .btn {
-	background: #1f1f1f;
-	border-color: #404040;
-	color: #d3d3d3;
+	background: #e5e7eb;
+	border-color: #9ca3af;
+	color: #1f2937;
+}
+body.dark-mode .btn:hover {
+	background: #d1d5db;
+	border-color: #6b7280;
+}
+body.dark-mode .btn:focus-visible {
+	outline-color: #76b9ed;
+}
+body.dark-mode .btn-primary {
+	background: #2563eb;
+	border-color: #2563eb;
+	color: #ffffff;
+}
+body.dark-mode .btn-primary:hover {
+	background: #1d4fd7;
+	border-color: #1d4fd7;
 }
 
 .table-responsive {
 	overflow-x: auto;
-	margin-top: 1rem;
+	margin-top: 0.25rem;
 }
 
 .table {
@@ -694,29 +893,55 @@ body.dark-mode .table thead {
 
 .episode { color: inherit; }
 
-/* Per-show row tinting. Toggleable via body.no-color. */
-.arrow { background: #006200; color: #fff; }
-.arrow:hover { background: #004e00; }
-.batwoman { background: #692e69; color: #fff; }
-.batwoman:hover { background: #470e47; }
-.black-lightning { background: #464340; color: #fff; }
-.black-lightning:hover { background: #383532; }
-.constantine { background: #d74014; color: #fff; }
-.constantine:hover { background: #be3915; }
-.flash { background: #a50400; color: #fff; }
-.flash:hover { background: #910400; }
-.freedom-fighters { background: #b4a242; color: #fff; }
-.freedom-fighters:hover { background: #a08e41; }
-.legends { background: #003e3e; color: #fff; }
-.legends:hover { background: #002a2a; }
-.stargirl { background: #12223a; color: #fff; }
-.stargirl:hover { background: #120e3a; }
-.supergirl { background: #007196; color: #fff; }
-.supergirl:hover { background: #005e82; }
-.superman-and-lois { background: #4b6c7a; color: #fff; }
-.superman-and-lois:hover { background: #324951; }
-.vixen { background: #3c0096; color: #fff; }
-.vixen:hover { background: #280082; }
+/* Per-show row tinting. Toggleable via body.no-color.
+   Light mode uses mid-saturation tints (darker than pastels so the
+   table reads as a soft banded list with enough contrast for white
+   icons). Dark mode keeps the saturated brand colour with white text. */
+.arrow { background: #98c898; color: #1f2937; }
+.arrow:hover { background: #7eb07e; }
+.batwoman { background: #c098ba; color: #1f2937; }
+.batwoman:hover { background: #a87ea4; }
+.black-lightning { background: #b8b6b5; color: #1f2937; }
+.black-lightning:hover { background: #9e9c9b; }
+.constantine { background: #d49c84; color: #1f2937; }
+.constantine:hover { background: #b8806a; }
+.flash { background: #d49c94; color: #1f2937; }
+.flash:hover { background: #b88078; }
+.freedom-fighters { background: #c8ba94; color: #1f2937; }
+.freedom-fighters:hover { background: #a89c78; }
+.legends { background: #94b8b4; color: #1f2937; }
+.legends:hover { background: #789894; }
+.stargirl { background: #98a8b8; color: #1f2937; }
+.stargirl:hover { background: #7c8c9c; }
+.supergirl { background: #90b0bc; color: #1f2937; }
+.supergirl:hover { background: #74949e; }
+.superman-and-lois { background: #98a8a8; color: #1f2937; }
+.superman-and-lois:hover { background: #7c8c8c; }
+.vixen { background: #b094c0; color: #1f2937; }
+.vixen:hover { background: #96789e; }
+
+body.dark-mode .arrow { background: #006200; color: #fff; }
+body.dark-mode .arrow:hover { background: #004e00; }
+body.dark-mode .batwoman { background: #692e69; color: #fff; }
+body.dark-mode .batwoman:hover { background: #470e47; }
+body.dark-mode .black-lightning { background: #464340; color: #fff; }
+body.dark-mode .black-lightning:hover { background: #383532; }
+body.dark-mode .constantine { background: #d74014; color: #fff; }
+body.dark-mode .constantine:hover { background: #be3915; }
+body.dark-mode .flash { background: #a50400; color: #fff; }
+body.dark-mode .flash:hover { background: #910400; }
+body.dark-mode .freedom-fighters { background: #b4a242; color: #fff; }
+body.dark-mode .freedom-fighters:hover { background: #a08e41; }
+body.dark-mode .legends { background: #003e3e; color: #fff; }
+body.dark-mode .legends:hover { background: #002a2a; }
+body.dark-mode .stargirl { background: #12223a; color: #fff; }
+body.dark-mode .stargirl:hover { background: #120e3a; }
+body.dark-mode .supergirl { background: #007196; color: #fff; }
+body.dark-mode .supergirl:hover { background: #005e82; }
+body.dark-mode .superman-and-lois { background: #4b6c7a; color: #fff; }
+body.dark-mode .superman-and-lois:hover { background: #324951; }
+body.dark-mode .vixen { background: #3c0096; color: #fff; }
+body.dark-mode .vixen:hover { background: #280082; }
 
 body.no-color .episode,
 body.no-color .table thead {
@@ -730,11 +955,22 @@ body.dark-mode.no-color .table tr:nth-child(even) td { background: rgba(255, 255
 /* Modal - native <dialog> */
 .modal {
 	border: 1px solid #d1d5db;
-	border-radius: 6px;
+	border-radius: 8px;
 	padding: 1rem 1.25rem;
 	max-width: 32rem;
+	max-height: 85vh;
+	overflow: auto;
 	background: #fff;
 	color: #1f2937;
+}
+
+/* Stop long URLs in the Acknowledgements list from causing a
+   horizontal scrollbar — break anywhere a word would overflow. */
+.modal,
+.modal ul,
+.modal p {
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 body.dark-mode .modal {
@@ -746,12 +982,44 @@ body.dark-mode .modal {
 .modal::backdrop { background: rgba(0, 0, 0, 0.5); }
 .modal h2 { margin-top: 0; }
 
+/* Modal footer row — used in the Support modal so the Ko-Fi image and
+   PayPal button sit on the same line, then the Close button on its own. */
+.modal-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	align-items: center;
+	margin-top: 1rem;
+}
+.modal-form {
+	margin-top: 0.75rem;
+}
+
 /* htmx loading indicator styling */
 .htmx-indicator { display: none; }
 .htmx-request .htmx-indicator { display: inline; }
 .htmx-request.htmx-indicator { display: inline; }
 
 .site-footer { margin-top: 2rem; }
+
+/* Visually hidden — for screen readers only. Used by the page h1 and
+   any label we'd rather not show visually. */
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* The FAB lives inside its own <nav> landmark so screen readers
+   know it's page-navigation chrome. Element is fixed-positioned; the
+   nav wrapper is just an accessibility wrapper, no visual style. */
+.fab-nav { display: contents; }
 
 .old-site-banner {
 	background: #fee2e2;
@@ -766,3 +1034,53 @@ body.dark-mode .old-site-banner {
 }
 
 .old-site-banner p { margin: 0.25rem 0; }
+
+/* Sticky back-to-top FAB. Anchored lower-right per NN/G convention;
+   hidden until the user scrolls past ~50% of a viewport. Morphs
+   between "Back to top" (up-arrow, scrolls to #page-top) and "Jump
+   to bottom" (down-arrow, scrolls to #page-end) based on which half
+   of the page the user is in. */
+.fab {
+	position: fixed;
+	right: 1.25rem;
+	bottom: 1.25rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0 1rem 0 0.85rem;
+	block-size: 2.75rem;
+	border-radius: 1.375rem;
+	background: #1f2937;
+	color: #f9fafb;
+	text-decoration: none;
+	font-size: 0.85rem;
+	font-weight: 500;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+	opacity: 0;
+	pointer-events: none;
+	transform: translateY(0.5rem);
+	transition: opacity .2s ease, transform .2s ease, background-color .2s ease;
+	z-index: 50;
+}
+.fab svg { flex-shrink: 0; }
+.fab-icon-down { display: none; }
+.fab.mode-bottom .fab-icon-up { display: none; }
+.fab.mode-bottom .fab-icon-down { display: inline; }
+.fab:hover { background: #0366d6; }
+.fab:focus-visible {
+	outline: 3px solid #76b9ed;
+	outline-offset: 3px;
+}
+.fab.visible {
+	opacity: 1;
+	pointer-events: auto;
+	transform: translateY(0);
+}
+body.dark-mode .fab {
+	background: #d3d3d3;
+	color: #1f1f1f;
+}
+body.dark-mode .fab:hover { background: #76b9ed; color: #1f1f1f; }
+@media (prefers-reduced-motion: reduce) {
+	.fab { transition: opacity .01ms; transform: none; }
+}
