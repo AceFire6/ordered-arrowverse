@@ -853,11 +853,6 @@ body.dark-mode .btn-primary:hover {
 .table-responsive {
 	overflow-x: auto;
 	margin-top: 0.25rem;
-	/* Constrain height so the sticky <thead> kicks in once the user
-	   scrolls past the first ~26 rows. Subtract ~120px for the navbar +
-	   filter form so the header docks just under them. */
-	max-height: calc(100vh - 120px);
-	overflow-y: auto;
 }
 
 .table {
@@ -889,11 +884,6 @@ body.dark-mode .table td {
 
 .table thead {
 	background: #f3f4f6;
-	/* Sticky header — sticks to top of .table-responsive's scroll box.
-	   `top: 0` works because the parent has its own scroll context. */
-	position: sticky;
-	top: 0;
-	z-index: 1;
 }
 
 body.dark-mode .table thead {
