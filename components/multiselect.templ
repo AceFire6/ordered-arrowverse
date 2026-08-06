@@ -10,50 +10,70 @@ import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
 templ SearchableMultiSelect(name string, showList []frontend.ShowData, selected []string, label string) {
 	<div class="multiselect" x-data="multiselectPanel()" x-cloak>
 		<span class="multiselect-label">{ label }</span>
-		<button type="button" class="multiselect-trigger"
+		<button
+			type="button"
+			class="multiselect-trigger"
 			@click="open = !open"
 			:aria-expanded="open.toString()"
-			aria-controls={ "multiselect-panel-" + name }>
+			aria-controls={ "multiselect-panel-" + name }
+		>
 			<span class="multiselect-summary" x-text="summary()"></span>
-			<svg class="multiselect-chevron" :class="{ 'is-open': open }"
-				xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-				<path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+			<svg
+				class="multiselect-chevron"
+				:class="{ 'is-open': open }"
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 16 16"
+				fill="currentColor"
+				aria-hidden="true"
+			>
+				<path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path>
 			</svg>
 		</button>
-
-		<div class="multiselect-panel"
+		<div
+			class="multiselect-panel"
 			id={ "multiselect-panel-" + name }
 			x-show="open"
 			x-transition.opacity.duration.150ms
 			@click.outside="open = false"
 			@keydown.escape.stop="open = false"
 			role="dialog"
-			aria-label={ label }>
-			<input type="search"
+			aria-label={ label }
+		>
+			<input
+				type="search"
 				class="multiselect-search"
 				placeholder="Search shows..."
 				x-model="search"
 				x-ref="search"
 				aria-label={ "Search " + label }
-				autocomplete="off"/>
-
+				autocomplete="off"
+			/>
 			<ul class="multiselect-options" role="listbox" aria-multiselectable="true">
 				for _, showData := range showList {
-					<li class="multiselect-option"
+					<li
+						class="multiselect-option"
 						data-show-name={ showData.Name }
-						x-show="matches($el.dataset.showName)">
+						x-show="matches($el.dataset.showName)"
+					>
 						<label class="multiselect-option-label">
-							<input type="checkbox"
+							<input
+								type="checkbox"
 								name={ name }
 								value={ showData.Slug }
 								if sliceContains(selected, showData.Slug) {
 									checked
 								}
-								@change="$dispatch('multiselect:change'); update()"/>
+								@change="$dispatch('multiselect:change'); update()"
+							/>
 							<span class="multiselect-name">{ showData.Name }</span>
-							<svg class="multiselect-checkmark" aria-hidden="true"
-								xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
-								<path fill-rule="evenodd" d="M12.416 5.376a.75.75 0 0 1 .083 1.06l-5 5.5a.75.75 0 0 1-1.126-.073l-2.5-3a.75.75 0 0 1 1.093-1.025l2.07 2.484 4.555-5.013a.75.75 0 0 1 1.063-.066Z" clip-rule="evenodd"/>
+							<svg
+								class="multiselect-checkmark"
+								aria-hidden="true"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 16 16"
+								fill="currentColor"
+							>
+								<path fill-rule="evenodd" d="M12.416 5.376a.75.75 0 0 1 .083 1.06l-5 5.5a.75.75 0 0 1-1.126-.073l-2.5-3a.75.75 0 0 1 1.093-1.025l2.07 2.484 4.555-5.013a.75.75 0 0 1 1.063-.066Z" clip-rule="evenodd"></path>
 							</svg>
 						</label>
 					</li>
@@ -62,7 +82,6 @@ templ SearchableMultiSelect(name string, showList []frontend.ShowData, selected 
 					<span>No shows match "<span x-text="search"></span>"</span>
 				</li>
 			</ul>
-
 			<div class="multiselect-footer">
 				<button type="button" class="multiselect-link" @click="clearAll()">Clear all</button>
 				<button type="button" class="multiselect-done" @click="open = false">Done</button>
@@ -79,7 +98,8 @@ templ SearchableMultiSelect(name string, showList []frontend.ShowData, selected 
 templ NativeDateInput(name, id, label, value string) {
 	<label class="date-input">
 		<span class="date-input-label">{ label }</span>
-		<input type="text"
+		<input
+			type="text"
 			class="date-input-control js-date-input"
 			name={ name }
 			id={ id }
@@ -88,6 +108,7 @@ templ NativeDateInput(name, id, label, value string) {
 			autocomplete="off"
 			if len(value) != 0 {
 				value={ value }
-			}/>
+			}
+		/>
 	</label>
 }

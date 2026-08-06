@@ -6,7 +6,8 @@ package components
 templ OldSiteBanner(usingOldSite bool, oldSiteHost string, newSiteURL string) {
 	if usingOldSite {
 		<section class="old-site-banner">
-			<p>Hi! You're using the old URL
+			<p>
+				Hi! You're using the old URL
 				if len(oldSiteHost) > 0 {
 					<code>https://{ oldSiteHost }</code>
 				}

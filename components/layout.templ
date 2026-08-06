@@ -4,48 +4,50 @@ import "github.com/AceFire6/ordered-arrowverse/internal/frontend"
 
 templ PageLayout(pageConfig *frontend.PageConfig) {
 	<!DOCTYPE html>
-		<html lang="en">
-			<head>
-				<meta charset="UTF-8"/>
-				<meta name="viewport" content="width=device-width, initial-scale=1"/>
-				<meta name="description" content="Arrowverse episode order tracker. Never spoil a crossover episode again!">
-				<link href={ pageConfig.Reverse("view:rss:recent-episodes") }
-					rel="alternate"
-					title="Recent Episodes"
-					type="application/atom+xml"/>
-				<link type="image/png" href={ pageConfig.Reverse("static:favicon") } rel="icon">
-				<link rel="stylesheet" href={ pageConfig.Reverse("static:css:index") }>
-				<link rel="stylesheet" href={ pageConfig.Reverse("static:css:flatpickr") }>
-				@CsrfMeta(pageConfig.CSRFToken)
-				<script src={ pageConfig.Reverse("static:js:htmx") } defer></script>
-				<script src={ pageConfig.Reverse("static:js:alpine") } defer></script>
-				<script src={ pageConfig.Reverse("static:js:flatpickr") } defer></script>
-				<title>{ pageConfig.Title }</title>
-			</head>
-			<body class="">
-				<a id="page-top"></a>
-				@OldSiteBanner(pageConfig.UsingOldSite, pageConfig.OldSiteHost, pageConfig.NewSiteURL)
-				@NavBar(pageConfig)
-				<div class="container">
-					@pageConfig.Contents
-				</div>
-				@Footer()
-				@SupportModal()
-				@AcknowledgementsModal(pageConfig.ShowList)
-				@ContactModal()
-				@Analytics(pageConfig.UsingOldSite)
-				<nav class="fab-nav" aria-label="Page navigation">
-					<a href="#page-top" id="back-to-top" class="fab" aria-label="Back to top" title="Back to top">
-						<svg class="fab-icon-up" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-							<path d="M12 19V5M5 12l7-7 7 7"/>
-						</svg>
-						<svg class="fab-icon-down" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-							<path d="M12 5v14M19 12l-7 7-7-7"/>
-						</svg>
-						<span class="fab-label">Back to top</span>
-					</a>
-				</nav>
-				<script>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="description" content="Arrowverse episode order tracker. Never spoil a crossover episode again!"/>
+			<link
+				href={ pageConfig.Reverse("view:rss:recent-episodes") }
+				rel="alternate"
+				title="Recent Episodes"
+				type="application/atom+xml"
+			/>
+			<link type="image/png" href={ pageConfig.Reverse("static:favicon") } rel="icon"/>
+			<link rel="stylesheet" href={ pageConfig.Reverse("static:css:index") }/>
+			<link rel="stylesheet" href={ pageConfig.Reverse("static:css:flatpickr") }/>
+			@CsrfMeta(pageConfig.CSRFToken)
+			<script src={ pageConfig.Reverse("static:js:htmx") } defer></script>
+			<script src={ pageConfig.Reverse("static:js:alpine") } defer></script>
+			<script src={ pageConfig.Reverse("static:js:flatpickr") } defer></script>
+			<title>{ pageConfig.Title }</title>
+		</head>
+		<body class="">
+			<a id="page-top"></a>
+			@OldSiteBanner(pageConfig.UsingOldSite, pageConfig.OldSiteHost, pageConfig.NewSiteURL)
+			@NavBar(pageConfig)
+			<div class="container">
+				@pageConfig.Contents
+			</div>
+			@Footer()
+			@SupportModal()
+			@AcknowledgementsModal(pageConfig.ShowList)
+			@ContactModal()
+			@Analytics(pageConfig.UsingOldSite)
+			<nav class="fab-nav" aria-label="Page navigation">
+				<a href="#page-top" id="back-to-top" class="fab" aria-label="Back to top" title="Back to top">
+					<svg class="fab-icon-up" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M12 19V5M5 12l7-7 7 7"></path>
+					</svg>
+					<svg class="fab-icon-down" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M12 5v14M19 12l-7 7-7-7"></path>
+					</svg>
+					<span class="fab-label">Back to top</span>
+				</a>
+			</nav>
+			<script>
 					// Tiny dependency-free controller: cookie plumbing for
 					// dark-mode + colour toggle, and a minimal modal opener.
 					(function() {
@@ -343,8 +345,8 @@ templ PageLayout(pageConfig *frontend.PageConfig) {
 						updateFab();
 					});
 				</script>
-			</body>
-		</html>
+		</body>
+	</html>
 }
 
 templ Footer() {
